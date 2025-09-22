@@ -58,36 +58,41 @@ const ScheduleSection: React.FC = () => {
     const container = document.querySelector('.schedule-container') as HTMLElement;
     const scheduleItems = document.querySelectorAll('.schedule-item');
 
+    // Store triggers for cleanup
+    const triggers: ScrollTrigger[] = [];
+
     if (pinHeight && container && scheduleItems.length > 0) {
       // Pin the container
-      ScrollTrigger.create({
+      const pinTrigger = ScrollTrigger.create({
         trigger: pinHeight,
         start: 'top top',
         end: 'bottom bottom',
         pin: container
       });
+      triggers.push(pinTrigger);
 
       // Animate schedule items scrolling through
       scheduleItems.forEach((item, index) => {
-        gsap.fromTo(item, {
-          yPercent: 100,
-          opacity: 0
-        }, {
-          yPercent: -100,
-          opacity: 1,
-          ease: 'none',
-          scrollTrigger: {
-            trigger: pinHeight,
-            start: `top+=${index * (100 / scheduleItems.length)}% top`,
-            end: `top+=${(index + 1) * (100 / scheduleItems.length)}% top`,
-            scrub: true
-          }
+        const itemTrigger = ScrollTrigger.create({
+          trigger: pinHeight,
+          start: `top+=${index * (100 / scheduleItems.length)}% top`,
+          end: `top+=${(index + 1) * (100 / scheduleItems.length)}% top`,
+          scrub: true,
+          animation: gsap.fromTo(item, {
+            yPercent: 100,
+            opacity: 0
+          }, {
+            yPercent: -100,
+            opacity: 1,
+            ease: 'none'
+          })
         });
+        triggers.push(itemTrigger);
       });
     }
 
     return () => {
-      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+      triggers.forEach(trigger => trigger.kill());
     };
   }, []);
 

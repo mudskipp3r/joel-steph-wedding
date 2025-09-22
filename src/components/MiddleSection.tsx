@@ -14,6 +14,9 @@ const MiddleSection: React.FC = () => {
     const container = root?.querySelector('.container');
     const sentences = root?.querySelectorAll('.sentence');
 
+    // Store triggers for cleanup
+    const triggers: ScrollTrigger[] = [];
+
     // Function to wrap letters exactly like mwg_009
     function wrapLettersInSpan(element: Element) {
       const text = element.textContent;
@@ -32,13 +35,13 @@ const MiddleSection: React.FC = () => {
       });
 
       // Pin setup
-      ScrollTrigger.create({
+      const pinTrigger = ScrollTrigger.create({
         trigger: pinHeight,
         start: 'top top',
         end: 'bottom bottom',
-        pin: container,
-        markers: true
+        pin: container
       });
+      triggers.push(pinTrigger);
 
       // Timeline like mwg_009
       const tl = gsap.timeline({
@@ -46,7 +49,8 @@ const MiddleSection: React.FC = () => {
           trigger: root,
           start: 'top top',
           end: 'bottom bottom',
-          scrub: true
+          scrub: true,
+          onRefresh: (self) => triggers.push(self)
         }
       });
 
@@ -87,7 +91,7 @@ const MiddleSection: React.FC = () => {
     }
 
     // Background color transitions
-    ScrollTrigger.create({
+    const bgTrigger1 = ScrollTrigger.create({
       trigger: '.animation-section',
       start: 'top center',
       onEnter: () => {
@@ -105,8 +109,9 @@ const MiddleSection: React.FC = () => {
         });
       }
     });
+    triggers.push(bgTrigger1);
 
-    ScrollTrigger.create({
+    const bgTrigger2 = ScrollTrigger.create({
       trigger: '.photo-carousel-section',
       start: 'top center',
       onEnter: () => {
@@ -124,9 +129,10 @@ const MiddleSection: React.FC = () => {
         });
       }
     });
+    triggers.push(bgTrigger2);
 
     return () => {
-      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+      triggers.forEach(trigger => trigger.kill());
     };
   }, []);
 

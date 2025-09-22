@@ -54,7 +54,8 @@ const ScrollAnimationSection: React.FC = () => {
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
 
-
+    // Store triggers for cleanup
+    const triggers: ScrollTrigger[] = [];
 
     const slideElements = document.querySelectorAll('.animation-section .slide');
 
@@ -66,38 +67,40 @@ const ScrollAnimationSection: React.FC = () => {
         // Only animate the first card (index 0)
         if (index === 0) {
           // 3D rotation and scale animation for first card
-          gsap.to(content, {
-            rotationZ: (Math.random() - 0.5) * 10,
-            scale: 0.7,
-            rotationX: 40,
-            ease: 'power1.in',
-            scrollTrigger: {
-              pin: contentWrapper,
-              trigger: slide,
-              start: 'top 0%',
-              end: '+=' + window.innerHeight,
-              scrub: true
-            }
+          const rotationTrigger = ScrollTrigger.create({
+            pin: contentWrapper,
+            trigger: slide,
+            start: 'top 0%',
+            end: '+=' + window.innerHeight,
+            scrub: true,
+            animation: gsap.to(content, {
+              rotationZ: (Math.random() - 0.5) * 10,
+              scale: 0.7,
+              rotationX: 40,
+              ease: 'power1.in'
+            })
           });
+          triggers.push(rotationTrigger);
 
           // Fade out animation for first card
-          gsap.to(content, {
-            autoAlpha: 0,
-            ease: 'power1.in',
-            scrollTrigger: {
-              trigger: content,
-              start: 'top -80%',
-              end: '+=' + 0.2 * window.innerHeight,
-              scrub: true
-            }
+          const fadeTrigger = ScrollTrigger.create({
+            trigger: content,
+            start: 'top -80%',
+            end: '+=' + 0.2 * window.innerHeight,
+            scrub: true,
+            animation: gsap.to(content, {
+              autoAlpha: 0,
+              ease: 'power1.in'
+            })
           });
+          triggers.push(fadeTrigger);
         }
         // Second card (index 1) just scrolls normally - no special animations
       }
     });
 
     return () => {
-      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+      triggers.forEach(trigger => trigger.kill());
     };
   }, []);
 

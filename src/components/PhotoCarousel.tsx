@@ -13,31 +13,36 @@ const PhotoCarousel: React.FC = () => {
     const container = root?.querySelector('.container') as HTMLElement;
     const circles = root?.querySelectorAll('.circle');
 
+    // Store triggers for cleanup
+    const triggers: ScrollTrigger[] = [];
+
     if (pinHeight && container && circles) {
-      ScrollTrigger.create({
+      const pinTrigger = ScrollTrigger.create({
         trigger: pinHeight,
         start: 'top top',
         end: 'bottom bottom',
         pin: container
       });
+      triggers.push(pinTrigger);
 
-      gsap.fromTo(circles, {
-        rotation: 30
-      }, {
-        rotation: -30,
-        ease: 'power2.inOut',
-        stagger: 0.06,
-        scrollTrigger: {
-          trigger: pinHeight,
-          start: 'top top',
-          end: 'bottom bottom',
-          scrub: true
-        }
+      const rotationTrigger = ScrollTrigger.create({
+        trigger: pinHeight,
+        start: 'top top',
+        end: 'bottom bottom',
+        scrub: true,
+        animation: gsap.fromTo(circles, {
+          rotation: 30
+        }, {
+          rotation: -30,
+          ease: 'power2.inOut',
+          stagger: 0.06
+        })
       });
+      triggers.push(rotationTrigger);
     }
 
     return () => {
-      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+      triggers.forEach(trigger => trigger.kill());
     };
   }, []);
 

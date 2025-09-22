@@ -184,7 +184,7 @@ const ScrollAnimationSection: React.FC = () => {
 
         .slide {
           height: 100vh;
-          padding: 5vh 5vw;
+          padding: 2vh 2vw;
           box-sizing: border-box;
         }
 
@@ -203,7 +203,7 @@ const ScrollAnimationSection: React.FC = () => {
           display: flex;
           flex-direction: column;
           justify-content: space-between;
-          border-radius: 20px;
+          border-radius: 12px;
           box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
         }
 
@@ -343,13 +343,13 @@ const ScrollAnimationSection: React.FC = () => {
 
         @media (max-aspect-ratio: 1/1) {
           .slide {
-            padding: 2vh 2vw;
+            padding: 1vh 1vw;
           }
 
           .content {
             padding: 20px;
             justify-content: initial;
-            border-radius: 15px;
+            border-radius: 10px;
           }
 
           .venue-header {

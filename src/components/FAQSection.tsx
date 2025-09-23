@@ -150,16 +150,18 @@ const FAQSection: React.FC = () => {
         }
 
         .faq-header h2 {
-          font-size: clamp(2.5rem, 5vw, 4rem);
-          font-weight: bold;
-          color: #2c3e50;
+          font-family: 'Instrument Serif', serif;
+          font-size: clamp(3rem, 8vw, 6rem);
+          font-weight: 600;
+          color: white;
           margin-bottom: 15px;
           letter-spacing: -0.02em;
         }
 
         .faq-header p {
+          font-family: 'Instrument Sans', sans-serif;
           font-size: clamp(1rem, 2vw, 1.3rem);
-          color: #555;
+          color: rgba(255, 255, 255, 0.9);
           line-height: 1.6;
         }
 
@@ -170,15 +172,19 @@ const FAQSection: React.FC = () => {
         }
 
         .faq-item {
-          background: white;
-          border-radius: 15px;
-          box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+          background: rgba(255, 255, 255, 0.1);
+          border-radius: 24px;
+          backdrop-filter: blur(20px);
+          border: 2px solid rgba(255, 255, 255, 0.2);
           overflow: hidden;
           transition: all 0.3s ease;
+          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
         }
 
         .faq-item:hover {
-          box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+          background: rgba(255, 255, 255, 0.15);
+          border-color: rgba(245, 142, 127, 0.4);
+          box-shadow: 0 12px 40px rgba(245, 142, 127, 0.2);
           transform: translateY(-2px);
         }
 
@@ -192,25 +198,26 @@ const FAQSection: React.FC = () => {
           display: flex;
           justify-content: space-between;
           align-items: center;
+          font-family: 'Instrument Sans', sans-serif;
           font-size: 1.1rem;
           font-weight: 600;
-          color: #2c3e50;
+          color: white;
           transition: all 0.3s ease;
         }
 
         .faq-question:hover {
-          background: rgba(102, 126, 234, 0.05);
+          background: rgba(245, 142, 127, 0.1);
         }
 
         .faq-question.open {
-          background: rgba(102, 126, 234, 0.1);
-          color: #667eea;
+          background: rgba(245, 142, 127, 0.15);
+          color: white;
         }
 
         .faq-icon {
           font-size: 1.5rem;
           font-weight: bold;
-          color: #667eea;
+          color: #F58E7F;
           transition: all 0.3s ease;
           min-width: 30px;
           text-align: center;
@@ -228,9 +235,10 @@ const FAQSection: React.FC = () => {
 
         .faq-answer-content {
           padding: 0 30px 30px 30px;
-          color: #555;
+          color: rgba(255, 255, 255, 0.9);
           line-height: 1.7;
           font-size: 1rem;
+          font-family: 'Instrument Sans', sans-serif;
         }
 
         @media (max-width: 768px) {

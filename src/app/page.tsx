@@ -1,7 +1,7 @@
 import HeroSection from "../components/HeroSection";
 import MiddleSection from "../components/MiddleSection";
 import ScheduleSection from "../components/ScheduleSection";
-import VenueSection from "../components/VenueSection";
+import ScrollAnimationSection from "../components/ScrollAnimationSection";
 import PhotoSection from "../components/PhotoSection";
 import RSVPSection from "../components/RSVPSection";
 import FAQSection from "../components/FAQSection";
@@ -22,7 +22,7 @@ export default function Home() {
       <div className="page-content" style={{
         position: 'relative',
         zIndex: 10,
-        background: '#8E7CC3',
+        background: '#faf9f6',
         borderTopLeftRadius: '40px',
         borderTopRightRadius: '40px',
         paddingTop: '60px',
@@ -34,7 +34,7 @@ export default function Home() {
       }}>
         <MiddleSection />
         <ScheduleSection />
-        <VenueSection />
+        <ScrollAnimationSection />
         <PhotoSection />
         <RSVPSection />
         <FAQSection />

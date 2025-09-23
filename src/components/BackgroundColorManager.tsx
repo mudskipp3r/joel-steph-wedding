@@ -11,23 +11,23 @@ const BackgroundColorManager: React.FC = () => {
     // Store triggers for cleanup
     const triggers: ScrollTrigger[] = [];
 
-    // Color palette from the bride's preferences
+    // Background colors with transition to dark at schedule section
     const colors = [
-      '#F58E7F', // HeroSection - Coral pink
-      '#F6C6AF', // MiddleSection - Soft peach
-      '#FDDDD0', // ScheduleSection - Light cream
-      '#F0E9E1', // VenueSection - Warm beige
-      '#EBE3D8', // PhotoSection - Light taupe
-      '#D0DBE1', // RSVPSection - Soft blue-gray
-      '#F58E7F'  // FAQSection - Back to coral pink
+      '#faf9f6', // HeroSection - off-white
+      '#faf9f6', // MiddleSection - off-white
+      '#1a1a2e', // ScheduleSection - dark navy
+      '#16213e', // ScrollAnimationSection - dark blue
+      '#0f1419', // PhotoSection - very dark
+      '#1a1a2e', // RSVPSection - back to dark navy
+      '#16213e'  // FAQSection - dark blue
     ];
 
     const sections = [
       '.hero-section',
       '.mwg_effect006', // MiddleSection
       '.schedule-section',
-      '.animation-section', // VenueSection
-      '.photo-carousel-section',
+      '.animation-section', // ScrollAnimationSection
+      '.photo-section',
       '.rsvp-section',
       '.faq-section'
     ];
@@ -37,27 +37,36 @@ const BackgroundColorManager: React.FC = () => {
 
     // Create transitions for each section
     sections.forEach((sectionSelector, index) => {
-      if (index > 0) { // Skip first section as it's the initial color
+      const section = document.querySelector(sectionSelector);
+
+      if (section && index > 0) { // Skip first section as it's the initial color
+        console.log(`Creating trigger for ${sectionSelector}, color: ${colors[index]}`);
+
         const trigger = ScrollTrigger.create({
-          trigger: sectionSelector,
-          start: 'top 50%',
-          end: 'bottom 50%',
+          trigger: section,
+          start: 'top top', // Trigger when section hits the top of viewport
+          end: 'bottom top',
+          markers: index === 2, // Show markers only for schedule section (index 2)
           onEnter: () => {
+            console.log(`Entering ${sectionSelector}, changing to ${colors[index]}`);
             gsap.to(document.body, {
               backgroundColor: colors[index],
-              duration: 1.5,
+              duration: 1.2,
               ease: 'power2.out'
             });
           },
           onLeaveBack: () => {
+            console.log(`Leaving back ${sectionSelector}, changing to ${colors[index - 1]}`);
             gsap.to(document.body, {
               backgroundColor: colors[index - 1],
-              duration: 1.5,
+              duration: 1.2,
               ease: 'power2.out'
             });
           }
         });
         triggers.push(trigger);
+      } else if (!section) {
+        console.warn(`Section not found: ${sectionSelector}`);
       }
     });
 

@@ -46,7 +46,6 @@ const MiddleSection: React.FC = () => {
         end: "bottom bottom",
         pin: pinContainer,
         pinSpacing: false,
-        markers: true,
         onUpdate: (self) => {
           const progress = self.progress;
 

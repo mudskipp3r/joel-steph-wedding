@@ -2,33 +2,84 @@
 
 import React, { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
-const Footer: React.FC = () => {
+const GSAPFooter: React.FC = () => {
+  const footerRef = useRef<HTMLDivElement>(null);
   const marqueeRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    gsap.registerPlugin(ScrollTrigger);
+
+    const footer = footerRef.current;
     const marqueeText = marqueeRef.current;
 
-    if (marqueeText) {
-      // Continuous marquee animation
-      gsap.to(marqueeText, {
+    // Store triggers for cleanup
+    const triggers: ScrollTrigger[] = [];
+    const animations: gsap.core.Tween[] = [];
+
+    if (footer && marqueeText) {
+      // Set initial state - footer starts completely off-screen below
+      gsap.set(footer, {
+        yPercent: 100
+      });
+
+      // Use ScrollTrigger to detect when we reach the FAQ bottom area
+      ScrollTrigger.create({
+        trigger: '.page-content',
+        start: 'bottom bottom',
+        end: 'bottom bottom-=50vh',
+        onEnter: () => {
+          // Slide footer up
+          gsap.to(footer, {
+            yPercent: 0,
+            duration: 0.8,
+            ease: 'power2.out'
+          });
+        },
+        onLeaveBack: () => {
+          // Slide footer down
+          gsap.to(footer, {
+            yPercent: 100,
+            duration: 0.6,
+            ease: 'power2.in'
+          });
+        }
+      });
+
+      // Marquee animation that runs continuously
+      const marqueeAnimation = gsap.to(marqueeText, {
         x: '-50%',
         duration: 20,
         repeat: -1,
         ease: 'none'
       });
+      animations.push(marqueeAnimation);
     }
+
+    return () => {
+      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+      animations.forEach(animation => animation.kill());
+    };
   }, []);
 
   return (
-    <footer
-      className="footer-section"
+    <div
+      ref={footerRef}
+      className="gsap-footer"
       style={{
+        position: 'fixed',
+        bottom: 0,
+        left: 0,
         width: '100%',
-        height: '100%',
+        height: '50vh',
+        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+        zIndex: 20,
         display: 'flex',
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        borderTopLeftRadius: '40px',
+        borderTopRightRadius: '40px'
       }}
     >
       <div className="footer-content">
@@ -134,8 +185,8 @@ const Footer: React.FC = () => {
           }
         }
       `}</style>
-    </footer>
+    </div>
   );
 };
 
-export default Footer;
+export default GSAPFooter;

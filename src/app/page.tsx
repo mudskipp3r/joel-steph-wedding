@@ -5,7 +5,7 @@ import VenueSection from "../components/VenueSection";
 import PhotoSection from "../components/PhotoSection";
 import RSVPSection from "../components/RSVPSection";
 import FAQSection from "../components/FAQSection";
-import Footer from "../components/Footer";
+import SimpleFooter from "../components/SimpleFooter";
 import BackgroundColorManager from "../components/BackgroundColorManager";
 
 export default function Home() {
@@ -13,6 +13,7 @@ export default function Home() {
     <>
       <BackgroundColorManager />
       <HeroSection />
+      <SimpleFooter />
 
       {/* Spacer for fixed hero section */}
       <div style={{ height: '100vh' }}></div>
@@ -25,7 +26,11 @@ export default function Home() {
         borderTopLeftRadius: '40px',
         borderTopRightRadius: '40px',
         paddingTop: '60px',
-        minHeight: '100vh'
+        minHeight: '100vh',
+        paddingBottom: '50vh',
+        width: '100%',
+        margin: 0,
+        overflow: 'hidden'
       }}>
         <MiddleSection />
         <ScheduleSection />
@@ -34,10 +39,6 @@ export default function Home() {
         <RSVPSection />
         <FAQSection />
       </div>
-
-      {/* Footer trigger - creates space to trigger footer drawer after FAQ */}
-      <div className="footer-trigger" style={{ height: '100vh' }}></div>
-      <Footer />
     </>
   );
 }

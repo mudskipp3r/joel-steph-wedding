@@ -3,7 +3,7 @@
 import React, { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 
-const Footer: React.FC = () => {
+const FooterBackground: React.FC = () => {
   const marqueeRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -21,11 +21,16 @@ const Footer: React.FC = () => {
   }, []);
 
   return (
-    <footer
-      className="footer-section"
+    <div
+      className="footer-background"
       style={{
+        position: 'fixed',
+        bottom: 0,
+        left: 0,
         width: '100%',
-        height: '100%',
+        height: '100vh',
+        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+        zIndex: 5,
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center'
@@ -134,8 +139,8 @@ const Footer: React.FC = () => {
           }
         }
       `}</style>
-    </footer>
+    </div>
   );
 };
 
-export default Footer;
+export default FooterBackground;

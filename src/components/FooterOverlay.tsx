@@ -3,7 +3,7 @@
 import React, { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 
-const Footer: React.FC = () => {
+const FooterOverlay: React.FC = () => {
   const marqueeRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -21,18 +21,24 @@ const Footer: React.FC = () => {
   }, []);
 
   return (
-    <footer
-      className="footer-section"
+    <div
+      className="footer-overlay"
       style={{
+        position: 'relative',
+        zIndex: 15,
+        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+        borderTopLeftRadius: '40px',
+        borderTopRightRadius: '40px',
+        height: '100vh',
         width: '100%',
-        height: '100%',
+        margin: 0,
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center'
       }}
     >
-      <div className="footer-content">
-        <div className="footer-main">
+      <div className="overlay-content">
+        <div className="overlay-main">
           <h2>Thank You</h2>
           <p>We can't wait to celebrate with you on our special day.</p>
           <p>Your presence is the greatest gift of all.</p>
@@ -51,7 +57,7 @@ const Footer: React.FC = () => {
       </div>
 
       <style jsx>{`
-        .footer-content {
+        .overlay-content {
           padding: 4rem 2rem;
           color: white;
           width: 100%;
@@ -64,8 +70,7 @@ const Footer: React.FC = () => {
           height: 100%;
         }
 
-        .footer-main {
-          flex: 1;
+        .overlay-main {
           display: flex;
           flex-direction: column;
           justify-content: center;
@@ -73,15 +78,15 @@ const Footer: React.FC = () => {
           max-width: 900px;
         }
 
-        .footer-main h2 {
+        .overlay-main h2 {
           font-size: clamp(4rem, 10vw, 8rem);
           font-weight: bold;
-          margin-bottom: 3rem;
+          margin-bottom: 2rem;
           text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
           letter-spacing: -0.02em;
         }
 
-        .footer-main p {
+        .overlay-main p {
           font-size: clamp(1.5rem, 4vw, 2.5rem);
           line-height: 1.6;
           margin-bottom: 1.5rem;
@@ -116,26 +121,17 @@ const Footer: React.FC = () => {
         }
 
         @media (max-width: 768px) {
-          .footer-content {
+          .overlay-content {
             padding: 3rem 1.5rem;
           }
 
-          .footer-main h2 {
-            margin-bottom: 2rem;
-          }
-
-          .footer-main p {
-            margin-bottom: 1rem;
-          }
-
-          .marquee-container {
-            height: 80px;
-            padding-top: 1.5rem;
+          .overlay-main h2 {
+            margin-bottom: 1.5rem;
           }
         }
       `}</style>
-    </footer>
+    </div>
   );
 };
 
-export default Footer;
+export default FooterOverlay;

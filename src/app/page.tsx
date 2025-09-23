@@ -1,7 +1,6 @@
 import HeroSection from "../components/HeroSection";
 import MiddleSection from "../components/MiddleSection";
 import ScheduleSection from "../components/ScheduleSection";
-import ScrollAnimationSection from "../components/ScrollAnimationSection";
 import PhotoSection from "../components/PhotoSection";
 import RSVPSection from "../components/RSVPSection";
 import FAQSection from "../components/FAQSection";
@@ -34,7 +33,6 @@ export default function Home() {
       }}>
         <MiddleSection />
         <ScheduleSection />
-        <ScrollAnimationSection />
         <PhotoSection />
         <RSVPSection />
         <FAQSection />

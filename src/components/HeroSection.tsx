@@ -13,13 +13,40 @@ const HeroSection: React.FC = () => {
         left: 0,
         width: '100%',
         height: '100vh',
-        backgroundImage: 'url(/images/LKCK6634.JPG)',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat',
+        overflow: 'hidden',
         zIndex: 1
       }}
     >
+      {/* Video Background */}
+      <video
+        autoPlay
+        loop
+        muted
+        playsInline
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          objectFit: 'cover',
+          zIndex: 1
+        }}
+      >
+        <source src="/images/AILoop.mp4" type="video/mp4" />
+        {/* Fallback image if video doesn't load */}
+        <img
+          src="/images/LKCK6634.JPG"
+          alt="Hero background"
+          style={{
+            width: '100%',
+            height: '100%',
+            objectFit: 'cover'
+          }}
+        />
+      </video>
+
+      {/* Dark overlay */}
       <div
         style={{
           position: 'absolute',
@@ -31,6 +58,8 @@ const HeroSection: React.FC = () => {
           zIndex: 2
         }}
       />
+
+      {/* Content */}
       <div style={{ position: 'relative', zIndex: 3 }}>
         <HeroBanner
           title="Joel & Stephanie"

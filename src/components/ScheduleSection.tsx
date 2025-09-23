@@ -1,367 +1,622 @@
-'use client';
+"use client";
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
-interface ScheduleEvent {
-  title: string;
-  startTime: string;
-  duration: string;
-  description: string;
-  location: string;
-  address: string;
-  mapUrl: string;
-  specialNote?: string;
+// Google Maps type declarations
+declare global {
+  interface Window {
+    google: {
+      maps: {
+        Map: new (element: HTMLElement, options: any) => google.maps.Map;
+        Marker: new (options: any) => google.maps.Marker;
+        Size: new (width: number, height: number) => any;
+        Point: new (x: number, y: number) => any;
+        Animation: {
+          DROP: any;
+        };
+        event: {
+          addListenerOnce: (instance: any, eventName: string, handler: () => void) => void;
+          addListener: (instance: any, eventName: string, handler: (error?: any) => void) => void;
+        };
+      };
+    };
+  }
 }
 
-const scheduleEvents: ScheduleEvent[] = [
+declare namespace google.maps {
+  class Map {
+    setZoom(zoom: number): void;
+    panTo(coords: { lat: number; lng: number }): void;
+    getCenter(): { lat(): number; lng(): number } | null;
+  }
+
+  class Marker {
+    addListener(eventName: string, handler: () => void): void;
+  }
+}
+
+gsap.registerPlugin(ScrollTrigger);
+
+interface ScheduleEvent {
+  id: number;
+  time: string;
+  title: string;
+  location: string;
+  address: string;
+  coordinates: { lat: number; lng: number };
+  color: string;
+  accentColor: string;
+}
+
+const events: ScheduleEvent[] = [
   {
-    title: "Wedding Ceremony",
-    startTime: "3:00 PM",
-    duration: "45 minutes",
-    description: "Join us as we exchange vows and begin our journey together",
-    location: "St. Mary's Cathedral",
-    address: "123 Cathedral Ave, Downtown, NY 10001",
-    mapUrl: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3022.9663095343008!2d-74.00425878459418!3d40.74844097932681!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c259a9b3117469%3A0xd134e199a405a163!2sEmpire%20State%20Building!5e0!3m2!1sen!2sus!4v1580491637188!5m2!1sen!2sus",
-    specialNote: "Please arrive 30 minutes before the ceremony begins"
+    id: 1,
+    time: "12:30 PM",
+    title: "Church ceremony",
+    location: "Saint Brigid's Catholic Church",
+    address: "Livingstone Rd, Marrickville, NSW 2204",
+    coordinates: { lat: -33.9133, lng: 151.1553 },
+    color: "#FFF3E0",
+    accentColor: "#FF9800"
   },
   {
+    id: 2,
+    time: "6:30 PM",
     title: "Reception",
-    startTime: "6:00 PM",
-    duration: "5 hours",
-    description: "Celebrate with us! Dinner, dancing, and unforgettable memories",
-    location: "The Grand Ballroom",
-    address: "456 Celebration Blvd, Uptown, NY 10002",
-    mapUrl: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3022.1422937950147!2d-73.98731968459391!3d40.75889497932615!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c25855c6480299%3A0x55194ec5a1ae072e!2sTimes%20Square!5e0!3m2!1sen!2sus!4v1580491637188!5m2!1sen!2sus"
+    location: "The Sky Ballroom",
+    address: "Level 3/462 Chapel Rd, Bankstown NSW 2200",
+    coordinates: { lat: -33.9198, lng: 151.0346 },
+    color: "#F3E5F5",
+    accentColor: "#9C27B0"
   }
 ];
 
 const ScheduleSection: React.FC = () => {
-  const sectionRef = useRef<HTMLElement>(null);
-  const mapRef = useRef<HTMLIFrameElement>(null);
-  const [activeEventIndex, setActiveEventIndex] = useState(0);
-  const [currentMapUrl, setCurrentMapUrl] = useState(scheduleEvents[0].mapUrl);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const rightRef = useRef<HTMLDivElement>(null);
+  const mapRef = useRef<HTMLDivElement>(null);
+  const [activeEvent, setActiveEvent] = useState(0);
+  const [map, setMap] = useState<google.maps.Map | null>(null);
+  const [markers, setMarkers] = useState<Array<{ marker: google.maps.Marker; event: ScheduleEvent }>>([]);
+  const [mapError, setMapError] = useState(false);
+  const [isMapLoading, setIsMapLoading] = useState(true);
 
-  useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger);
+  // Calculate distance between two coordinates (in km)
+  const calculateDistance = (coord1: { lat: number; lng: number }, coord2: { lat: number; lng: number }) => {
+    const R = 6371; // Earth's radius in km
+    const dLat = (coord2.lat - coord1.lat) * Math.PI / 180;
+    const dLon = (coord2.lng - coord1.lng) * Math.PI / 180;
+    const a =
+      Math.sin(dLat/2) * Math.sin(dLat/2) +
+      Math.cos(coord1.lat * Math.PI / 180) * Math.cos(coord2.lat * Math.PI / 180) *
+      Math.sin(dLon/2) * Math.sin(dLon/2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+    return R * c;
+  };
 
-    const section = sectionRef.current;
-    if (!section) return;
+  // Improved map initialization with better error handling
+  const initializeMap = () => {
+    if (!mapRef.current || !window.google?.maps) {
+      console.log('Google Maps not ready, retrying...');
+      return;
+    }
 
-    const eventCards = section.querySelectorAll('.event-card');
-    const triggers: ScrollTrigger[] = [];
+    try {
+      setIsMapLoading(true);
+      setMapError(false);
 
-    // Create scroll triggers for each event card
-    eventCards.forEach((card, index) => {
-      const trigger = ScrollTrigger.create({
-        trigger: card,
-        start: 'top center',
-        end: 'bottom center',
-        onEnter: () => {
-          setActiveEventIndex(index);
-          setCurrentMapUrl(scheduleEvents[index].mapUrl);
-        },
-        onEnterBack: () => {
-          setActiveEventIndex(index);
-          setCurrentMapUrl(scheduleEvents[index].mapUrl);
+      const newMap = new window.google.maps.Map(mapRef.current, {
+        zoom: 12,
+        center: events[0].coordinates,
+        mapTypeControl: true,
+        streetViewControl: true,
+        fullscreenControl: true,
+        zoomControl: true,
+        gestureHandling: 'cooperative',
+        styles: [
+          {
+            "featureType": "all",
+            "elementType": "geometry.fill",
+            "stylers": [{"weight": "2.00"}]
+          },
+          {
+            "featureType": "all",
+            "elementType": "geometry.stroke",
+            "stylers": [{"color": "#9c9c9c"}]
+          },
+          {
+            "featureType": "all",
+            "elementType": "labels.text",
+            "stylers": [{"visibility": "on"}]
+          },
+          {
+            "featureType": "landscape",
+            "elementType": "all",
+            "stylers": [{"color": "#f2f2f2"}]
+          },
+          {
+            "featureType": "water",
+            "elementType": "all",
+            "stylers": [{"color": "#e6f3ff"}]
+          }
+        ]
+      });
+
+      // Wait for map to be ready before creating markers
+      window.google.maps.event.addListenerOnce(newMap, 'idle', () => {
+        try {
+          // Create markers for all events
+          const newMarkers = events.map((event, index) => {
+            const marker = new window.google.maps.Marker({
+              position: event.coordinates,
+              map: newMap,
+              title: event.location,
+              animation: window.google.maps.Animation.DROP,
+              icon: {
+                url: `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(`
+                  <svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="16" cy="16" r="12" fill="${event.accentColor}" stroke="white" stroke-width="3"/>
+                    <text x="16" y="20" text-anchor="middle" fill="white" font-family="Arial" font-size="12" font-weight="bold">${index + 1}</text>
+                  </svg>
+                `)}`,
+                scaledSize: new window.google.maps.Size(32, 32),
+                anchor: new window.google.maps.Point(16, 16)
+              }
+            });
+
+            // Add click listener to marker
+            marker.addListener('click', () => {
+              setActiveEvent(index);
+            });
+
+            return { marker, event };
+          });
+
+          setMap(newMap);
+          setMarkers(newMarkers);
+          setIsMapLoading(false);
+          console.log('Google Maps initialized successfully');
+        } catch (error) {
+          console.error('Error creating markers:', error);
+          setMapError(true);
+          setIsMapLoading(false);
         }
       });
-      triggers.push(trigger);
-    });
 
+      // Handle map errors
+      window.google.maps.event.addListener(newMap, 'error', (error: any) => {
+        console.error('Google Maps error:', error);
+        setMapError(true);
+        setIsMapLoading(false);
+      });
+
+    } catch (error) {
+      console.error('Error initializing map:', error);
+      setMapError(true);
+      setIsMapLoading(false);
+    }
+  };
+
+  // Load Google Maps API with improved error handling
+  useEffect(() => {
+    // Check if Google Maps is already loaded
+    if (window.google?.maps) {
+      initializeMap();
+      return;
+    }
+
+    // Check if script is already being loaded
+    if (document.querySelector('script[src*="maps.googleapis.com"]')) {
+      // Wait for existing script to load
+      const checkGoogleMaps = setInterval(() => {
+        if (window.google?.maps) {
+          clearInterval(checkGoogleMaps);
+          initializeMap();
+        }
+      }, 100);
+
+      // Clear interval after 10 seconds to prevent infinite checking
+      setTimeout(() => {
+        clearInterval(checkGoogleMaps);
+        if (!window.google?.maps) {
+          setMapError(true);
+          setIsMapLoading(false);
+        }
+      }, 10000);
+      return;
+    }
+
+    // Load Google Maps script
+    const script = document.createElement('script');
+    const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
+
+    // Temporary debug logging
+    console.log('API Key loaded:', apiKey ? 'Yes (length: ' + apiKey.length + ')' : 'No');
+    console.log('All env vars:', Object.keys(process.env).filter(key => key.startsWith('NEXT_PUBLIC_')));
+
+    if (!apiKey) {
+      console.error('Google Maps API key not found. Please add NEXT_PUBLIC_GOOGLE_MAPS_API_KEY to your environment variables.');
+      setMapError(true);
+      setIsMapLoading(false);
+      return;
+    }
+
+    script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=geometry&v=3.54`;
+    script.async = true;
+    script.defer = true;
+
+    script.onload = () => {
+      console.log('Google Maps script loaded');
+      // Small delay to ensure Google Maps is fully ready
+      setTimeout(initializeMap, 100);
+    };
+
+    script.onerror = (error) => {
+      console.error('Failed to load Google Maps script:', error);
+      setMapError(true);
+      setIsMapLoading(false);
+    };
+
+    document.head.appendChild(script);
+
+    // Cleanup function
     return () => {
-      triggers.forEach(trigger => trigger.kill());
+      // Don't remove the script as it might be used by other components
+      // Just clear any intervals or timeouts if they exist
     };
   }, []);
 
+  // Smooth pan with intelligent zoom
+  const smoothPanToLocation = (targetCoords: { lat: number; lng: number }, currentCoords: { lat: number; lng: number }) => {
+    if (!map) return;
+
+    const distance = calculateDistance(currentCoords, targetCoords);
+
+    // Always zoom out and back in to make location changes clear
+    let zoomOutLevel, finalZoom;
+
+    if (distance > 10) { // Very far (>10km)
+      zoomOutLevel = 10;
+      finalZoom = 14;
+    } else if (distance > 5) { // Far (5-10km)
+      zoomOutLevel = 11;
+      finalZoom = 15;
+    } else if (distance > 2) { // Medium distance (2-5km)
+      zoomOutLevel = 12;
+      finalZoom = 15;
+    } else { // Close distance (<2km)
+      zoomOutLevel = 12;
+      finalZoom = 15;
+    }
+
+    // Smooth animation sequence
+    map.setZoom(zoomOutLevel);
+
+    setTimeout(() => {
+      map.panTo(targetCoords);
+    }, 300);
+
+    setTimeout(() => {
+      map.setZoom(finalZoom);
+    }, 1000);
+  };
+
+  // Update map when active event changes
+  useEffect(() => {
+    if (!map || !markers.length || mapError) return;
+
+    const activeEventData = events[activeEvent];
+    const currentCenter = map.getCenter();
+
+    if (currentCenter) {
+      const currentCoords = {
+        lat: currentCenter.lat(),
+        lng: currentCenter.lng()
+      };
+
+      // Smooth pan to the new location
+      smoothPanToLocation(activeEventData.coordinates, currentCoords);
+    }
+  }, [activeEvent, map, markers, mapError]);
+
+  useEffect(() => {
+    const container = containerRef.current;
+    const rightSide = rightRef.current;
+
+    if (!container || !rightSide) return;
+
+    // Pin the right side (map) while left side (timeline) scrolls
+    ScrollTrigger.create({
+      trigger: container,
+      start: "top top",
+      end: "bottom bottom",
+      pin: rightSide
+    });
+
+    // Create scroll triggers for each event to update the map
+    events.forEach((event, index) => {
+      const eventElement = document.querySelector(`[data-event-id="${event.id}"]`);
+
+      if (eventElement) {
+        ScrollTrigger.create({
+          trigger: eventElement,
+          start: "top 60%",
+          end: "bottom 40%",
+          onEnter: () => {
+            setActiveEvent(index);
+          },
+          onEnterBack: () => {
+            setActiveEvent(index);
+          }
+        });
+      }
+    });
+
+    return () => {
+      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+    };
+  }, []);
+
+  const openInGoogleMaps = (event: ScheduleEvent) => {
+    const url = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(event.address)}`;
+    window.open(url, '_blank');
+  };
+
   return (
-    <section ref={sectionRef} className="schedule-section">
-      <h2 className="schedule-title">Schedule & Locations</h2>
+    <div
+      ref={containerRef}
+      style={{
+        display: 'flex',
+        background: 'transparent'
+      }}
+    >
+      {/* Left Side - Scrolling Timeline */}
+      <div style={{
+        width: '50%'
+      }}>
+        <div style={{
+          margin: 'auto',
+          width: '80%',
+          padding: '2rem 0',
+          position: 'relative'
+        }}>
+          {/* Timeline vertical line */}
+          <div style={{
+            position: 'absolute',
+            left: 'calc(-2rem + 12px - 1px)',
+            top: '50vh',
+            bottom: '50vh',
+            width: '2px',
+            background: 'rgba(255,255,255,0.3)',
+            zIndex: 1
+          }} />
+          {events.map((event, index) => (
+            <div
+              key={event.id}
+              data-event-id={event.id}
+              style={{
+                height: '100vh',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                position: 'relative',
+                padding: '2rem'
+              }}
+            >
+              {/* Timeline dot */}
+              <div style={{
+                position: 'absolute',
+                left: '-2rem',
+                top: '50%',
+                transform: 'translateY(-50%)',
+                width: '24px',
+                height: '24px',
+                background: 'transparent',
+                borderRadius: '50%',
+                border: activeEvent === index ? `4px solid ${event.accentColor}` : '4px solid rgba(255,255,255,0.5)',
+                boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+                transition: 'all 0.4s ease',
+                zIndex: 5
+              }} />
 
-      <div className="schedule-layout">
-        {/* Left side - Scrollable events */}
-        <div className="events-container">
-          <div className="events-scroll">
-            {scheduleEvents.map((event, index) => (
-              <div
-                key={index}
-                className={`event-card ${activeEventIndex === index ? 'active' : ''}`}
-              >
-                <div className="event-number">{index + 1}</div>
-                <div className="event-content">
-                  <h3 className="event-title">{event.title}</h3>
-
-                  <div className="event-time">
-                    <span className="time">{event.startTime}</span>
-                    <span className="duration">{event.duration}</span>
-                  </div>
-
-                  <p className="event-description">{event.description}</p>
-
-                  <div className="event-location">
-                    <strong>{event.location}</strong>
-                    <span>{event.address}</span>
-                  </div>
-
-                  {event.specialNote && (
-                    <div className="special-note">
-                      {event.specialNote}
-                    </div>
-                  )}
+              {/* Event content */}
+              <div style={{
+                background: 'transparent',
+                padding: '3rem',
+                transition: 'all 0.5s ease'
+              }}>
+                <div style={{
+                  fontFamily: 'Instrument Sans, sans-serif',
+                  fontSize: '3rem',
+                  fontWeight: '700',
+                  color: event.accentColor,
+                  marginBottom: '1rem',
+                  lineHeight: '1'
+                }}>
+                  {event.time}
                 </div>
-              </div>
-            ))}
-          </div>
-        </div>
 
-        {/* Right side - Fixed map */}
-        <div className="map-container">
-          <div className="map-wrapper">
-            <iframe
-              ref={mapRef}
-              src={currentMapUrl}
-              width="100%"
-              height="100%"
-              style={{ border: 0 }}
-              allowFullScreen
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-            />
-          </div>
+                <h3 style={{
+                  fontFamily: 'Instrument Serif, serif',
+                  fontSize: '4.5rem',
+                  fontWeight: '700',
+                  color: 'white',
+                  margin: '0 0 1.5rem 0',
+                  letterSpacing: '-0.02em',
+                  lineHeight: '0.9'
+                }}>
+                  {event.title}
+                </h3>
+
+                <div style={{
+                  fontFamily: 'Instrument Sans, sans-serif',
+                  fontSize: '1.4rem',
+                  fontWeight: '600',
+                  color: 'white',
+                  marginBottom: '1rem'
+                }}>
+                  {event.location}
+                </div>
+
+                <div style={{
+                  fontFamily: 'Instrument Sans, sans-serif',
+                  fontSize: '1.1rem',
+                  color: 'white',
+                  lineHeight: '1.6',
+                  marginBottom: '2rem'
+                }}>
+                  {event.address}
+                </div>
+
+                <button
+                  onClick={() => openInGoogleMaps(event)}
+                  style={{
+                    fontFamily: 'Instrument Sans, sans-serif',
+                    padding: '1rem 2rem',
+                    background: event.accentColor,
+                    color: 'white',
+                    border: 'none',
+                    borderRadius: '12px',
+                    fontSize: '1rem',
+                    fontWeight: '600',
+                    cursor: 'pointer',
+                    transition: 'all 0.3s ease',
+                    boxShadow: `0 4px 15px ${event.accentColor}40`
+                  }}
+                >
+                  Open in Google Maps
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Right Side - Pinned Map */}
+      <div
+        ref={rightRef}
+        style={{
+          width: '50%',
+          height: '100vh',
+          display: 'flex',
+          flexDirection: 'column',
+          background: 'transparent',
+          position: 'sticky',
+          top: 0
+        }}
+      >
+        {/* Map Container */}
+        <div style={{
+          flex: 1,
+          borderRadius: '20px',
+          overflow: 'hidden',
+          position: 'relative',
+          margin: '2rem',
+          boxShadow: '0 10px 30px rgba(0,0,0,0.2)'
+        }}>
+          {/* Loading State */}
+          {isMapLoading && !mapError && (
+            <div style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              width: '100%',
+              height: '100%',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              background: 'transparent',
+              zIndex: 10
+            }}>
+              <div style={{
+                textAlign: 'center',
+                color: '#666',
+                background: 'rgba(255,255,255,0.9)',
+                padding: '2rem',
+                borderRadius: '12px'
+              }}>
+                <div style={{
+                  width: '40px',
+                  height: '40px',
+                  border: '4px solid #ddd',
+                  borderTop: '4px solid #667eea',
+                  borderRadius: '50%',
+                  animation: 'spin 1s linear infinite',
+                  margin: '0 auto 1rem'
+                }} />
+                <p>Loading map...</p>
+              </div>
+            </div>
+          )}
+
+          {/* Error State */}
+          {mapError && (
+            <div style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              width: '100%',
+              height: '100%',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              background: 'transparent',
+              zIndex: 10
+            }}>
+              <div style={{
+                textAlign: 'center',
+                color: '#666',
+                background: 'rgba(255,255,255,0.9)',
+                padding: '2rem',
+                borderRadius: '12px'
+              }}>
+                <div style={{
+                  fontSize: '3rem',
+                  marginBottom: '1rem'
+                }}>📍</div>
+                <h3 style={{ marginBottom: '1rem' }}>Map unavailable</h3>
+                <p style={{ marginBottom: '1.5rem' }}>
+                  Unable to load the interactive map, but you can still view location details.
+                </p>
+                <button
+                  onClick={() => openInGoogleMaps(events[activeEvent])}
+                  style={{
+                    padding: '0.75rem 1.5rem',
+                    background: '#667eea',
+                    color: 'white',
+                    border: 'none',
+                    borderRadius: '8px',
+                    cursor: 'pointer'
+                  }}
+                >
+                  Open in Google Maps
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* Map Element */}
+          <div
+            ref={mapRef}
+            style={{
+              width: '100%',
+              height: '100%',
+              minHeight: '400px',
+              opacity: mapError ? 0 : 1
+            }}
+          />
         </div>
       </div>
 
       <style jsx>{`
-        .schedule-section {
-          background: transparent;
-          padding: 80px 20px;
-          min-height: 100vh;
-        }
-
-        .schedule-title {
-          font-family: 'Instrument Serif', serif;
-          font-size: clamp(3rem, 8vw, 6rem);
-          font-weight: 600;
-          color: white;
-          text-align: center;
-          margin: 0 0 4rem;
-          letter-spacing: -0.02em;
-        }
-
-        .schedule-layout {
-          display: flex;
-          gap: 40px;
-          max-width: 1400px;
-          margin: 0 auto;
-          height: 80vh;
-        }
-
-        .events-container {
-          flex: 1;
-          overflow-y: auto;
-          padding-right: 20px;
-        }
-
-        .events-scroll {
-          display: flex;
-          flex-direction: column;
-          gap: 30px;
-          padding: 40px 0;
-        }
-
-        .event-card {
-          background: rgba(255, 255, 255, 0.1);
-          border-radius: 24px;
-          padding: 40px;
-          backdrop-filter: blur(20px);
-          border: 2px solid rgba(255, 255, 255, 0.2);
-          transition: all 0.3s ease;
-          display: flex;
-          gap: 30px;
-          position: relative;
-          min-height: 250px;
-        }
-
-        .event-card.active {
-          background: rgba(255, 255, 255, 0.15);
-          border-color: #F58E7F;
-          transform: translateX(10px);
-          box-shadow: 0 12px 40px rgba(245, 142, 127, 0.3);
-        }
-
-        .event-number {
-          font-family: 'Instrument Serif', serif;
-          font-size: 4rem;
-          font-weight: 600;
-          color: rgba(255, 255, 255, 0.2);
-          line-height: 1;
-          transition: all 0.3s ease;
-        }
-
-        .event-card.active .event-number {
-          color: #F58E7F;
-        }
-
-        .event-content {
-          flex: 1;
-        }
-
-        .event-title {
-          font-family: 'Instrument Serif', serif;
-          font-size: clamp(2rem, 3vw, 2.5rem);
-          font-weight: 600;
-          color: white;
-          margin-bottom: 20px;
-          letter-spacing: -0.02em;
-        }
-
-        .event-time {
-          display: flex;
-          gap: 20px;
-          align-items: center;
-          margin-bottom: 20px;
-        }
-
-        .time {
-          font-family: 'Instrument Sans', sans-serif;
-          font-size: 1.5rem;
-          font-weight: 600;
-          color: #F58E7F;
-        }
-
-        .duration {
-          font-family: 'Instrument Sans', sans-serif;
-          font-size: 1rem;
-          color: rgba(255, 255, 255, 0.9);
-          background: rgba(245, 142, 127, 0.2);
-          padding: 6px 16px;
-          border-radius: 20px;
-          border: 1px solid rgba(245, 142, 127, 0.3);
-        }
-
-        .event-description {
-          font-family: 'Instrument Sans', sans-serif;
-          font-size: 1.1rem;
-          color: rgba(255, 255, 255, 0.9);
-          line-height: 1.6;
-          margin-bottom: 20px;
-        }
-
-        .event-location {
-          display: flex;
-          flex-direction: column;
-          gap: 8px;
-          margin-bottom: 20px;
-        }
-
-        .event-location strong {
-          font-family: 'Instrument Sans', sans-serif;
-          font-size: 1.2rem;
-          color: white;
-          font-weight: 600;
-        }
-
-        .event-location span {
-          font-family: 'Instrument Sans', sans-serif;
-          font-size: 1rem;
-          color: rgba(255, 255, 255, 0.8);
-        }
-
-        .special-note {
-          background: rgba(245, 142, 127, 0.2);
-          border: 1px solid rgba(245, 142, 127, 0.4);
-          border-radius: 12px;
-          padding: 15px;
-          color: rgba(255, 255, 255, 0.95);
-          font-family: 'Instrument Sans', sans-serif;
-          font-size: 1rem;
-          font-weight: 500;
-        }
-
-        .map-container {
-          flex: 1;
-          position: sticky;
-          top: 100px;
-          height: fit-content;
-        }
-
-        .map-wrapper {
-          width: 100%;
-          height: 70vh;
-          border-radius: 24px;
-          overflow: hidden;
-          box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-          border: 2px solid rgba(255, 255, 255, 0.2);
-        }
-
-        /* Scrollbar styling */
-        .events-container::-webkit-scrollbar {
-          width: 8px;
-        }
-
-        .events-container::-webkit-scrollbar-track {
-          background: rgba(255, 255, 255, 0.1);
-          border-radius: 10px;
-        }
-
-        .events-container::-webkit-scrollbar-thumb {
-          background: rgba(255, 255, 255, 0.3);
-          border-radius: 10px;
-        }
-
-        .events-container::-webkit-scrollbar-thumb:hover {
-          background: rgba(255, 255, 255, 0.4);
-        }
-
-        @media (max-width: 1024px) {
-          .schedule-layout {
-            flex-direction: column;
-            height: auto;
-          }
-
-          .map-container {
-            position: sticky;
-            top: 20px;
-            order: -1;
-            margin-bottom: 40px;
-          }
-
-          .map-wrapper {
-            height: 400px;
-          }
-
-          .events-container {
-            overflow-y: visible;
-            padding-right: 0;
-          }
-
-          .event-card.active {
-            transform: translateX(0) translateY(-5px);
-          }
-        }
-
-        @media (max-width: 768px) {
-          .schedule-section {
-            padding: 60px 15px;
-          }
-
-          .event-card {
-            padding: 30px 20px;
-            flex-direction: column;
-            gap: 20px;
-          }
-
-          .event-number {
-            font-size: 3rem;
-          }
-
-          .map-wrapper {
-            height: 300px;
-          }
+        @keyframes spin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
         }
       `}</style>
-    </section>
+    </div>
   );
 };
 

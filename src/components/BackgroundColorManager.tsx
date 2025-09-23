@@ -35,40 +35,50 @@ const BackgroundColorManager: React.FC = () => {
     // Set initial background color
     gsap.set(document.body, { backgroundColor: colors[0] });
 
-    // Create transitions for each section
-    sections.forEach((sectionSelector, index) => {
-      const section = document.querySelector(sectionSelector);
+    // Create trigger based on middle section position
+    const middleSection = document.querySelector('.mwg_effect006');
 
-      if (section && index > 0) { // Skip first section as it's the initial color
-        console.log(`Creating trigger for ${sectionSelector}, color: ${colors[index]}`);
+    if (middleSection) {
+      console.log('Setting up background trigger 50vh above bottom of middle section');
 
-        const trigger = ScrollTrigger.create({
-          trigger: section,
-          start: 'top top', // Trigger when section hits the top of viewport
-          end: 'bottom top',
-          markers: index === 2, // Show markers only for schedule section (index 2)
-          onEnter: () => {
-            console.log(`Entering ${sectionSelector}, changing to ${colors[index]}`);
-            gsap.to(document.body, {
-              backgroundColor: colors[index],
-              duration: 1.2,
-              ease: 'power2.out'
-            });
-          },
-          onLeaveBack: () => {
-            console.log(`Leaving back ${sectionSelector}, changing to ${colors[index - 1]}`);
-            gsap.to(document.body, {
-              backgroundColor: colors[index - 1],
-              duration: 1.2,
-              ease: 'power2.out'
-            });
-          }
-        });
-        triggers.push(trigger);
-      } else if (!section) {
-        console.warn(`Section not found: ${sectionSelector}`);
-      }
-    });
+      const trigger = ScrollTrigger.create({
+        trigger: middleSection,
+        start: 'bottom-=50vh center', // Trigger 50vh before the bottom of middle section
+        end: 'bottom center',
+        markers: true, // Show markers for debugging
+        onEnter: () => {
+          console.log('Transition point reached - changing to dark background');
+          gsap.to('.page-content', {
+            backgroundColor: '#1a1a2e',
+            duration: 1.5,
+            ease: 'power2.out'
+          });
+          // Change schedule title to white
+          gsap.to('.schedule-title', {
+            color: 'white',
+            duration: 1.5,
+            ease: 'power2.out'
+          });
+        },
+        onLeaveBack: () => {
+          console.log('Transition point left - changing back to light background');
+          gsap.to('.page-content', {
+            backgroundColor: '#faf9f6',
+            duration: 1.5,
+            ease: 'power2.out'
+          });
+          // Change schedule title back to black
+          gsap.to('.schedule-title', {
+            color: '#2c3e50',
+            duration: 1.5,
+            ease: 'power2.out'
+          });
+        }
+      });
+      triggers.push(trigger);
+    } else {
+      console.warn('Middle section not found');
+    }
 
     return () => {
       triggers.forEach(trigger => trigger.kill());

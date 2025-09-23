@@ -168,7 +168,7 @@ const MiddleSection: React.FC = () => {
         .mwg_effect006 {
           position: relative;
           height: 400vh;
-          background: #faf9f6;
+          background: transparent;
           letter-spacing: -0.03em;
           overflow: hidden;
           margin: -60px -20px 0 -20px;

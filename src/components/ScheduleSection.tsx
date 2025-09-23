@@ -117,12 +117,12 @@ const ScheduleSection: React.FC = () => {
         }
 
         .schedule-title {
-          font-size: clamp(2.5rem, 5vw, 4rem);
-          font-weight: bold;
+          font-family: 'Instrument Serif', serif;
+          font-size: clamp(3rem, 8vw, 6rem);
+          font-weight: 600;
           color: white;
-          text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
           text-align: center;
-          margin-bottom: 60px;
+          margin: 2rem 0 3rem;
           letter-spacing: -0.02em;
         }
 
@@ -133,14 +133,21 @@ const ScheduleSection: React.FC = () => {
         }
 
         .schedule-card {
-          background: rgba(255, 255, 255, 0.95);
-          border-radius: 20px;
-          box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
-          backdrop-filter: blur(10px);
-          border: 1px solid rgba(255, 255, 255, 0.3);
+          background: rgba(255, 255, 255, 0.1);
+          border-radius: 24px;
+          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+          backdrop-filter: blur(20px);
+          border: 1px solid rgba(255, 255, 255, 0.2);
           overflow: hidden;
           display: flex;
-          min-height: 250px;
+          min-height: 280px;
+          transition: all 0.3s ease;
+        }
+
+        .schedule-card:hover {
+          transform: translateY(-5px);
+          box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+          background: rgba(255, 255, 255, 0.15);
         }
 
         .card-image {
@@ -163,9 +170,10 @@ const ScheduleSection: React.FC = () => {
         }
 
         .event-title {
+          font-family: 'Instrument Serif', serif;
           font-size: clamp(1.8rem, 3vw, 2.5rem);
-          font-weight: bold;
-          color: #2c3e50;
+          font-weight: 600;
+          color: white;
           margin-bottom: 20px;
           letter-spacing: -0.02em;
         }
@@ -178,39 +186,46 @@ const ScheduleSection: React.FC = () => {
         }
 
         .start-time {
+          font-family: 'Instrument Sans', sans-serif;
           font-size: 1.5rem;
-          font-weight: bold;
+          font-weight: 600;
           color: #F58E7F;
         }
 
         .duration {
+          font-family: 'Instrument Sans', sans-serif;
           font-size: 1rem;
-          color: #666;
-          background: rgba(245, 142, 127, 0.1);
-          padding: 4px 12px;
+          color: rgba(255, 255, 255, 0.9);
+          background: rgba(245, 142, 127, 0.2);
+          padding: 6px 16px;
           border-radius: 20px;
+          border: 1px solid rgba(245, 142, 127, 0.3);
         }
 
         .event-description {
+          font-family: 'Instrument Sans', sans-serif;
           font-size: 1.1rem;
-          color: #555;
+          color: rgba(255, 255, 255, 0.9);
           line-height: 1.6;
           margin-bottom: 15px;
         }
 
         .event-location {
+          font-family: 'Instrument Sans', sans-serif;
           font-size: 1rem;
-          color: #777;
+          color: rgba(255, 255, 255, 0.8);
           margin-bottom: 15px;
         }
 
         .special-note {
-          background: rgba(245, 142, 127, 0.15);
-          border: 2px solid #F58E7F;
+          background: rgba(245, 142, 127, 0.2);
+          border: 1px solid rgba(245, 142, 127, 0.4);
           border-radius: 12px;
           padding: 15px;
-          color: #d63031;
+          color: rgba(255, 255, 255, 0.95);
+          font-family: 'Instrument Sans', sans-serif;
           font-size: 1rem;
+          font-weight: 500;
         }
 
         @media (max-width: 768px) {

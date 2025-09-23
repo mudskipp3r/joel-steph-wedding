@@ -174,14 +174,20 @@ const RSVPSection: React.FC = () => {
         }
 
         .rsvp-form-container {
-          background: rgba(255, 255, 255, 0.95);
-          border-radius: 20px;
+          background: rgba(255, 255, 255, 0.1);
+          border-radius: 24px;
           padding: 60px 50px;
           max-width: 800px;
           width: 100%;
-          box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3);
-          backdrop-filter: blur(10px);
+          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+          backdrop-filter: blur(20px);
           border: 1px solid rgba(255, 255, 255, 0.2);
+          transition: all 0.3s ease;
+        }
+
+        .rsvp-form-container:hover {
+          background: rgba(255, 255, 255, 0.15);
+          box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
         }
 
         .rsvp-header {

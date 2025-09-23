@@ -31,8 +31,8 @@ const venues: VenueData[] = [
     publicTransport: "Take the B, D, F, M, N, Q, R, or W train to 34th St-Herald Sq station. The cathedral is a 2-minute walk from the station.",
     imageUrl: "/images/LKCK6724.JPG",
     number: "(01)",
-    backgroundColor: "#ffffff",
-    textColor: "#2c3e50"
+    backgroundColor: "transparent",
+    textColor: "white"
   },
   {
     title: "Reception",
@@ -45,8 +45,8 @@ const venues: VenueData[] = [
     publicTransport: "Take the N, Q, R, W, S, 1, 2, 3, or 7 trains to Times Sq-42nd St station. The ballroom is directly above the station.",
     imageUrl: "/images/LKCK6729.JPG",
     number: "(02)",
-    backgroundColor: "#ffffff",
-    textColor: "#34495e"
+    backgroundColor: "transparent",
+    textColor: "white"
   }
 ];
 
@@ -206,8 +206,18 @@ const ScrollAnimationSection: React.FC = () => {
           display: flex;
           flex-direction: column;
           justify-content: space-between;
-          border-radius: 12px;
-          box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+          border-radius: 24px;
+          background: rgba(255, 255, 255, 0.1);
+          backdrop-filter: blur(20px);
+          border: 1px solid rgba(255, 255, 255, 0.2);
+          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+          transition: all 0.3s ease;
+        }
+
+        .content:hover {
+          background: rgba(255, 255, 255, 0.15);
+          transform: translateY(-2px);
+          box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
         }
 
         .venue-header {
@@ -224,16 +234,20 @@ const ScrollAnimationSection: React.FC = () => {
         }
 
         .venue-type {
-          font-weight: 500;
+          font-family: 'Instrument Serif', serif;
+          font-weight: 600;
           font-size: clamp(3rem, 8vw, 6rem);
           line-height: 0.9;
           letter-spacing: -0.04em;
+          color: white;
         }
 
         .venue-number {
+          font-family: 'Instrument Sans', sans-serif;
           font-weight: 500;
           font-size: clamp(1.5rem, 3vw, 2.5rem);
           opacity: 0.7;
+          color: white;
         }
 
         .venue-details {
@@ -242,24 +256,30 @@ const ScrollAnimationSection: React.FC = () => {
         }
 
         .venue-name {
+          font-family: 'Instrument Serif', serif;
           font-weight: 600;
           font-size: clamp(1.8rem, 3.5vw, 3rem);
           margin-bottom: 0.5rem;
           line-height: 1.1;
+          color: white;
         }
 
         .venue-time {
-          font-weight: 500;
+          font-family: 'Instrument Sans', sans-serif;
+          font-weight: 600;
           font-size: clamp(1.2rem, 2.5vw, 2rem);
           margin-bottom: 0.5rem;
           opacity: 0.9;
+          color: #F58E7F;
         }
 
         .venue-address {
+          font-family: 'Instrument Sans', sans-serif;
           font-weight: 400;
           font-size: clamp(0.9rem, 1.8vw, 1.4rem);
           line-height: 1.3;
           opacity: 0.8;
+          color: rgba(255, 255, 255, 0.8);
         }
 
         .venue-content {
@@ -280,30 +300,37 @@ const ScrollAnimationSection: React.FC = () => {
         }
 
         .venue-description {
+          font-family: 'Instrument Sans', sans-serif;
           font-weight: 400;
           font-size: clamp(1rem, 2vw, 1.5rem);
           line-height: 1.4;
+          color: rgba(255, 255, 255, 0.9);
         }
 
         .transport-info {
           padding: 1rem;
-          background: rgba(255, 255, 255, 0.1);
-          border-radius: 8px;
+          background: rgba(245, 142, 127, 0.15);
+          border: 1px solid rgba(245, 142, 127, 0.3);
+          border-radius: 12px;
           backdrop-filter: blur(10px);
         }
 
         .transport-info h4 {
+          font-family: 'Instrument Sans', sans-serif;
           font-weight: 600;
           font-size: clamp(1rem, 2vw, 1.3rem);
           margin-bottom: 0.5rem;
           opacity: 0.9;
+          color: white;
         }
 
         .transport-info p {
+          font-family: 'Instrument Sans', sans-serif;
           font-weight: 400;
           font-size: clamp(0.9rem, 1.8vw, 1.2rem);
           line-height: 1.4;
           opacity: 0.8;
+          color: rgba(255, 255, 255, 0.8);
         }
 
         .venue-map-section {
@@ -326,22 +353,24 @@ const ScrollAnimationSection: React.FC = () => {
         .directions-btn {
           display: inline-block;
           padding: 14px 28px;
-          background: transparent;
+          background: rgba(245, 142, 127, 0.2);
           color: white;
           text-decoration: none;
           border-radius: 25px;
+          border: 1px solid rgba(245, 142, 127, 0.4);
+          font-family: 'Instrument Sans', sans-serif;
           font-weight: 600;
           font-size: clamp(1rem, 2vw, 1.2rem);
           text-align: center;
           transition: all 0.3s ease;
-          box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
-          border: none;
+          backdrop-filter: blur(10px);
         }
 
         .directions-btn:hover {
-          background: #5a6fd8;
+          background: rgba(245, 142, 127, 0.3);
+          border: 1px solid rgba(245, 142, 127, 0.6);
           transform: translateY(-3px);
-          box-shadow: 0 8px 25px rgba(102, 126, 234, 0.6);
+          box-shadow: 0 8px 25px rgba(245, 142, 127, 0.3);
         }
 
         @media (max-aspect-ratio: 1/1) {

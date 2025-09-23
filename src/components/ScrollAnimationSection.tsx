@@ -29,9 +29,9 @@ const venues: VenueData[] = [
     mapUrl: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3022.9663095343008!2d-74.00425878459418!3d40.74844097932681!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c259a9b3117469%3A0xd134e199a405a163!2sEmpire%20State%20Building!5e0!3m2!1sen!2sus!4v1580491637188!5m2!1sen!2sus",
     directionsUrl: "https://maps.google.com/maps?q=Empire+State+Building,+New+York,+NY",
     publicTransport: "Take the B, D, F, M, N, Q, R, or W train to 34th St-Herald Sq station. The cathedral is a 2-minute walk from the station.",
-    imageUrl: "https://images.unsplash.com/photo-1519491050282-cf00c82424b4?w=800&h=600&fit=crop",
+    imageUrl: "/images/LKCK6724.JPG",
     number: "(01)",
-    backgroundColor: "#f8f9fa",
+    backgroundColor: "#ffffff",
     textColor: "#2c3e50"
   },
   {
@@ -43,9 +43,9 @@ const venues: VenueData[] = [
     mapUrl: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3022.1422937950147!2d-73.98731968459391!3d40.75889497932615!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c25855c6480299%3A0x55194ec5a1ae072e!2sTimes%20Square!5e0!3m2!1sen!2sus!4v1580491637188!5m2!1sen!2sus",
     directionsUrl: "https://maps.google.com/maps?q=Times+Square,+New+York,+NY",
     publicTransport: "Take the N, Q, R, W, S, 1, 2, 3, or 7 trains to Times Sq-42nd St station. The ballroom is directly above the station.",
-    imageUrl: "https://images.unsplash.com/photo-1519167758481-83f550bb49b3?w=800&h=600&fit=crop",
+    imageUrl: "/images/LKCK6729.JPG",
     number: "(02)",
-    backgroundColor: "#f5f6fa",
+    backgroundColor: "#ffffff",
     textColor: "#34495e"
   }
 ];
@@ -186,7 +186,7 @@ const ScrollAnimationSection: React.FC = () => {
 
 
         .slide {
-          height: 100vh;
+          height: 90vh;
           padding: 2vh 2vw;
           box-sizing: border-box;
         }
@@ -326,7 +326,7 @@ const ScrollAnimationSection: React.FC = () => {
         .directions-btn {
           display: inline-block;
           padding: 14px 28px;
-          background: #667eea;
+          background: transparent;
           color: white;
           text-decoration: none;
           border-radius: 25px;

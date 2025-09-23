@@ -5,48 +5,32 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 interface ScheduleEvent {
-  time: string;
   title: string;
+  startTime: string;
+  duration: string;
   description: string;
-  location?: string;
+  location: string;
+  imageUrl: string;
+  specialNote?: string;
 }
 
 const scheduleEvents: ScheduleEvent[] = [
   {
-    time: "2:30 PM",
-    title: "Guest Arrival",
-    description: "Welcome drinks and mingling",
-    location: "Cathedral Entrance"
-  },
-  {
-    time: "3:00 PM",
     title: "Wedding Ceremony",
-    description: "The moment we say 'I do'",
-    location: "St. Mary's Cathedral"
+    startTime: "3:00 PM",
+    duration: "45 minutes",
+    description: "Join us as we exchange vows and begin our journey together",
+    location: "St. Mary's Cathedral",
+    imageUrl: "/images/LKCK6724.JPG",
+    specialNote: "Please arrive 30 minutes before the ceremony begins"
   },
   {
-    time: "4:00 PM",
-    title: "Photos & Cocktails",
-    description: "Capturing memories while you enjoy cocktails",
-    location: "Cathedral Gardens"
-  },
-  {
-    time: "6:00 PM",
-    title: "Reception Begins",
-    description: "Dinner, dancing, and celebration",
-    location: "The Grand Ballroom"
-  },
-  {
-    time: "7:30 PM",
-    title: "First Dance",
-    description: "Our first dance as married couple",
-    location: "Main Dance Floor"
-  },
-  {
-    time: "11:30 PM",
-    title: "Last Dance",
-    description: "Final celebration before we say goodnight",
-    location: "Main Dance Floor"
+    title: "Reception",
+    startTime: "6:00 PM",
+    duration: "5 hours",
+    description: "Celebrate with us! Dinner, dancing, and unforgettable memories",
+    location: "The Grand Ballroom",
+    imageUrl: "/images/LKCK6729.JPG"
   }
 ];
 
@@ -54,42 +38,29 @@ const ScheduleSection: React.FC = () => {
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
 
-    const pinHeight = document.querySelector('.schedule-pin-height') as HTMLElement;
-    const container = document.querySelector('.schedule-container') as HTMLElement;
-    const scheduleItems = document.querySelectorAll('.schedule-item');
+    const cards = document.querySelectorAll('.schedule-card');
 
     // Store triggers for cleanup
     const triggers: ScrollTrigger[] = [];
 
-    if (pinHeight && container && scheduleItems.length > 0) {
-      // Pin the container
-      const pinTrigger = ScrollTrigger.create({
-        trigger: pinHeight,
-        start: 'top top',
-        end: 'bottom bottom',
-        pin: container
+    // Simple fade-in animation for cards
+    cards.forEach((card, index) => {
+      const trigger = ScrollTrigger.create({
+        trigger: card,
+        start: 'top 80%',
+        animation: gsap.fromTo(card, {
+          opacity: 0,
+          y: 50
+        }, {
+          opacity: 1,
+          y: 0,
+          duration: 1,
+          ease: 'power2.out',
+          delay: index * 0.2
+        })
       });
-      triggers.push(pinTrigger);
-
-      // Animate schedule items scrolling through
-      scheduleItems.forEach((item, index) => {
-        const itemTrigger = ScrollTrigger.create({
-          trigger: pinHeight,
-          start: `top+=${index * (100 / scheduleItems.length)}% top`,
-          end: `top+=${(index + 1) * (100 / scheduleItems.length)}% top`,
-          scrub: true,
-          animation: gsap.fromTo(item, {
-            yPercent: 100,
-            opacity: 0
-          }, {
-            yPercent: -100,
-            opacity: 1,
-            ease: 'none'
-          })
-        });
-        triggers.push(itemTrigger);
-      });
-    }
+      triggers.push(trigger);
+    });
 
     return () => {
       triggers.forEach(trigger => trigger.kill());
@@ -98,175 +69,180 @@ const ScheduleSection: React.FC = () => {
 
   return (
     <section className="schedule-section">
-      <div className="schedule-pin-height">
-        <div className="schedule-container">
-          <div className="schedule-left">
-            <h2 className="schedule-title">Schedule</h2>
-          </div>
+      <div className="schedule-container">
+        <h2 className="schedule-title">Schedule</h2>
 
-          <div className="schedule-right">
-            <div className="schedule-viewport">
-              {scheduleEvents.map((event, index) => (
-                <div key={index} className="schedule-item">
-                  <div className="schedule-content">
-                    <div className="schedule-time">{event.time}</div>
-                    <h3 className="schedule-event-title">{event.title}</h3>
-                    <p className="schedule-description">{event.description}</p>
-                    {event.location && (
-                      <p className="schedule-location">📍 {event.location}</p>
-                    )}
-                  </div>
+        <div className="schedule-cards">
+          {scheduleEvents.map((event, index) => (
+            <div key={index} className="schedule-card">
+              <div className="card-image">
+                <img src={event.imageUrl} alt={event.title} />
+              </div>
+
+              <div className="card-content">
+                <h3 className="event-title">{event.title}</h3>
+
+                <div className="time-info">
+                  <div className="start-time">{event.startTime}</div>
+                  <div className="duration">{event.duration}</div>
                 </div>
-              ))}
+
+                <p className="event-description">{event.description}</p>
+                <p className="event-location">📍 {event.location}</p>
+
+                {event.specialNote && (
+                  <div className="special-note">
+                    <strong>{event.specialNote}</strong>
+                  </div>
+                )}
+              </div>
             </div>
-          </div>
+          ))}
         </div>
       </div>
 
       <style jsx>{`
         .schedule-section {
           background: transparent;
-        }
-
-        .schedule-pin-height {
-          height: 400vh;
+          padding: 80px 20px;
+          min-height: 100vh;
+          display: flex;
+          align-items: center;
+          justify-content: center;
         }
 
         .schedule-container {
-          height: 100vh;
-          display: flex;
-          overflow: hidden;
-        }
-
-        .schedule-left {
-          flex: 1;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          padding: 0 40px;
+          max-width: 1000px;
+          width: 100%;
         }
 
         .schedule-title {
-          font-size: clamp(3rem, 8vw, 6rem);
+          font-size: clamp(2.5rem, 5vw, 4rem);
           font-weight: bold;
           color: white;
           text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-          writing-mode: vertical-rl;
-          text-orientation: mixed;
-          letter-spacing: 0.1em;
+          text-align: center;
+          margin-bottom: 60px;
+          letter-spacing: -0.02em;
         }
 
-        .schedule-right {
-          flex: 1;
+        .schedule-cards {
           display: flex;
-          align-items: center;
-          justify-content: center;
-          padding: 40px;
+          flex-direction: column;
+          gap: 40px;
         }
 
-        .schedule-viewport {
-          position: relative;
-          height: 80vh;
-          width: 100%;
+        .schedule-card {
+          background: rgba(255, 255, 255, 0.95);
+          border-radius: 20px;
+          box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+          backdrop-filter: blur(10px);
+          border: 1px solid rgba(255, 255, 255, 0.3);
+          overflow: hidden;
           display: flex;
-          align-items: center;
-          justify-content: flex-start;
+          min-height: 250px;
+        }
+
+        .card-image {
+          flex: 0 0 300px;
           overflow: hidden;
         }
 
-        .schedule-item {
-          position: absolute;
+        .card-image img {
           width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+
+        .card-content {
+          flex: 1;
+          padding: 40px;
           display: flex;
-          justify-content: flex-start;
-          align-items: center;
+          flex-direction: column;
+          justify-content: center;
         }
 
-        .schedule-content {
-          background: rgba(255, 255, 255, 0.95);
-          padding: 30px 35px;
-          border-radius: 12px;
-          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-          backdrop-filter: blur(10px);
-          border: 1px solid rgba(255, 255, 255, 0.3);
-          text-align: left;
-          width: 100%;
-          max-width: 400px;
-          border-left: 4px solid #667eea;
-        }
-
-        .schedule-time {
-          font-size: 1.8rem;
+        .event-title {
+          font-size: clamp(1.8rem, 3vw, 2.5rem);
           font-weight: bold;
-          color: #667eea;
-          margin-bottom: 8px;
-          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-        }
-
-        .schedule-event-title {
-          font-size: 1.4rem;
-          font-weight: 600;
           color: #2c3e50;
-          margin-bottom: 8px;
-          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+          margin-bottom: 20px;
+          letter-spacing: -0.02em;
         }
 
-        .schedule-description {
+        .time-info {
+          display: flex;
+          gap: 20px;
+          align-items: center;
+          margin-bottom: 20px;
+        }
+
+        .start-time {
+          font-size: 1.5rem;
+          font-weight: bold;
+          color: #F58E7F;
+        }
+
+        .duration {
           font-size: 1rem;
-          color: #555;
-          line-height: 1.4;
-          margin-bottom: 8px;
-          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+          color: #666;
+          background: rgba(245, 142, 127, 0.1);
+          padding: 4px 12px;
+          border-radius: 20px;
         }
 
-        .schedule-location {
-          font-size: 0.9rem;
+        .event-description {
+          font-size: 1.1rem;
+          color: #555;
+          line-height: 1.6;
+          margin-bottom: 15px;
+        }
+
+        .event-location {
+          font-size: 1rem;
           color: #777;
-          font-style: italic;
-          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+          margin-bottom: 15px;
+        }
+
+        .special-note {
+          background: rgba(245, 142, 127, 0.15);
+          border: 2px solid #F58E7F;
+          border-radius: 12px;
+          padding: 15px;
+          color: #d63031;
+          font-size: 1rem;
         }
 
         @media (max-width: 768px) {
-          .schedule-container {
+          .schedule-section {
+            padding: 60px 15px;
+          }
+
+          .schedule-card {
             flex-direction: column;
+            min-height: auto;
           }
 
-          .schedule-left {
-            flex: 0 0 20%;
-            padding: 20px;
+          .card-image {
+            flex: 0 0 200px;
           }
 
-          .schedule-title {
-            writing-mode: horizontal-tb;
-            text-orientation: initial;
-            font-size: clamp(2rem, 8vw, 3rem);
-            text-align: center;
+          .card-content {
+            padding: 30px 25px;
           }
 
-          .schedule-right {
-            flex: 1;
-            padding: 20px;
+          .time-info {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 10px;
           }
 
-          .schedule-content {
-            padding: 20px 25px;
-            max-width: 100%;
+          .event-title {
+            font-size: clamp(1.5rem, 6vw, 2rem);
           }
 
-          .schedule-time {
-            font-size: 1.5rem;
-          }
-
-          .schedule-event-title {
-            font-size: 1.2rem;
-          }
-
-          .schedule-description {
-            font-size: 0.9rem;
-          }
-
-          .schedule-location {
-            font-size: 0.8rem;
+          .start-time {
+            font-size: 1.3rem;
           }
         }
       `}</style>

@@ -132,7 +132,7 @@ const FAQSection: React.FC = () => {
       <style jsx>{`
         .faq-section {
           min-height: 100vh;
-          background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+          background: transparent;
           padding: 80px 20px;
           display: flex;
           align-items: center;

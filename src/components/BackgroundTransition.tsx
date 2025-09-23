@@ -10,7 +10,7 @@ const BackgroundTransition: React.FC = () => {
 
     // Create a background color transition from hero to animation section
     gsap.to(document.body, {
-      backgroundColor: '#121212',
+      backgroundColor: '#667eea',
       duration: 1,
       ease: 'power2.inOut',
       scrollTrigger: {

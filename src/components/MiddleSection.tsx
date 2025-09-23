@@ -17,23 +17,7 @@ const MiddleSection: React.FC = () => {
     // Store triggers for cleanup
     const triggers: ScrollTrigger[] = [];
 
-    // Function to wrap letters exactly like mwg_009
-    function wrapLettersInSpan(element: Element) {
-      const text = element.textContent;
-      if (text) {
-        element.innerHTML = text
-          .split('')
-          .map(char => char === ' ' ? '<span>&nbsp;</span>' : `<span>${char}</span>`)
-          .join(' ');
-      }
-    }
-
     if (root && pinHeight && container && sentences) {
-      // Wrap letters in spans
-      sentences.forEach(sentence => {
-        wrapLettersInSpan(sentence);
-      });
-
       // Pin setup
       const pinTrigger = ScrollTrigger.create({
         trigger: pinHeight,
@@ -43,7 +27,7 @@ const MiddleSection: React.FC = () => {
       });
       triggers.push(pinTrigger);
 
-      // Timeline like mwg_009
+      // Simple fade transition timeline
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: root,
@@ -54,82 +38,36 @@ const MiddleSection: React.FC = () => {
         }
       });
 
-      // Animation loop like mwg_009
+      // Simple fade animation between sentences
       sentences.forEach((sentence, index) => {
         if (sentences[index + 1]) {
-          // Move current sentence up and out
+          // Fade out current sentence
           tl.to(sentence, {
-            yPercent: -50,
-            y: '-50vh',
-            ease: 'power4.in',
+            opacity: 0,
+            duration: 0.5,
+            ease: 'power2.inOut'
           });
 
-          // Move current sentence letters up with stagger
-          tl.to(sentence.querySelectorAll('span'), {
-            yPercent: -50,
-            y: '-50vh',
-            stagger: -0.02,
-            ease: 'power2.in',
-          }, '<');
-
-          // Move next sentence in from below
-          tl.from(sentences[index + 1], {
-            yPercent: 50,
-            y: '50vh',
-            ease: 'power4.out',
-          }, '<');
-
-          // Move next sentence letters in with stagger
-          tl.from(sentences[index + 1].querySelectorAll('span'), {
-            yPercent: 50,
-            y: '50vh',
-            ease: 'power2.out',
-            stagger: -0.02,
-          }, '<');
+          // Fade in next sentence
+          tl.fromTo(sentences[index + 1], {
+            opacity: 0
+          }, {
+            opacity: 1,
+            duration: 0.5,
+            ease: 'power2.inOut'
+          }, '-=0.2');
         }
       });
+
+      // Fade out all text at the end of the section
+      tl.to(sentences, {
+        opacity: 0,
+        duration: 1,
+        ease: 'power2.inOut',
+        stagger: 0.1
+      }, '+=0.5');
     }
 
-    // Background color transitions
-    const bgTrigger1 = ScrollTrigger.create({
-      trigger: '.animation-section',
-      start: 'top center',
-      onEnter: () => {
-        gsap.to(document.body, {
-          backgroundColor: '#2c3e50',
-          duration: 1.5,
-          ease: 'power2.out'
-        });
-      },
-      onLeaveBack: () => {
-        gsap.to(document.body, {
-          backgroundColor: '#667eea',
-          duration: 1.5,
-          ease: 'power2.out'
-        });
-      }
-    });
-    triggers.push(bgTrigger1);
-
-    const bgTrigger2 = ScrollTrigger.create({
-      trigger: '.photo-carousel-section',
-      start: 'top center',
-      onEnter: () => {
-        gsap.to(document.body, {
-          backgroundColor: '#8B4513',
-          duration: 2,
-          ease: 'power2.out'
-        });
-      },
-      onLeaveBack: () => {
-        gsap.to(document.body, {
-          backgroundColor: '#2c3e50',
-          duration: 2,
-          ease: 'power2.out'
-        });
-      }
-    });
-    triggers.push(bgTrigger2);
 
     return () => {
       triggers.forEach(trigger => trigger.kill());
@@ -141,22 +79,22 @@ const MiddleSection: React.FC = () => {
       {/* Background images */}
       <div className="bg-images">
         <div className="bg-image">
-          <img src="https://images.unsplash.com/photo-1519741497674-611481863552?w=400&h=600&fit=crop" alt="Wedding moment 1" loading="lazy" />
+          <img src="/images/LKCK6491.JPG" alt="Joel and Stephanie photo" loading="lazy" />
         </div>
         <div className="bg-image">
-          <img src="https://images.unsplash.com/photo-1606216794074-735e91aa2c92?w=400&h=600&fit=crop" alt="Wedding moment 2" loading="lazy" />
+          <img src="/images/LKCK6507.JPG" alt="Joel and Stephanie photo" loading="lazy" />
         </div>
         <div className="bg-image">
-          <img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=400&h=600&fit=crop" alt="Wedding moment 3" loading="lazy" />
+          <img src="/images/LKCK6591.JPG" alt="Joel and Stephanie photo" loading="lazy" />
         </div>
         <div className="bg-image">
-          <img src="https://images.unsplash.com/photo-1520854221256-17451cc331bf?w=400&h=600&fit=crop" alt="Wedding moment 4" loading="lazy" />
+          <img src="/images/LKCK6595.JPG" alt="Joel and Stephanie photo" loading="lazy" />
         </div>
         <div className="bg-image">
-          <img src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?w=400&h=600&fit=crop" alt="Wedding moment 5" loading="lazy" />
+          <img src="/images/LKCK6634.JPG" alt="Joel and Stephanie photo" loading="lazy" />
         </div>
         <div className="bg-image">
-          <img src="https://images.unsplash.com/photo-1469371670807-013ccf25f16a?w=400&h=600&fit=crop" alt="Wedding moment 6" loading="lazy" />
+          <img src="/images/LKCK6661.JPG" alt="Joel and Stephanie photo" loading="lazy" />
         </div>
       </div>
 
@@ -173,14 +111,14 @@ const MiddleSection: React.FC = () => {
       <style jsx>{`
         .mwg_effect006 {
           position: relative;
-          height: 300vh;
-          background: red;
+          height: 400vh;
+          background: transparent;
           letter-spacing: -0.03em;
           overflow: hidden;
         }
 
         .pin-height {
-          height: 300vh;
+          height: 400vh;
         }
 
         .container {
@@ -197,7 +135,7 @@ const MiddleSection: React.FC = () => {
         }
 
         .sentence {
-          width: 100%;
+          width: clamp(300px, 60vw, 800px);
           text-align: center;
           display: flex;
           justify-content: center;
@@ -206,19 +144,16 @@ const MiddleSection: React.FC = () => {
           color: white;
           line-height: 1.2;
           text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-          max-width: 800px;
           margin: 0 auto;
+          flex-wrap: wrap;
         }
 
-        .sentence span {
-          display: inline-block;
-          letter-spacing: -0.06em;
-        }
 
         .sentence:not(:first-child) {
           position: absolute;
-          left: 0;
-          top: 0;
+          left: 50%;
+          top: 50%;
+          transform: translate(-50%, -50%);
         }
 
         @media (max-width: 768px) {
@@ -236,26 +171,26 @@ const MiddleSection: React.FC = () => {
           top: 0;
           left: 0;
           width: 100%;
-          height: 300vh;
+          height: 400vh;
           z-index: 1;
         }
 
         .bg-image {
           position: absolute;
-          width: 15vw;
-          height: 25vh;
+          width: 20vw;
+          height: 30vh;
           border-radius: 15px;
           overflow: hidden;
           opacity: 0.8;
           box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
         }
 
-        .bg-image:nth-child(1) { left: 5vw; top: 20vh; }
-        .bg-image:nth-child(2) { right: 5vw; top: 50vh; }
-        .bg-image:nth-child(3) { left: 8vw; top: 120vh; }
-        .bg-image:nth-child(4) { right: 8vw; top: 150vh; }
-        .bg-image:nth-child(5) { left: 6vw; top: 220vh; }
-        .bg-image:nth-child(6) { right: 6vw; top: 250vh; }
+        .bg-image:nth-child(1) { left: 8vw; top: 20vh; }
+        .bg-image:nth-child(2) { right: 15vw; top: 50vh; }
+        .bg-image:nth-child(3) { left: 20vw; top: 120vh; }
+        .bg-image:nth-child(4) { right: 12vw; top: 150vh; }
+        .bg-image:nth-child(5) { left: 10vw; top: 220vh; }
+        .bg-image:nth-child(6) { right: 18vw; top: 250vh; }
 
         .bg-image img {
           width: 100%;

@@ -1,24 +1,36 @@
-import HeroBanner from "../components/HeroBanner";
+import HeroSection from "../components/HeroSection";
 import MiddleSection from "../components/MiddleSection";
 import ScheduleSection from "../components/ScheduleSection";
-import ScrollAnimationSection from "../components/ScrollAnimationSection";
-import PhotoCarousel from "../components/PhotoCarousel";
+import VenueSection from "../components/VenueSection";
+import PhotoSection from "../components/PhotoSection";
 import RSVPSection from "../components/RSVPSection";
 import FAQSection from "../components/FAQSection";
 import Footer from "../components/Footer";
+import BackgroundColorManager from "../components/BackgroundColorManager";
 
 export default function Home() {
   return (
     <>
-      <div className="page-content">
-        <HeroBanner
-          title="Joel & Stephanie"
-          subtitle="Save the Date"
-        />
+      <BackgroundColorManager />
+      <HeroSection />
+
+      {/* Spacer for fixed hero section */}
+      <div style={{ height: '100vh' }}></div>
+
+      {/* Content that overlaps the hero */}
+      <div className="page-content" style={{
+        position: 'relative',
+        zIndex: 10,
+        background: '#8E7CC3',
+        borderTopLeftRadius: '40px',
+        borderTopRightRadius: '40px',
+        paddingTop: '60px',
+        minHeight: '100vh'
+      }}>
         <MiddleSection />
         <ScheduleSection />
-        <ScrollAnimationSection />
-        <PhotoCarousel />
+        <VenueSection />
+        <PhotoSection />
         <RSVPSection />
         <FAQSection />
       </div>

@@ -48,28 +48,28 @@ const PhotoCarousel: React.FC = () => {
 
   const photos = [
     {
-      src: "https://images.unsplash.com/photo-1519741497674-611481863552?w=400&h=600&fit=crop",
-      alt: "Wedding moment 1"
+      src: "/images/Joel Proposes to Steph-22.jpg",
+      alt: "Joel and Stephanie engagement photo"
     },
     {
-      src: "https://images.unsplash.com/photo-1606216794074-735e91aa2c92?w=400&h=600&fit=crop",
-      alt: "Wedding moment 2"
+      src: "/images/Joel Proposes to Steph-43.jpg",
+      alt: "Joel and Stephanie engagement photo"
     },
     {
-      src: "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?w=400&h=600&fit=crop",
-      alt: "Wedding moment 3"
+      src: "/images/Joel Proposes to Steph-103.jpg",
+      alt: "Joel and Stephanie engagement photo"
     },
     {
-      src: "https://images.unsplash.com/photo-1520854221256-17451cc331bf?w=400&h=600&fit=crop",
-      alt: "Wedding moment 4"
+      src: "/images/Joel Proposes to Steph-139.jpg",
+      alt: "Joel and Stephanie engagement photo"
     },
     {
-      src: "https://images.unsplash.com/photo-1583939003579-730e3918a45a?w=400&h=600&fit=crop",
-      alt: "Wedding moment 5"
+      src: "/images/Joel Proposes to Steph-145.jpg",
+      alt: "Joel and Stephanie engagement photo"
     },
     {
-      src: "https://images.unsplash.com/photo-1469371670807-013ccf25f16a?w=400&h=600&fit=crop",
-      alt: "Wedding moment 6"
+      src: "/images/Joel Proposes to Steph-149.jpg",
+      alt: "Joel and Stephanie engagement photo"
     }
   ];
 

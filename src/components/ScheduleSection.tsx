@@ -1,39 +1,39 @@
 "use client";
 
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect, useCallback } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 // Google Maps type declarations
-declare global {
-  interface Window {
-    google: {
-      maps: {
-        Map: new (element: HTMLElement, options: any) => google.maps.Map;
-        Marker: new (options: any) => google.maps.Marker;
-        Size: new (width: number, height: number) => any;
-        Point: new (x: number, y: number) => any;
-        Animation: {
-          DROP: any;
-        };
-        event: {
-          addListenerOnce: (instance: any, eventName: string, handler: () => void) => void;
-          addListener: (instance: any, eventName: string, handler: (error?: any) => void) => void;
-        };
-      };
+interface GoogleMapsApi {
+  maps: {
+    Map: new (element: HTMLElement, options: unknown) => GoogleMapsMap;
+    Marker: new (options: unknown) => GoogleMapsMarker;
+    Size: new (width: number, height: number) => unknown;
+    Point: new (x: number, y: number) => unknown;
+    Animation: {
+      DROP: unknown;
     };
-  }
+    event: {
+      addListenerOnce: (instance: unknown, eventName: string, handler: () => void) => void;
+      addListener: (instance: unknown, eventName: string, handler: (error?: unknown) => void) => void;
+    };
+  };
 }
 
-declare namespace google.maps {
-  class Map {
-    setZoom(zoom: number): void;
-    panTo(coords: { lat: number; lng: number }): void;
-    getCenter(): { lat(): number; lng(): number } | null;
-  }
+interface GoogleMapsMap {
+  setZoom(zoom: number): void;
+  panTo(coords: { lat: number; lng: number }): void;
+  getCenter(): { lat(): number; lng(): number } | null;
+}
 
-  class Marker {
-    addListener(eventName: string, handler: () => void): void;
+interface GoogleMapsMarker {
+  addListener(eventName: string, handler: () => void): void;
+}
+
+declare global {
+  interface Window {
+    google?: GoogleMapsApi;
   }
 }
 
@@ -78,8 +78,8 @@ const ScheduleSection: React.FC = () => {
   const rightRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<HTMLDivElement>(null);
   const [activeEvent, setActiveEvent] = useState(0);
-  const [map, setMap] = useState<google.maps.Map | null>(null);
-  const [markers, setMarkers] = useState<Array<{ marker: google.maps.Marker; event: ScheduleEvent }>>([]);
+  const [map, setMap] = useState<GoogleMapsMap | null>(null);
+  const [markers, setMarkers] = useState<Array<{ marker: GoogleMapsMarker; event: ScheduleEvent }>>([]);
   const [mapError, setMapError] = useState(false);
   const [isMapLoading, setIsMapLoading] = useState(true);
 
@@ -107,7 +107,7 @@ const ScheduleSection: React.FC = () => {
       setIsMapLoading(true);
       setMapError(false);
 
-      const newMap = new window.google.maps.Map(mapRef.current, {
+      const newMap = new window.google!.maps.Map(mapRef.current, {
         zoom: 12,
         center: events[0].coordinates,
         mapTypeControl: true,
@@ -145,15 +145,15 @@ const ScheduleSection: React.FC = () => {
       });
 
       // Wait for map to be ready before creating markers
-      window.google.maps.event.addListenerOnce(newMap, 'idle', () => {
+      window.google!.maps.event.addListenerOnce(newMap, 'idle', () => {
         try {
           // Create markers for all events
           const newMarkers = events.map((event, index) => {
-            const marker = new window.google.maps.Marker({
+            const marker = new window.google!.maps.Marker({
               position: event.coordinates,
               map: newMap,
               title: event.location,
-              animation: window.google.maps.Animation.DROP,
+              animation: window.google!.maps.Animation.DROP,
               icon: {
                 url: `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(`
                   <svg width="32" height="32" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
@@ -161,8 +161,8 @@ const ScheduleSection: React.FC = () => {
                     <text x="16" y="20" text-anchor="middle" fill="white" font-family="Arial" font-size="12" font-weight="bold">${index + 1}</text>
                   </svg>
                 `)}`,
-                scaledSize: new window.google.maps.Size(32, 32),
-                anchor: new window.google.maps.Point(16, 16)
+                scaledSize: new window.google!.maps.Size(32, 32),
+                anchor: new window.google!.maps.Point(16, 16)
               }
             });
 
@@ -186,7 +186,7 @@ const ScheduleSection: React.FC = () => {
       });
 
       // Handle map errors
-      window.google.maps.event.addListener(newMap, 'error', (error: any) => {
+      window.google!.maps.event.addListener(newMap, 'error', (error: unknown) => {
         console.error('Google Maps error:', error);
         setMapError(true);
         setIsMapLoading(false);
@@ -269,7 +269,7 @@ const ScheduleSection: React.FC = () => {
   }, []);
 
   // Smooth pan with intelligent zoom
-  const smoothPanToLocation = (targetCoords: { lat: number; lng: number }, currentCoords: { lat: number; lng: number }) => {
+  const smoothPanToLocation = useCallback((targetCoords: { lat: number; lng: number }, currentCoords: { lat: number; lng: number }) => {
     if (!map) return;
 
     const distance = calculateDistance(currentCoords, targetCoords);
@@ -301,7 +301,7 @@ const ScheduleSection: React.FC = () => {
     setTimeout(() => {
       map.setZoom(finalZoom);
     }, 1000);
-  };
+  }, [map]);
 
   // Update map when active event changes
   useEffect(() => {

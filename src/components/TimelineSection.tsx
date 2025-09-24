@@ -176,7 +176,7 @@ const TimelineSection: React.FC = () => {
               }}
             >
               <div style={{
-                fontFamily: 'Instrument Serif, serif',
+                fontFamily: 'Cardo, serif',
                 fontSize: '4rem',
                 color: '#1a1a1a',
                 fontWeight: '400',
@@ -236,7 +236,7 @@ const TimelineSection: React.FC = () => {
 
               {/* Title - large black serif */}
               <div style={{
-                fontFamily: 'Instrument Serif, serif',
+                fontFamily: 'Cardo, serif',
                 fontSize: '5.5rem', // Much larger like reference
                 color: '#1a1a1a', // Pure black like reference
                 fontWeight: '400', // Not bold
@@ -315,7 +315,7 @@ const TimelineSection: React.FC = () => {
 
               {/* Title - large black serif */}
               <div style={{
-                fontFamily: 'Instrument Serif, serif',
+                fontFamily: 'Cardo, serif',
                 fontSize: '5.5rem',
                 color: '#1a1a1a',
                 fontWeight: '400',

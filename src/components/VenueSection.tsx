@@ -43,14 +43,24 @@ const venues = [
     name: "Saint Brigid's Catholic Church",
     address: "Livingstone Rd, Marrickville, NSW 2204",
     coordinates: { lat: -33.9133, lng: 151.1553 },
-    type: "Ceremony"
+    type: "Ceremony",
+    parking: "Limited street parking available. Public parking at nearby Marrickville Metro (5min walk).",
+    publicTransport: {
+      train: "Marrickville Station (10min walk) - Inner West Line",
+      bus: "Routes 426, 428, 445 - Stop at Marrickville Road"
+    }
   },
   {
     id: 2,
     name: "The Sky Ballroom",
     address: "Level 3/462 Chapel Rd, Bankstown NSW 2200",
     coordinates: { lat: -33.9198, lng: 151.0346 },
-    type: "Reception"
+    type: "Reception",
+    parking: "Free parking available at venue. Additional parking at Chapel Road Centre.",
+    publicTransport: {
+      train: "Bankstown Station (8min walk) - T3 Bankstown Line",
+      bus: "Routes 901, 902, 925 - Stop at Chapel Road/Restwell Street"
+    }
   }
 ];
 
@@ -134,6 +144,13 @@ const VenueSection: React.FC = () => {
     }
   };
 
+  // Open Google Maps with directions
+  const openGoogleMaps = () => {
+    const venue = venues[activeVenue];
+    const url = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(venue.address)}`;
+    window.open(url, '_blank');
+  };
+
   // Load Google Maps API
   useEffect(() => {
     if (window.google?.maps) {
@@ -174,21 +191,21 @@ const VenueSection: React.FC = () => {
     <section
       className="venue-section"
       style={{
-        padding: '4rem 2rem',
-        background: 'transparent', // No background - inherit red from page
+        padding: '3rem 2rem',
+        background: 'transparent', // No background - managed by BackgroundColorManager
         minHeight: '100vh',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        gap: '3rem'
+        gap: '1.5rem' // Tightened spacing
       }}
     >
       <h2
         style={{
-          fontFamily: 'Instrument Serif, serif',
+          fontFamily: 'Cardo, serif',
           fontSize: 'clamp(3rem, 6vw, 5rem)',
-          color: 'white', // White text on red background
+          color: 'white',
           fontWeight: '400',
           letterSpacing: '-0.02em',
           margin: '0',
@@ -206,8 +223,7 @@ const VenueSection: React.FC = () => {
           borderRadius: '25px',
           padding: '4px',
           gap: '4px',
-          boxShadow: '0 10px 20px rgba(0, 0, 0, 0.2)',
-          marginBottom: '1rem'
+          boxShadow: '0 10px 20px rgba(0, 0, 0, 0.2)'
         }}
       >
         {venues.map((venue, index) => (
@@ -237,8 +253,8 @@ const VenueSection: React.FC = () => {
         style={{
           position: 'relative',
           width: '100%',
-          maxWidth: '800px',
-          height: '500px',
+          maxWidth: '1000px', // Larger map
+          height: '600px', // Larger height
           borderRadius: '20px',
           overflow: 'hidden',
           boxShadow: '0 20px 40px rgba(0, 0, 0, 0.3)',
@@ -260,54 +276,185 @@ const VenueSection: React.FC = () => {
             top: '8px',
             left: '8px',
             bottom: '8px',
-            width: 'calc(25% - 8px)', // 1/4 of container minus padding
+            width: 'calc(30% - 8px)', // Expanded to 30% to fit more content
             background: 'rgba(255, 255, 255, 0.95)',
             borderRadius: '12px',
             padding: '1.5rem',
             display: 'flex',
             flexDirection: 'column',
-            justifyContent: 'center',
+            justifyContent: 'flex-start',
             boxShadow: '0 10px 20px rgba(0, 0, 0, 0.3)',
             transition: 'all 0.3s ease',
-            backdropFilter: 'blur(5px)'
+            backdropFilter: 'blur(5px)',
+            overflowY: 'auto'
           }}
         >
-          <h3
-            style={{
-              fontFamily: 'Instrument Serif, serif',
-              fontSize: '1.8rem',
-              color: '#1a1a1a',
-              fontWeight: '400',
-              marginBottom: '0.5rem',
-              textAlign: 'left'
-            }}
-          >
-            {venues[activeVenue].type}
-          </h3>
-          <h4
-            style={{
-              fontFamily: 'Instrument Sans, sans-serif',
-              fontSize: '1.1rem',
-              color: '#333',
-              fontWeight: '500',
-              marginBottom: '1rem',
-              textAlign: 'left'
-            }}
-          >
-            {venues[activeVenue].name}
-          </h4>
-          <p
+          {/* Venue Header */}
+          <div style={{ marginBottom: '1rem' }}>
+            <h3
+              style={{
+                fontFamily: 'Cardo, serif',
+                fontSize: '1.6rem',
+                color: '#1a1a1a',
+                fontWeight: '400',
+                marginBottom: '0.25rem',
+                textAlign: 'left'
+              }}
+            >
+              {venues[activeVenue].type}
+            </h3>
+            <h4
+              style={{
+                fontFamily: 'Instrument Sans, sans-serif',
+                fontSize: '1rem',
+                color: '#333',
+                fontWeight: '500',
+                marginBottom: '0.5rem',
+                textAlign: 'left'
+              }}
+            >
+              {venues[activeVenue].name}
+            </h4>
+            <p
+              style={{
+                fontFamily: 'Instrument Sans, sans-serif',
+                fontSize: '0.85rem',
+                color: '#666',
+                fontWeight: '400',
+                lineHeight: '1.3',
+                textAlign: 'left',
+                marginBottom: '1rem'
+              }}
+            >
+              {venues[activeVenue].address}
+            </p>
+          </div>
+
+          {/* Google Maps CTA Button */}
+          <button
+            onClick={openGoogleMaps}
             style={{
               fontFamily: 'Instrument Sans, sans-serif',
               fontSize: '0.9rem',
-              color: '#666',
-              fontWeight: '400',
-              lineHeight: '1.4',
-              textAlign: 'left'
+              fontWeight: '500',
+              color: 'white',
+              background: '#4285F4', // Google Maps blue
+              border: 'none',
+              borderRadius: '8px',
+              padding: '10px 16px',
+              cursor: 'pointer',
+              transition: 'all 0.3s ease',
+              marginBottom: '1.5rem',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '6px'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = '#3367D6';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = '#4285F4';
             }}
           >
-            {venues[activeVenue].address}
-          </p>
+            🗺️ Open in Google Maps
+          </button>
+
+          {/* Parking Information */}
+          <div style={{ marginBottom: '1rem' }}>
+            <h5
+              style={{
+                fontFamily: 'Instrument Sans, sans-serif',
+                fontSize: '0.9rem',
+                color: '#1a1a1a',
+                fontWeight: '600',
+                marginBottom: '0.5rem'
+              }}
+            >
+              🚗 Parking
+            </h5>
+            <p
+              style={{
+                fontFamily: 'Instrument Sans, sans-serif',
+                fontSize: '0.8rem',
+                color: '#666',
+                fontWeight: '400',
+                lineHeight: '1.3',
+                marginBottom: '0'
+              }}
+            >
+              {venues[activeVenue].parking}
+            </p>
+          </div>
+
+          {/* Public Transport Information */}
+          <div>
+            <h5
+              style={{
+                fontFamily: 'Instrument Sans, sans-serif',
+                fontSize: '0.9rem',
+                color: '#1a1a1a',
+                fontWeight: '600',
+                marginBottom: '0.5rem'
+              }}
+            >
+              🚊 Public Transport
+            </h5>
+            <div style={{ marginBottom: '0.5rem' }}>
+              <p
+                style={{
+                  fontFamily: 'Instrument Sans, sans-serif',
+                  fontSize: '0.8rem',
+                  color: '#666',
+                  fontWeight: '500',
+                  lineHeight: '1.3',
+                  marginBottom: '0.25rem'
+                }}
+              >
+                🚂 Train:
+              </p>
+              <p
+                style={{
+                  fontFamily: 'Instrument Sans, sans-serif',
+                  fontSize: '0.75rem',
+                  color: '#666',
+                  fontWeight: '400',
+                  lineHeight: '1.3',
+                  marginBottom: '0.5rem',
+                  paddingLeft: '1rem'
+                }}
+              >
+                {venues[activeVenue].publicTransport.train}
+              </p>
+            </div>
+            <div>
+              <p
+                style={{
+                  fontFamily: 'Instrument Sans, sans-serif',
+                  fontSize: '0.8rem',
+                  color: '#666',
+                  fontWeight: '500',
+                  lineHeight: '1.3',
+                  marginBottom: '0.25rem'
+                }}
+              >
+                🚌 Bus:
+              </p>
+              <p
+                style={{
+                  fontFamily: 'Instrument Sans, sans-serif',
+                  fontSize: '0.75rem',
+                  color: '#666',
+                  fontWeight: '400',
+                  lineHeight: '1.3',
+                  marginBottom: '0',
+                  paddingLeft: '1rem'
+                }}
+              >
+                {venues[activeVenue].publicTransport.bus}
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     </section>

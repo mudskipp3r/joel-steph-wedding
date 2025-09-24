@@ -150,7 +150,7 @@ const FAQSection: React.FC = () => {
         }
 
         .faq-header h2 {
-          font-family: 'Instrument Serif', serif;
+          font-family: 'Cardo', serif;
           font-size: clamp(3rem, 8vw, 6rem);
           font-weight: 600;
           color: white;

@@ -439,7 +439,7 @@ const ScheduleSection: React.FC = () => {
                 </div>
 
                 <h3 style={{
-                  fontFamily: 'Instrument Serif, serif',
+                  fontFamily: 'Cardo, serif',
                   fontSize: '4.5rem',
                   fontWeight: '700',
                   color: 'white',

@@ -77,7 +77,6 @@ const PhotoCarousel: React.FC = () => {
     <section className="photo-carousel-section">
       <div className="pin-height">
         <div className="container">
-          <p className="header">Our Journey Together</p>
           {photos.map((photo, index) => (
             <div key={index} className="circle">
               <img

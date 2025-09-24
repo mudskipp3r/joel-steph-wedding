@@ -354,7 +354,7 @@ const MiddleSection: React.FC = () => {
         }
 
         .center-text {
-          font-family: 'Instrument Serif', serif;
+          font-family: 'Cardo', serif;
           font-size: clamp(2.5rem, 4vw + 0.5rem, 4rem);
           font-weight: 400;
           color: #2c3e50;

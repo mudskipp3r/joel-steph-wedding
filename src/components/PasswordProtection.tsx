@@ -93,7 +93,7 @@ const PasswordProtection: React.FC<{ children: React.ReactNode }> = ({ children 
             marginBottom: '2rem'
           }}>
             <h1 style={{
-              fontFamily: 'Instrument Serif, serif',
+              fontFamily: 'Cardo, serif',
               fontSize: '2.5rem',
               color: '#2c3e50',
               marginBottom: '0.5rem',

@@ -48,7 +48,7 @@ const HeroBanner: React.FC<HeroBannerProps> = ({
         {/* Stephanie */}
         <div
           style={{
-            fontFamily: 'Instrument Serif, serif',
+            fontFamily: 'Cardo, serif',
             fontSize: 'clamp(5rem, 15vw, 12rem)',
             fontWeight: '300', // Lighter weight
             margin: '0',
@@ -71,7 +71,7 @@ const HeroBanner: React.FC<HeroBannerProps> = ({
         }}>
           <span
             style={{
-              fontFamily: 'Instrument Serif, serif',
+              fontFamily: 'Cardo, serif',
               fontSize: 'clamp(5rem, 15vw, 12rem)', // Same size as Stephanie
               fontWeight: '300', // Lighter weight
               color: '#D9950D', // Golden color for "and"
@@ -83,7 +83,7 @@ const HeroBanner: React.FC<HeroBannerProps> = ({
           </span>
           <span
             style={{
-              fontFamily: 'Instrument Serif, serif',
+              fontFamily: 'Cardo, serif',
               fontSize: 'clamp(5rem, 15vw, 12rem)', // Same size as Stephanie
               fontWeight: '300', // Lighter weight
               color: '#FFF0E2',

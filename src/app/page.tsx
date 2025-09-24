@@ -34,10 +34,15 @@ export default function Home() {
         overflow: 'hidden'
       }}>
         <MiddleSection />
+        <div style={{ height: '8vh' }}></div>
         <TimelineSection />
+        <div style={{ height: '8vh' }}></div>
         <VenueSection />
+        <div style={{ height: '8vh' }}></div>
         <PhotoSection />
+        <div style={{ height: '8vh' }}></div>
         <RSVPSection />
+        <div style={{ height: '8vh' }}></div>
         <FAQSection />
       </div>
     </>

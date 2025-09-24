@@ -22,7 +22,7 @@ const BackgroundColorManager: React.FC = () => {
       { selector: '.mwg_effect006', backgroundColor: '#faf9f6', name: 'MiddleSection' },
       { selector: '[data-timeline-section]', backgroundColor: '#EBE3D8', name: 'TimelineSection' },
       { selector: '.venue-section', backgroundColor: '#754936', name: 'VenueSection' },
-      { selector: '.photo-section', backgroundColor: '#1a1a2e', name: 'PhotoSection' },
+      { selector: '.photo-section', backgroundColor: '#F6C6AF', name: 'PhotoSection' },
       { selector: '.rsvp-section', backgroundColor: '#16213e', name: 'RSVPSection' },
       { selector: '.faq-section', backgroundColor: '#0f1419', name: 'FAQSection' }
     ];

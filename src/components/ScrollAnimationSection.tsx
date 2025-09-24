@@ -234,7 +234,7 @@ const ScrollAnimationSection: React.FC = () => {
         }
 
         .venue-type {
-          font-family: 'Instrument Serif', serif;
+          font-family: 'Cardo', serif;
           font-weight: 600;
           font-size: clamp(3rem, 8vw, 6rem);
           line-height: 0.9;
@@ -256,7 +256,7 @@ const ScrollAnimationSection: React.FC = () => {
         }
 
         .venue-name {
-          font-family: 'Instrument Serif', serif;
+          font-family: 'Cardo', serif;
           font-weight: 600;
           font-size: clamp(1.8rem, 3.5vw, 3rem);
           margin-bottom: 0.5rem;

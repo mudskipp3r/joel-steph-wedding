@@ -51,7 +51,7 @@ const Footer: React.FC<FooterProps> = ({ onOpenRSVPForm }) => {
           color: '#888',
           margin: 0,
           lineHeight: 1.4
-        }}>Please RSVP by April 15th, 2025</p>
+        }}>Please RSVP by October 6th, 2025</p>
       </div>
 
       <Button onClick={onOpenRSVPForm} variant="primary" size="large">

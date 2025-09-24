@@ -36,7 +36,7 @@ const HeroSection: React.FC = () => {
         <source src="/images/HeroVideo.mp4" type="video/mp4" />
         {/* Fallback image if video doesn't load */}
         <img
-          src="/images/LKCK6634.JPG"
+          src="/images/compressed_LKCK6634.JPG"
           alt="Hero background"
           style={{
             width: '100%',

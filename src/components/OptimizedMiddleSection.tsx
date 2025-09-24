@@ -50,7 +50,7 @@ const OptimizedMiddleSection: React.FC = () => {
     const cloudSvg = document.querySelector('.cloud-svg') as HTMLElement;
 
     // Track current state to prevent conflicts
-    let currentText = "6th February, 2026";
+    let currentText = "Together we celebrate";
     let currentSvg: HTMLElement | null = heartSvg;
 
     // Helper function to animate text with split effect
@@ -105,7 +105,7 @@ const OptimizedMiddleSection: React.FC = () => {
       onUpdate: self => {
         const progress = self.progress;
         if (progress > 0.5) {
-          animateTextTransition("Together February 6th", sunSvg, [heartSvg, cloudSvg]);
+          animateTextTransition("With family and friends", sunSvg, [heartSvg, cloudSvg]);
         }
       },
       id: "text-1-to-2"
@@ -119,7 +119,7 @@ const OptimizedMiddleSection: React.FC = () => {
       onUpdate: self => {
         const progress = self.progress;
         if (progress > 0.5) {
-          animateTextTransition("Love begins February 6th", cloudSvg, [heartSvg, sunSvg]);
+          animateTextTransition("Friday 6th February 2026", cloudSvg, [heartSvg, sunSvg]);
         }
       },
       id: "text-2-to-3"
@@ -134,7 +134,7 @@ const OptimizedMiddleSection: React.FC = () => {
       onUpdate: self => {
         const progress = self.progress;
         if (progress < 0.5) {
-          animateTextTransition("6th February, 2026", heartSvg, [sunSvg, cloudSvg]);
+          animateTextTransition("Together we celebrate", heartSvg, [sunSvg, cloudSvg]);
         }
       },
       id: "text-2-to-1"
@@ -148,7 +148,7 @@ const OptimizedMiddleSection: React.FC = () => {
       onUpdate: self => {
         const progress = self.progress;
         if (progress < 0.5) {
-          animateTextTransition("Together February 6th", sunSvg, [heartSvg, cloudSvg]);
+          animateTextTransition("With family and friends", sunSvg, [heartSvg, cloudSvg]);
         }
       },
       id: "text-3-to-2"
@@ -176,29 +176,29 @@ const OptimizedMiddleSection: React.FC = () => {
     >
       <div ref={div1Ref} className="section-div">
         <div className="squares-container">
-          <img src="/images/compressed_Joel Proposes to Steph-22.jpg" alt="Proposal portrait" className="red-square portrait" style={{ top: '15%', right: '12%' }} />
-          <img src="/images/compressed_Joel Proposes to Steph-103.jpg" alt="Proposal tall" className="red-square portrait-tall" style={{ top: '55%', left: '5%' }} />
-          <img src="/images/compressed_LKCK6467.JPG" alt="Proposal landscape" className="red-square" style={{ top: '85%', right: '25%' }} />
+          <img src="/images/story-section1-proposal-portrait.jpg" alt="Proposal portrait" className="red-square portrait" style={{ top: '15%', right: '12%' }} />
+          <img src="/images/story-section1-proposal-tall.jpg" alt="Proposal tall" className="red-square portrait-tall" style={{ top: '55%', left: '5%' }} />
+          <img src="/images/story-section1-proposal-landscape.jpg" alt="Proposal landscape" className="red-square" style={{ top: '85%', right: '25%' }} />
         </div>
       </div>
       <div ref={div2Ref} className="section-div">
         <div className="squares-container">
-          <img src="/images/compressed_LKCK6595.JPG" alt="Couple landscape" className="red-square" style={{ top: '12%', left: '8%' }} />
-          <img src="/images/compressed_joel and steph-05191.jpg" alt="Couple large portrait" className="red-square portrait-large" style={{ top: '40%', right: '10%' }} />
-          <img src="/images/compressed_LKCK6601.JPG" alt="Couple portrait" className="red-square portrait" style={{ top: '80%', left: '15%' }} />
+          <img src="/images/story-section2-couple-landscape.jpg" alt="Couple landscape" className="red-square" style={{ top: '12%', left: '8%' }} />
+          <img src="/images/story-section2-couple-portrait.jpg" alt="Couple large portrait" className="red-square portrait-large" style={{ top: '40%', right: '10%' }} />
+          <img src="/images/story-section2-couple-small.jpg" alt="Couple portrait" className="red-square portrait" style={{ top: '80%', left: '15%' }} />
         </div>
       </div>
       <div ref={div3Ref} className="section-div">
         <div className="squares-container">
-          <img src="/images/compressed_Joel Proposes to Steph-114.jpg" alt="Engagement tall portrait" className="red-square portrait-tall" style={{ top: '10%', right: '15%' }} />
-          <img src="/images/compressed_joel and steph-05237.jpg" alt="Engagement large portrait" className="red-square portrait-large" style={{ top: '45%', left: '8%' }} />
-          <img src="/images/compressed_Joel Proposes to Steph-130.jpg" alt="Beautiful moment" className="red-square" style={{ top: '85%', right: '20%' }} />
+          <img src="/images/story-section3-engagement-tall.jpg" alt="Engagement tall portrait" className="red-square portrait-tall" style={{ top: '10%', right: '15%' }} />
+          <img src="/images/story-section3-engagement-portrait.jpg" alt="Engagement large portrait" className="red-square portrait-large" style={{ top: '45%', left: '8%' }} />
+          <img src="/images/story-section3-engagement-moment.jpg" alt="Beautiful moment" className="red-square" style={{ top: '85%', right: '20%' }} />
         </div>
       </div>
       <div ref={div4Ref} className="section-div">
         <div className="squares-container">
-          <img src="/images/compressed_LKCK6632.JPG" alt="Engagement photo" className="red-square" style={{ top: '18%', left: '12%' }} />
-          <img src="/images/compressed_joel and steph-05263.jpg" alt="Couple portrait" className="red-square" style={{ top: '50%', right: '8%' }} />
+          <img src="/images/story-section4-final-photo.jpg" alt="Engagement photo" className="red-square" style={{ top: '18%', left: '12%' }} />
+          <img src="/images/story-section4-couple-portrait.jpg" alt="Couple portrait" className="red-square" style={{ top: '50%', right: '8%' }} />
         </div>
       </div>
 
@@ -208,7 +208,7 @@ const OptimizedMiddleSection: React.FC = () => {
           <img src="/sun.svg" alt="" className="background-svg sun-svg" />
           <img src="/cloud.svg" alt="" className="background-svg cloud-svg" />
         </div>
-        <h2>6th February, 2026</h2>
+        <h2>Together we celebrate</h2>
       </div>
 
       <style jsx>{`

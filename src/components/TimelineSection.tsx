@@ -19,34 +19,40 @@ const TimelineSection: React.FC = () => {
 
     if (!container || !content || !eventsContainer) return;
 
+    // Check if we're on mobile
+    const isMobile = window.innerWidth <= 768;
+
     // Clean up any existing ScrollTriggers
     const triggers: ScrollTrigger[] = [];
 
-    // Set initial state for events
-    gsap.set(eventsContainer, { y: window.innerHeight });
+    if (!isMobile) {
+      // Desktop: Use complex pinned scroll animation
+      gsap.set(eventsContainer, { y: window.innerHeight });
 
-    // Create a simple animation that moves events up
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: container,
-        start: "top top",
-        end: "bottom bottom", // Changed to bottom bottom for proper spacing
-        pin: content,
-        pinSpacing: true, // Changed to true to maintain proper spacing
-        scrub: 1,
-        id: "timeline-scroll",
-        markers: false,
-      }
-    });
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: container,
+          start: "top top",
+          end: "bottom bottom",
+          pin: content,
+          pinSpacing: true,
+          scrub: 1,
+          id: "timeline-scroll",
+          markers: false,
+        }
+      });
 
-    // Animate events scrolling through
-    tl.to(eventsContainer, {
-      y: -window.innerHeight * 2,
-      ease: "none",
-      duration: 1
-    });
+      tl.to(eventsContainer, {
+        y: -window.innerHeight * 2,
+        ease: "none",
+        duration: 1
+      });
 
-    triggers.push(ScrollTrigger.getById("timeline-scroll")!);
+      triggers.push(ScrollTrigger.getById("timeline-scroll")!);
+    } else {
+      // Mobile: Simple static layout, no pinning
+      gsap.set(eventsContainer, { y: 0, clearProps: "transform" });
+    }
 
     return () => {
       triggers.forEach(trigger => trigger?.kill());
@@ -57,18 +63,18 @@ const TimelineSection: React.FC = () => {
     <div
       ref={containerRef}
       data-timeline-section
+      className="timeline-section"
       style={{
         position: 'relative',
-        height: '300vh', // Total scroll distance
         background: 'transparent'
       }}
     >
       {/* Content container that gets pinned */}
       <div
         ref={contentRef}
+        className="timeline-content"
         style={{
           position: 'relative',
-          height: '100vh',
           width: '100%',
           overflow: 'hidden'
         }}
@@ -272,6 +278,132 @@ const TimelineSection: React.FC = () => {
           </div>
         </div>
       </div>
+
+      <style jsx>{`
+        /* Desktop Layout (Default) */
+        .timeline-section {
+          height: 300vh; /* Total scroll distance for desktop animation */
+        }
+
+        .timeline-content {
+          height: 100vh;
+        }
+
+        /* Mobile Layout */
+        @media (max-width: 768px) {
+          .timeline-section {
+            height: auto !important; /* Remove fixed height on mobile */
+            padding: 2rem 1rem;
+          }
+
+          .timeline-content {
+            height: auto !important;
+            position: static !important; /* Remove pinning on mobile */
+          }
+
+          /* Background card adjustments for mobile */
+          .timeline-content > div {
+            position: static !important;
+            inset: 0 !important;
+            margin: 0 !important;
+            border-radius: 20px !important;
+            padding: 2rem !important;
+          }
+
+          /* Hide the vertical line on mobile */
+          .timeline-content > div > div:first-child {
+            display: none !important;
+          }
+
+          /* Events container mobile layout */
+          .timeline-content > div > div:last-child {
+            position: static !important;
+            height: auto !important;
+            transform: none !important;
+            display: flex;
+            flex-direction: column;
+            gap: 3rem;
+            padding: 1rem 0;
+          }
+
+          /* Mobile title section */
+          .timeline-content > div > div:last-child > div:first-child {
+            position: static !important;
+            left: auto !important;
+            top: auto !important;
+            transform: none !important;
+            text-align: center;
+            margin-bottom: 3rem;
+          }
+
+          .timeline-content > div > div:last-child > div:first-child > div:first-child {
+            font-size: 2.5rem !important;
+            line-height: 1.2 !important;
+            margin-bottom: 1rem !important;
+          }
+
+          .timeline-content > div > div:last-child > div:first-child > div:last-child {
+            font-size: 1rem !important;
+          }
+
+          /* Mobile event items */
+          .timeline-content > div > div:last-child > div:not(:first-child) {
+            position: static !important;
+            left: auto !important;
+            top: auto !important;
+            transform: none !important;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.8);
+            padding: 2rem;
+            border-radius: 16px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+          }
+
+          /* Hide circles on mobile */
+          .timeline-content > div > div:last-child > div:nth-child(2),
+          .timeline-content > div > div:last-child > div:nth-child(4) {
+            display: none !important;
+          }
+
+          /* Mobile event content adjustments */
+          .timeline-content > div > div:last-child > div:nth-child(3) > div:first-child,
+          .timeline-content > div > div:last-child > div:nth-child(5) > div:first-child {
+            font-size: 2.5rem !important;
+            margin-bottom: 0.5rem !important;
+          }
+
+          .timeline-content > div > div:last-child > div:nth-child(3) > div:nth-child(2),
+          .timeline-content > div > div:last-child > div:nth-child(5) > div:nth-child(2) {
+            font-size: 3rem !important;
+            line-height: 1.1 !important;
+            margin-bottom: 1rem !important;
+          }
+
+          .timeline-content > div > div:last-child > div:nth-child(3) > div:nth-child(3),
+          .timeline-content > div > div:last-child > div:nth-child(5) > div:nth-child(3) {
+            font-size: 1rem !important;
+            margin-bottom: 1.5rem !important;
+          }
+        }
+
+        /* Tablet adjustments */
+        @media (min-width: 769px) and (max-width: 1024px) {
+          .timeline-content > div > div:last-child > div:first-child > div:first-child {
+            font-size: 3rem !important;
+          }
+
+          .timeline-content > div > div:last-child > div:nth-child(3) > div:nth-child(2),
+          .timeline-content > div > div:last-child > div:nth-child(5) > div:nth-child(2) {
+            font-size: 4rem !important;
+          }
+
+          .timeline-content > div > div:last-child > div:nth-child(3) > div:first-child,
+          .timeline-content > div > div:last-child > div:nth-child(5) > div:first-child {
+            font-size: 3rem !important;
+          }
+        }
+      `}</style>
     </div>
   );
 };

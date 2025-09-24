@@ -206,7 +206,7 @@ const MiddleSection: React.FC = () => {
       <style jsx>{`
         .mwg_effect006 {
           position: relative;
-          height: 400vh;
+          height: 150vh;
           background: transparent;
           letter-spacing: -0.03em;
           overflow: hidden;
@@ -220,7 +220,7 @@ const MiddleSection: React.FC = () => {
           top: 0;
           left: 0;
           width: 100%;
-          height: 400vh;
+          height: 150vh;
         }
 
         .bg-image {

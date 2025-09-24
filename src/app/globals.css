@@ -44,6 +44,17 @@ a {
 
 html {
   background: #667eea;
+  min-height: 100%;
+}
+
+/* Defensive layout rules to prevent gaps */
+.page-content {
+  min-height: 0;
+}
+
+/* Ensure sections don't create excessive space */
+section {
+  flex-shrink: 0;
 }
 
 @media (prefers-color-scheme: dark) {

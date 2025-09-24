@@ -193,7 +193,6 @@ const VenueSection: React.FC = () => {
       style={{
         padding: '3rem 2rem',
         background: 'transparent', // No background - managed by BackgroundColorManager
-        minHeight: '100vh',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',

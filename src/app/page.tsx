@@ -1,7 +1,6 @@
 import HeroSection from "../components/HeroSection";
-import MiddleSection from "../components/MiddleSection";
-import ScheduleSection from "../components/ScheduleSection";
-import TimelineSection from "../components/TimelineSection";
+import OptimizedMiddleSection from "../components/OptimizedMiddleSection";
+import OptimizedTimelineSection from "../components/OptimizedTimelineSection";
 import VenueSection from "../components/VenueSection";
 import PhotoSection from "../components/PhotoSection";
 import FAQSection from "../components/FAQSection";
@@ -25,13 +24,14 @@ export default function Home() {
         borderTopLeftRadius: '40px',
         borderTopRightRadius: '40px',
         paddingTop: '60px',
+        paddingBottom: '0',
         width: '100%',
         margin: 0,
         boxShadow: '0 10px 30px rgba(0, 0, 0, 0.1)'
       }}>
-        <MiddleSection />
+        <OptimizedMiddleSection />
         <div style={{ height: '8vh' }}></div>
-        <TimelineSection />
+        <OptimizedTimelineSection />
         <div style={{ height: '8vh' }}></div>
         <VenueSection />
         <div style={{ height: '8vh' }}></div>

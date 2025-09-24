@@ -19,8 +19,8 @@ const BackgroundColorManager: React.FC = () => {
 
     // Define sections and their background colors
     const sections: SectionConfig[] = [
-      { selector: '.mwg_effect006', backgroundColor: '#faf9f6', name: 'MiddleSection' },
-      { selector: '[data-timeline-section]', backgroundColor: '#EBE3D8', name: 'TimelineSection' },
+      { selector: '.optimized-middle-section', backgroundColor: '#faf9f6', name: 'OptimizedMiddleSection' },
+      { selector: '.optimized-timeline-section', backgroundColor: '#EBE3D8', name: 'OptimizedTimelineSection' },
       { selector: '.venue-section', backgroundColor: '#754936', name: 'VenueSection' },
       { selector: '.photo-section', backgroundColor: '#F6C6AF', name: 'PhotoSection' },
       { selector: '.faq-section', backgroundColor: '#0f1419', name: 'FAQSection' }

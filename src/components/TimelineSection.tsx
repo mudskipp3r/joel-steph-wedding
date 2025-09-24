@@ -115,7 +115,7 @@ const TimelineSection: React.FC = () => {
       data-timeline-section
       style={{
         position: 'relative',
-        height: '400vh', // Extended height for scroll
+        height: '150vh', // Further reduced height for scroll
         background: 'transparent' // No background - managed by BackgroundColorManager
       }}
     >

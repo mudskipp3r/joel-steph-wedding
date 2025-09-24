@@ -33,6 +33,7 @@ const SimpleFooter: React.FC<SimpleFooterProps> = ({
     dietaryRestrictions: '',
     message: ''
   });
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   // Handle panel slide animations
   useEffect(() => {
@@ -118,7 +119,7 @@ const SimpleFooter: React.FC<SimpleFooterProps> = ({
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     // Validation for plus one code
@@ -127,11 +128,36 @@ const SimpleFooter: React.FC<SimpleFooterProps> = ({
       return;
     }
 
-    // This will be connected to Netlify Forms or backend
-    console.log('RSVP Form Data:', formData);
-    alert('Thank you for your RSVP! We will be in touch soon.');
-    // Close panel after successful submission
-    closePanel();
+    try {
+      // Create form data for Netlify submission
+      const submitData = new FormData();
+      submitData.append('form-name', 'wedding-rsvp');
+      submitData.append('fullName', formData.fullName);
+      submitData.append('email', formData.email);
+      submitData.append('phone', formData.phone);
+      submitData.append('attendance', formData.attendance);
+      submitData.append('hasPlusOne', formData.hasPlusOne ? 'yes' : 'no');
+      if (formData.hasPlusOne) {
+        submitData.append('plusOneCode', formData.plusOneCode);
+      }
+      submitData.append('dietaryRestrictions', formData.dietaryRestrictions);
+      submitData.append('message', formData.message);
+
+      // Submit to Netlify
+      const response = await fetch('/', {
+        method: 'POST',
+        body: submitData,
+      });
+
+      if (response.ok) {
+        setIsSubmitted(true);
+      } else {
+        throw new Error('Form submission failed');
+      }
+    } catch (error) {
+      console.error('Form submission error:', error);
+      alert('There was an error submitting your RSVP. Please try again.');
+    }
   };
 
   const openPanel = () => {
@@ -150,6 +176,22 @@ const SimpleFooter: React.FC<SimpleFooterProps> = ({
     }
   };
 
+  const handleReturnToSite = () => {
+    // Reset form and submission state
+    setFormData({
+      fullName: '',
+      email: '',
+      phone: '',
+      attendance: 'yes',
+      hasPlusOne: false,
+      plusOneCode: '',
+      dietaryRestrictions: '',
+      message: ''
+    });
+    setIsSubmitted(false);
+    closePanel();
+  };
+
   // Cleanup on component unmount
   useEffect(() => {
     return () => {
@@ -161,6 +203,22 @@ const SimpleFooter: React.FC<SimpleFooterProps> = ({
 
   return (
     <>
+      {/* Hidden form for Netlify to detect at build time */}
+      <form
+        name="wedding-rsvp"
+        data-netlify="true"
+        hidden
+      >
+        <input type="text" name="fullName" />
+        <input type="email" name="email" />
+        <input type="tel" name="phone" />
+        <input type="text" name="attendance" />
+        <input type="text" name="hasPlusOne" />
+        <input type="text" name="plusOneCode" />
+        <input type="text" name="dietaryRestrictions" />
+        <textarea name="message"></textarea>
+      </form>
+
       {/* Traditional Footer */}
       <footer
         ref={footerRef}
@@ -351,8 +409,63 @@ const SimpleFooter: React.FC<SimpleFooterProps> = ({
             </div>
           </div>
 
-          {/* RSVP Form */}
-          <form className="rsvp-form" onSubmit={handleSubmit} data-netlify="true" name="wedding-rsvp" style={{
+          {/* Conditional Content - Form or Success State */}
+          {isSubmitted ? (
+            /* Success State */
+            <div style={{
+              textAlign: 'center',
+              padding: '3rem 1rem',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              gap: '2rem'
+            }}>
+              {/* Success Icon */}
+              <div style={{
+                width: '80px',
+                height: '80px',
+                borderRadius: '50%',
+                background: 'linear-gradient(135deg, #FF6B6B, #F58E7F)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontSize: '2.5rem',
+                boxShadow: '0 10px 30px rgba(255, 107, 107, 0.3)'
+              }}>
+                ✓
+              </div>
+
+              {/* Success Message */}
+              <div>
+                <h3 style={{
+                  fontFamily: 'Cardo, serif',
+                  fontSize: '2.5rem',
+                  color: '#1a1a1a',
+                  fontWeight: '400',
+                  marginBottom: '1rem',
+                  letterSpacing: '-0.02em'
+                }}>
+                  Thank You!
+                </h3>
+                <p style={{
+                  fontFamily: 'Instrument Sans, sans-serif',
+                  fontSize: '1.1rem',
+                  color: '#666',
+                  lineHeight: '1.6',
+                  marginBottom: '0'
+                }}>
+                  Your RSVP has been received successfully. We're excited to celebrate with you and will be in touch soon with more details!
+                </p>
+              </div>
+
+              {/* Return to Site Button */}
+              <Button size="medium" onClick={handleReturnToSite}>
+                Return to Site
+              </Button>
+            </div>
+          ) : (
+            /* RSVP Form */
+            <form className="rsvp-form" onSubmit={handleSubmit} data-netlify="true" name="wedding-rsvp" style={{
             display: 'flex',
             flexDirection: 'column',
             gap: '2rem'
@@ -505,6 +618,7 @@ const SimpleFooter: React.FC<SimpleFooterProps> = ({
               {formData.attendance === 'yes' ? 'Send RSVP' : 'Send Response'}
             </Button>
           </form>
+          )}
         </div>
       </div>
 

@@ -128,9 +128,35 @@ const SimpleFooter: React.FC<SimpleFooterProps> = ({
       return;
     }
 
+    // Validate plus one code against environment variable
+    if (formData.hasPlusOne && formData.plusOneCode.trim()) {
+      const validPromoCode = process.env.NEXT_PUBLIC_PROMO_CODE;
+      if (formData.plusOneCode.trim() !== validPromoCode) {
+        alert('Invalid plus one code. Please check your code and try again.');
+        return;
+      }
+    }
+
     try {
       // Create FormData from the form element (like your old form)
       const formData = new FormData(e.target as HTMLFormElement);
+
+      // Ensure default values for fields that might be blank or unchecked
+      if (!formData.get('hasPlusOne')) {
+        formData.set('hasPlusOne', 'no');
+      }
+      if (!formData.get('plusOneCode')) {
+        formData.set('plusOneCode', 'N/A');
+      }
+      if (!formData.get('phone')) {
+        formData.set('phone', 'Not provided');
+      }
+      if (!formData.get('dietaryRestrictions')) {
+        formData.set('dietaryRestrictions', 'None specified');
+      }
+      if (!formData.get('message')) {
+        formData.set('message', 'No message provided');
+      }
 
       // Submit to Netlify exactly like your old working form
       const response = await fetch("/", {
@@ -463,6 +489,8 @@ const SimpleFooter: React.FC<SimpleFooterProps> = ({
             gap: '2rem'
           }}>
             <input type="hidden" name="form-name" value="wedding-rsvp" />
+            {/* Hidden inputs to ensure default values are always sent */}
+            <input type="hidden" name="hasPlusOne" value={formData.hasPlusOne ? 'yes' : 'no'} />
 
             {/* Full Name */}
             <div className="form-group">

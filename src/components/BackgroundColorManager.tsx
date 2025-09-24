@@ -43,19 +43,19 @@ const BackgroundColorManager: React.FC = () => {
 
       const trigger = ScrollTrigger.create({
         trigger: middleSection,
-        start: 'bottom-=50vh center', // Trigger 50vh before the bottom of middle section
+        start: '70% center', // Trigger at 70% through the middle section
         end: 'bottom center',
         markers: true, // Show markers for debugging
         onEnter: () => {
-          console.log('Transition point reached - changing to dark background');
+          console.log('Transition point reached - changing to beige background');
           gsap.to('.page-content', {
-            backgroundColor: '#1a1a2e',
+            backgroundColor: '#EBE3D8',
             duration: 1.5,
             ease: 'power2.out'
           });
-          // Change schedule title to white
+          // Keep schedule title dark for good contrast on beige
           gsap.to('.schedule-title', {
-            color: 'white',
+            color: '#2c3e50',
             duration: 1.5,
             ease: 'power2.out'
           });

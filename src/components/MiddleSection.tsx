@@ -54,7 +54,7 @@ const MiddleSection: React.FC = () => {
 
           // Show text immediately when section starts (0% of scroll)
           const showTextThreshold = 0; // Start at top of section
-          const fadeOutThreshold = 0.85; // Start fading at 85% progress
+          const fadeOutThreshold = 0.70; // Start fading at 70% progress (earlier)
 
           if (progress >= showTextThreshold && progress < fadeOutThreshold) {
             // Normal animation phase

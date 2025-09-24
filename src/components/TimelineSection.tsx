@@ -116,12 +116,7 @@ const TimelineSection: React.FC = () => {
       style={{
         position: 'relative',
         height: '400vh', // Extended height for scroll
-        background: `linear-gradient(to bottom,
-          #faf9f6 0%,
-          #f2ebe2 20%,
-          #EBE3D8 40%,
-          #EBE3D8 100%
-        )` // Smooth transition from cream to beige
+        background: '#EBE3D8' // Consistent beige background
       }}
     >
       {/* Pinned Container */}

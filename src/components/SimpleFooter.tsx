@@ -129,8 +129,8 @@ const SimpleFooter: React.FC<SimpleFooterProps> = ({
     }
 
     try {
-      // Create form data for Netlify submission
-      const submitData = new FormData();
+      // Create URL-encoded form data for Netlify submission
+      const submitData = new URLSearchParams();
       submitData.append('form-name', 'wedding-rsvp');
       submitData.append('fullName', formData.fullName);
       submitData.append('email', formData.email);
@@ -143,10 +143,13 @@ const SimpleFooter: React.FC<SimpleFooterProps> = ({
       submitData.append('dietaryRestrictions', formData.dietaryRestrictions);
       submitData.append('message', formData.message);
 
-      // Submit to Netlify
+      // Submit to Netlify with correct headers
       const response = await fetch('/', {
         method: 'POST',
-        body: submitData,
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: submitData.toString(),
       });
 
       if (response.ok) {

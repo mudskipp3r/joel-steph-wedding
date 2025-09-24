@@ -3,39 +3,7 @@
 import React, { useRef, useState, useEffect, useCallback } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-
-// Google Maps type declarations
-interface GoogleMapsApi {
-  maps: {
-    Map: new (element: HTMLElement, options: unknown) => GoogleMapsMap;
-    Marker: new (options: unknown) => GoogleMapsMarker;
-    Size: new (width: number, height: number) => unknown;
-    Point: new (x: number, y: number) => unknown;
-    Animation: {
-      DROP: unknown;
-    };
-    event: {
-      addListenerOnce: (instance: unknown, eventName: string, handler: () => void) => void;
-      addListener: (instance: unknown, eventName: string, handler: (error?: unknown) => void) => void;
-    };
-  };
-}
-
-interface GoogleMapsMap {
-  setZoom(zoom: number): void;
-  panTo(coords: { lat: number; lng: number }): void;
-  getCenter(): { lat(): number; lng(): number } | null;
-}
-
-interface GoogleMapsMarker {
-  addListener(eventName: string, handler: () => void): void;
-}
-
-declare global {
-  interface Window {
-    google?: GoogleMapsApi;
-  }
-}
+import '../types/googlemaps';
 
 gsap.registerPlugin(ScrollTrigger);
 

@@ -3,14 +3,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-
-// Google Maps types
-declare global {
-  interface Window {
-    google: any;
-    initMap: () => void;
-  }
-}
+import '../types/googlemaps';
 
 interface Event {
   id: number;

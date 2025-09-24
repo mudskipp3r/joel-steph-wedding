@@ -1,41 +1,7 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
-
-// Google Maps type declarations
-interface GoogleMapsApi {
-  maps: {
-    Map: new (element: HTMLElement, options: unknown) => GoogleMapsMap;
-    Marker: new (options: unknown) => GoogleMapsMarker;
-    Animation: {
-      DROP: unknown;
-    };
-    Size: new (width: number, height: number) => unknown;
-    Point: new (x: number, y: number) => unknown;
-    LatLng: new (lat: number, lng: number) => unknown;
-    LatLngBounds: new () => GoogleMapsLatLngBounds;
-  };
-}
-
-interface GoogleMapsMap {
-  setCenter: (latLng: unknown) => void;
-  setZoom: (zoom: number) => void;
-  fitBounds: (bounds: unknown) => void;
-}
-
-interface GoogleMapsMarker {
-  setMap: (map: GoogleMapsMap | null) => void;
-}
-
-interface GoogleMapsLatLngBounds {
-  extend: (latLng: unknown) => void;
-}
-
-declare global {
-  interface Window {
-    google?: GoogleMapsApi;
-  }
-}
+import '../types/googlemaps';
 
 const venues = [
   {

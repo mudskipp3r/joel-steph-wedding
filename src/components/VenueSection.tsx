@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
-import '../types/googlemaps';
+import { GoogleMapsMap, GoogleMapsMarker } from '../types/googlemaps';
 
 const venues = [
   {

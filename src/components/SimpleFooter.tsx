@@ -47,7 +47,7 @@ const SimpleFooter: React.FC<SimpleFooterProps> = ({
         // Ensure panel can scroll with all input methods including trackpads
         panel.style.overflowY = 'auto';
         panel.style.overflowX = 'hidden';
-        panel.style.WebkitOverflowScrolling = 'touch';
+        (panel.style as any).WebkitOverflowScrolling = 'touch';
         panel.style.scrollBehavior = 'smooth';
 
         // Enable trackpad scrolling

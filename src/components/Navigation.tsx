@@ -92,9 +92,6 @@ const Navigation: React.FC<NavigationProps> = ({ isRSVPFormOpen = false, onOpenR
             display: 'flex',
             alignItems: 'center',
             gap: '2rem',
-            '@media (max-width: 768px)': {
-              display: 'none',
-            },
           }}
           className="desktop-nav"
         >

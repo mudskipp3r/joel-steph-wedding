@@ -10,6 +10,7 @@ interface ButtonProps {
   type?: 'button' | 'submit' | 'reset';
   disabled?: boolean;
   className?: string;
+  style?: React.CSSProperties;
 }
 
 const Button: React.FC<ButtonProps> = ({
@@ -19,7 +20,8 @@ const Button: React.FC<ButtonProps> = ({
   onClick,
   type = 'button',
   disabled = false,
-  className = ''
+  className = '',
+  style = {}
 }) => {
   const baseStyles = {
     fontFamily: 'Instrument Sans, sans-serif',
@@ -89,6 +91,7 @@ const Button: React.FC<ButtonProps> = ({
         ...baseStyles,
         ...variantStyles[variant],
         ...sizeStyles[size],
+        ...style,
       }}
       onMouseEnter={(e) => {
         if (!disabled) {

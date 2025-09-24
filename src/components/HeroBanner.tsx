@@ -34,113 +34,114 @@ const HeroBanner: React.FC<HeroBannerProps> = ({
         position: 'relative'
       }}
     >
-      <div style={{ maxWidth: '800px', padding: '0 20px' }}>
-        <h1
-          style={{
-            fontSize: 'clamp(2.5rem, 8vw, 5rem)',
-            fontWeight: 'bold',
-            marginBottom: '1rem',
-            textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)'
-          }}
-        >
-          {title}
-        </h1>
-        <p
-          style={{
-            fontSize: 'clamp(1.2rem, 4vw, 2rem)',
-            marginBottom: '2rem',
-            opacity: 0.9,
-            textShadow: '1px 1px 2px rgba(0, 0, 0, 0.5)'
-          }}
-        >
-          {subtitle}
-        </p>
-        <button
-          style={{
-            padding: '12px 30px',
-            fontSize: '1.1rem',
-            background: 'rgba(255, 255, 255, 0.2)',
-            border: '2px solid white',
-            color: 'white',
-            borderRadius: '50px',
-            cursor: 'pointer',
-            transition: 'all 0.3s ease',
-            backdropFilter: 'blur(10px)'
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.background = 'white';
-            e.currentTarget.style.color = '#333';
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.background = 'rgba(255, 255, 255, 0.2)';
-            e.currentTarget.style.color = 'white';
-          }}
-        >
-          Learn More
-        </button>
-      </div>
-
-      <div
-        style={{
-          position: 'absolute',
-          bottom: '30px',
-          left: '50%',
-          transform: 'translateX(-50%)',
-          animation: 'bounce 2s infinite'
-        }}
-      >
+      {/* Main Names Display */}
+      <div style={{
+        position: 'absolute',
+        bottom: 'calc(5% + 2px)', // 2px above the date - almost touching
+        right: '4%',
+        maxWidth: '600px',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'flex-end',
+        textAlign: 'right'
+      }}>
+        {/* Stephanie */}
         <div
           style={{
-            width: '24px',
-            height: '40px',
-            border: '2px solid white',
-            borderRadius: '12px',
-            position: 'relative'
+            fontFamily: 'Instrument Serif, serif',
+            fontSize: 'clamp(5rem, 15vw, 12rem)',
+            fontWeight: '300', // Lighter weight
+            margin: '0',
+            lineHeight: '0.8',
+            letterSpacing: '-0.02em',
+            textShadow: '2px 2px 8px rgba(0, 0, 0, 0.6)',
+            color: '#FFF0E2'
           }}
         >
-          <div
+          Stephanie
+        </div>
+
+        {/* and Joel on same line with consistent sizing */}
+        <div style={{
+          display: 'flex',
+          alignItems: 'baseline',
+          gap: '1.2rem',
+          justifyContent: 'center',
+          marginTop: '-1rem' // Much tighter spacing between lines
+        }}>
+          <span
             style={{
-              width: '4px',
-              height: '8px',
-              background: 'white',
-              borderRadius: '2px',
-              position: 'absolute',
-              top: '6px',
-              left: '50%',
-              transform: 'translateX(-50%)',
-              animation: 'scroll 1.5s infinite'
+              fontFamily: 'Instrument Serif, serif',
+              fontSize: 'clamp(5rem, 15vw, 12rem)', // Same size as Stephanie
+              fontWeight: '300', // Lighter weight
+              color: '#D9950D', // Golden color for "and"
+              textShadow: '2px 2px 8px rgba(0, 0, 0, 0.6)',
+              letterSpacing: '-0.02em'
             }}
-          />
+          >
+            and
+          </span>
+          <span
+            style={{
+              fontFamily: 'Instrument Serif, serif',
+              fontSize: 'clamp(5rem, 15vw, 12rem)', // Same size as Stephanie
+              fontWeight: '300', // Lighter weight
+              color: '#FFF0E2',
+              textShadow: '2px 2px 8px rgba(0, 0, 0, 0.6)',
+              letterSpacing: '-0.02em'
+            }}
+          >
+            Joel
+          </span>
         </div>
       </div>
 
-      <style jsx>{`
-        @keyframes bounce {
-          0%, 20%, 50%, 80%, 100% {
-            transform: translateX(-50%) translateY(0);
-          }
-          40% {
-            transform: translateX(-50%) translateY(-10px);
-          }
-          60% {
-            transform: translateX(-50%) translateY(-5px);
-          }
-        }
+      {/* Date in bottom right */}
+      <div
+        style={{
+          position: 'absolute',
+          bottom: '5%', // More padding from bottom
+          right: '4%',
+          fontFamily: 'Instrument Sans, sans-serif',
+          fontSize: 'clamp(1rem, 2vw, 1.3rem)',
+          fontWeight: '400',
+          color: '#FFF0E2',
+          textShadow: '1px 1px 4px rgba(0, 0, 0, 0.6)',
+          textAlign: 'right'
+        }}
+      >
+        6th February <span style={{ fontWeight: 'bold' }}>2026</span>
+      </div>
 
-        @keyframes scroll {
-          0% {
-            opacity: 0;
-            transform: translateX(-50%) translateY(0);
-          }
-          50% {
-            opacity: 1;
-          }
-          100% {
-            opacity: 0;
-            transform: translateX(-50%) translateY(15px);
-          }
-        }
-      `}</style>
+      {/* Heart SVG in bottom left */}
+      <div
+        style={{
+          position: 'absolute',
+          bottom: '5%',
+          left: '4%',
+          width: '60px',
+          height: '60px',
+          opacity: 0.8
+        }}
+      >
+        <svg
+          width="100%"
+          height="100%"
+          viewBox="0 0 100 100"
+          style={{
+            filter: 'drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.3))'
+          }}
+        >
+          <image
+            href="/Heart_3.svg"
+            width="100"
+            height="100"
+            style={{
+              filter: 'brightness(0) saturate(100%) invert(100%) sepia(5%) saturate(341%) hue-rotate(12deg) brightness(105%) contrast(92%)'
+            }}
+          />
+        </svg>
+      </div>
     </section>
   );
 };

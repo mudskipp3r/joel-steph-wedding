@@ -59,12 +59,30 @@ const HeroSection: React.FC = () => {
         }}
       />
 
+      {/* Noise overlay */}
+      <div
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          backgroundImage: `
+            radial-gradient(circle at 25% 25%, rgba(255, 255, 255, 0.1) 1px, transparent 1px),
+            radial-gradient(circle at 75% 75%, rgba(0, 0, 0, 0.1) 1px, transparent 1px),
+            radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.05) 0.5px, transparent 0.5px)
+          `,
+          backgroundSize: '8px 8px, 6px 6px, 4px 4px',
+          backgroundPosition: '0 0, 3px 3px, 1px 1px',
+          opacity: 0.3,
+          mixBlendMode: 'overlay',
+          zIndex: 2.5
+        }}
+      />
+
       {/* Content */}
       <div style={{ position: 'relative', zIndex: 3 }}>
-        <HeroBanner
-          title="Joel & Stephanie"
-          subtitle="Save the Date"
-        />
+        <HeroBanner />
       </div>
     </section>
   );

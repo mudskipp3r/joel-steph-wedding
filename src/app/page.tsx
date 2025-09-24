@@ -13,7 +13,6 @@ export default function Home() {
     <>
       <BackgroundColorManager />
       <HeroSection />
-      <SimpleFooter />
 
       {/* Spacer for fixed hero section */}
       <div style={{ height: '100vh' }}></div>
@@ -27,10 +26,8 @@ export default function Home() {
         borderTopRightRadius: '40px',
         paddingTop: '60px',
         minHeight: '100vh',
-        paddingBottom: '50vh',
         width: '100%',
-        margin: 0,
-        overflow: 'hidden'
+        margin: 0
       }}>
         <MiddleSection />
         <div style={{ height: '8vh' }}></div>
@@ -41,6 +38,8 @@ export default function Home() {
         <PhotoSection />
         <div style={{ height: '8vh' }}></div>
         <FAQSection />
+        <div style={{ height: '8vh' }}></div>
+        <SimpleFooter />
       </div>
     </>
   );

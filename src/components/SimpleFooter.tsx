@@ -5,8 +5,8 @@ import { gsap } from 'gsap';
 
 const SimpleFooter: React.FC = () => {
   const footerRef = useRef<HTMLDivElement>(null);
-  const marqueeRef = useRef<HTMLDivElement>(null);
-  const [isVisible, setIsVisible] = useState(false);
+  const panelRef = useRef<HTMLDivElement>(null);
+  const [isPanelOpen, setIsPanelOpen] = useState(false);
 
   // RSVP Form State
   const [formData, setFormData] = useState({
@@ -20,60 +20,49 @@ const SimpleFooter: React.FC = () => {
     message: ''
   });
 
+  // Handle panel slide animations
   useEffect(() => {
-    const footer = footerRef.current;
-    const marqueeText = marqueeRef.current;
+    const panel = panelRef.current;
 
-    if (footer && marqueeText) {
-      // Set initial state - footer starts off-screen
-      gsap.set(footer, {
-        yPercent: 100
-      });
+    if (panel) {
+      if (isPanelOpen) {
+        // Hide body scrollbar and prevent scroll
+        document.body.style.overflow = 'hidden';
+        document.documentElement.style.overflow = 'hidden';
 
-      // Marquee animation
-      gsap.to(marqueeText, {
-        x: '-50%',
-        duration: 20,
-        repeat: -1,
-        ease: 'none'
-      });
+        // Slide panel in from right
+        gsap.fromTo(panel,
+          {
+            x: '100%'
+          },
+          {
+            x: '0%',
+            duration: 0.6,
+            ease: 'power3.out'
+          }
+        );
+      } else {
+        // Restore body scroll and scrollbar
+        document.body.style.overflow = 'auto';
+        document.documentElement.style.overflow = 'auto';
 
-      // Scroll-linked animation (scrub effect)
-      const handleScroll = () => {
-        const scrollTop = window.scrollY;
-        const windowHeight = window.innerHeight;
-        const documentHeight = document.documentElement.scrollHeight;
-
-        // Calculate scroll position relative to bottom
-        const scrollBottom = scrollTop + windowHeight;
-        const startThreshold = documentHeight - (windowHeight * 0.5); // Start at 50vh from bottom
-        const endThreshold = documentHeight; // End at very bottom
-
-        // Calculate progress between start and end thresholds
-        if (scrollBottom >= startThreshold) {
-          const progress = Math.min(1, (scrollBottom - startThreshold) / (endThreshold - startThreshold));
-
-          // Map progress to footer position (100% hidden to 0% visible)
-          const yPercent = 100 - (progress * 100);
-
-          gsap.set(footer, {
-            yPercent: yPercent
-          });
-        } else {
-          // Keep footer hidden when above threshold
-          gsap.set(footer, {
-            yPercent: 100
-          });
-        }
-      };
-
-      window.addEventListener('scroll', handleScroll);
-
-      return () => {
-        window.removeEventListener('scroll', handleScroll);
-      };
+        // Slide panel out to right
+        gsap.to(panel, {
+          x: '100%',
+          duration: 0.4,
+          ease: 'power3.in'
+        });
+      }
     }
-  }, [isVisible]);
+
+    // Cleanup function
+    return () => {
+      if (!isPanelOpen) {
+        document.body.style.overflow = 'auto';
+        document.documentElement.style.overflow = 'auto';
+      }
+    };
+  }, [isPanelOpen]);
 
   // RSVP Form Handlers
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -116,42 +105,197 @@ const SimpleFooter: React.FC = () => {
     // This will be connected to Netlify Forms or backend
     console.log('RSVP Form Data:', formData);
     alert('Thank you for your RSVP! We will be in touch soon.');
+    // Close panel after successful submission
+    setIsPanelOpen(false);
   };
 
-  return (
-    <div
-      ref={footerRef}
-      className="simple-footer"
-      style={{
-        position: 'fixed',
-        bottom: 0,
-        left: 0,
-        width: '100%',
-        height: '100vh', // Changed to full height for RSVP form
-        background: '#FFF0E2', // Use the RSVP section background color
-        zIndex: 20,
-        borderTopLeftRadius: '40px',
-        borderTopRightRadius: '40px',
-        overflowY: 'auto'
-      }}
-    >
-      <div className="footer-content">
-        {/* RSVP Form */}
-        <div className="rsvp-section">
-          <div className="rsvp-header">
-            <h2>RSVP</h2>
-            <p>We can't wait to celebrate with you! Please let us know if you'll be joining us for our special day.</p>
-          </div>
+  const openPanel = () => {
+    setIsPanelOpen(true);
+  };
 
-          <div className="deadline-notice">
-            <div className="deadline-icon">⏰</div>
-            <div className="deadline-text">
-              <strong>RSVP Deadline: 6th December 2025</strong>
-              <span>Please respond by this date to help us plan the perfect celebration</span>
+  const closePanel = () => {
+    setIsPanelOpen(false);
+  };
+
+  // Cleanup on component unmount
+  useEffect(() => {
+    return () => {
+      // Ensure scrollbar is restored on component unmount
+      document.body.style.overflow = 'auto';
+      document.documentElement.style.overflow = 'auto';
+    };
+  }, []);
+
+  return (
+    <>
+      {/* Traditional Footer */}
+      <footer
+        ref={footerRef}
+        className="simple-footer"
+        style={{
+          position: 'relative',
+          width: '100%',
+          height: '120px',
+          background: '#FFF0E2',
+          borderTopLeftRadius: '40px',
+          borderTopRightRadius: '40px',
+          padding: '1.5rem 2rem',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between'
+        }}
+      >
+        <div className="footer-main">
+          <h3 style={{
+            fontFamily: 'Cardo, serif',
+            fontSize: 'clamp(1.5rem, 3vw, 2rem)',
+            fontWeight: 400,
+            margin: 0,
+            color: '#2c3e50'
+          }}>Thank You</h3>
+          <p style={{
+            fontFamily: 'Instrument Sans, sans-serif',
+            fontSize: '0.9rem',
+            color: '#666',
+            margin: '0.25rem 0 0 0'
+          }}>We can't wait to celebrate with you</p>
+        </div>
+
+        <button
+          onClick={openPanel}
+          className="rsvp-cta-button"
+          style={{
+            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+            color: 'white',
+            border: 'none',
+            padding: '1rem 2rem',
+            fontSize: '1.1rem',
+            fontWeight: 600,
+            fontFamily: 'Instrument Sans, sans-serif',
+            borderRadius: '50px',
+            cursor: 'pointer',
+            transition: 'all 0.3s ease',
+            boxShadow: '0 8px 25px rgba(102, 126, 234, 0.3)',
+            minWidth: '140px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '0.5rem'
+          }}
+        >
+          <span>✨</span>
+          RSVP
+        </button>
+      </footer>
+
+      {/* Slide-out RSVP Panel */}
+      <div
+        ref={panelRef}
+        className="rsvp-panel"
+        style={{
+          position: 'fixed',
+          top: 0,
+          right: 0,
+          width: '100vw',
+          maxWidth: '500px',
+          height: '100vh',
+          background: '#FFF0E2',
+          zIndex: 9999,
+          transform: 'translateX(100%)',
+          boxShadow: '-10px 0 30px rgba(0, 0, 0, 0.2)',
+          overflowY: 'auto'
+        }}
+      >
+        {/* Panel Header */}
+        <div className="panel-header" style={{
+          position: 'sticky',
+          top: 0,
+          background: '#FFF0E2',
+          padding: '1.5rem 2rem',
+          borderBottom: '2px solid rgba(44, 62, 80, 0.1)',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          zIndex: 10
+        }}>
+          <h2 style={{
+            fontFamily: 'Cardo, serif',
+            fontSize: '2rem',
+            fontWeight: 400,
+            margin: 0,
+            color: '#2c3e50'
+          }}>RSVP</h2>
+          <button
+            onClick={closePanel}
+            className="close-button"
+            style={{
+              background: 'rgba(102, 126, 234, 0.1)',
+              color: '#667eea',
+              border: '2px solid #667eea',
+              padding: '0.75rem',
+              fontSize: '1.2rem',
+              borderRadius: '50%',
+              cursor: 'pointer',
+              transition: 'all 0.3s ease',
+              width: '45px',
+              height: '45px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}
+          >
+            ✕
+          </button>
+        </div>
+
+        {/* Panel Content */}
+        <div className="panel-content" style={{
+          padding: '2rem',
+          paddingTop: '1rem'
+        }}>
+          <p style={{
+            fontFamily: 'Instrument Sans, sans-serif',
+            fontSize: '1.1rem',
+            color: '#666',
+            lineHeight: 1.6,
+            marginBottom: '2rem',
+            textAlign: 'center'
+          }}>We can't wait to celebrate with you! Please let us know if you'll be joining us for our special day.</p>
+
+          <div className="deadline-notice" style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '1rem',
+            background: 'linear-gradient(135deg, #FF6B6B, #FF8E53)',
+            color: 'white',
+            padding: '1.5rem',
+            borderRadius: '16px',
+            marginBottom: '2.5rem',
+            boxShadow: '0 8px 25px rgba(255, 107, 107, 0.3)'
+          }}>
+            <div style={{ fontSize: '2rem', flexShrink: 0 }}>⏰</div>
+            <div>
+              <strong style={{
+                fontFamily: 'Instrument Sans, sans-serif',
+                fontSize: '1.2rem',
+                fontWeight: 700,
+                display: 'block',
+                marginBottom: '0.25rem'
+              }}>RSVP Deadline: 6th December 2025</strong>
+              <span style={{
+                fontFamily: 'Instrument Sans, sans-serif',
+                fontSize: '0.95rem',
+                opacity: 0.95
+              }}>Please respond by this date to help us plan the perfect celebration</span>
             </div>
           </div>
 
-          <form className="rsvp-form" onSubmit={handleSubmit} data-netlify="true" name="wedding-rsvp">
+          {/* RSVP Form */}
+          <form className="rsvp-form" onSubmit={handleSubmit} data-netlify="true" name="wedding-rsvp" style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '2rem'
+          }}>
             <input type="hidden" name="form-name" value="wedding-rsvp" />
 
             {/* Full Name */}
@@ -300,23 +444,6 @@ const SimpleFooter: React.FC = () => {
               {formData.attendance === 'yes' ? '✨ Send RSVP' : '💌 Send Response'}
             </button>
           </form>
-        </div>
-
-        {/* Thank You Message at bottom */}
-        <div className="footer-main">
-          <h3>Thank You</h3>
-          <p>We can't wait to celebrate with you on our special day. Your presence is the greatest gift of all.</p>
-        </div>
-
-        <div className="marquee-container">
-          <div ref={marqueeRef} className="marquee-wrapper">
-            <span className="marquee-text">
-              Stephanie & Joel • Stephanie & Joel •
-            </span>
-            <span className="marquee-text">
-              Stephanie & Joel • Stephanie & Joel •
-            </span>
-          </div>
         </div>
       </div>
 
@@ -628,6 +755,15 @@ const SimpleFooter: React.FC = () => {
           transform: translateY(-1px);
         }
 
+        .rsvp-cta-button:hover:not(:disabled) {
+          transform: translateY(-2px) !important;
+          box-shadow: 0 12px 35px rgba(102, 126, 234, 0.4) !important;
+        }
+
+        .rsvp-cta-button:active {
+          transform: translateY(0) !important;
+        }
+
         /* Footer Styles */
         .footer-main {
           text-align: center;
@@ -684,9 +820,42 @@ const SimpleFooter: React.FC = () => {
           color: #2c3e50;
         }
 
+        .close-button:hover {
+          background: rgba(102, 126, 234, 0.2) !important;
+          transform: scale(1.1);
+        }
+
         @media (max-width: 768px) {
-          .footer-content {
-            padding: 2rem 1rem;
+          .simple-footer {
+            height: 100px !important;
+            padding: 1rem !important;
+            flex-direction: column;
+            text-align: center;
+            gap: 1rem;
+          }
+
+          .footer-main h3 {
+            font-size: 1.25rem !important;
+          }
+
+          .footer-main p {
+            font-size: 0.8rem !important;
+          }
+
+          .rsvp-cta-button {
+            padding: 0.75rem 1.5rem !important;
+            font-size: 1rem !important;
+            min-width: 120px !important;
+          }
+
+          .rsvp-panel {
+            width: 100vw !important;
+            max-width: none !important;
+          }
+
+          .panel-content {
+            padding: 1.5rem !important;
+            padding-top: 1rem !important;
           }
 
           .form-row {
@@ -728,7 +897,7 @@ const SimpleFooter: React.FC = () => {
           }
         }
       `}</style>
-    </div>
+    </>
   );
 };
 

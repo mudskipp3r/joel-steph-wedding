@@ -24,6 +24,9 @@ const RSVPSlideout: React.FC<RSVPSlideoutProps> = ({ isOpen, onClose }) => {
     message: ''
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [errors, setErrors] = useState<{
+    plusOneCode?: string;
+  }>({});
 
   // Handle panel slide animations
   useEffect(() => {
@@ -84,6 +87,11 @@ const RSVPSlideout: React.FC<RSVPSlideoutProps> = ({ isOpen, onClose }) => {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value, type } = e.target;
 
+    // Clear errors when user starts typing
+    if (name === 'plusOneCode' && errors.plusOneCode) {
+      setErrors(prev => ({ ...prev, plusOneCode: undefined }));
+    }
+
     if (type === 'checkbox') {
       const checked = (e.target as HTMLInputElement).checked;
       setFormData(prev => ({
@@ -112,9 +120,12 @@ const RSVPSlideout: React.FC<RSVPSlideoutProps> = ({ isOpen, onClose }) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    // Clear previous errors
+    setErrors({});
+
     // Validation for plus one code
     if (formData.hasPlusOne && !formData.plusOneCode.trim()) {
-      alert('Please enter your plus one code to bring a guest.');
+      setErrors({ plusOneCode: 'Please enter your plus one code to bring a guest.' });
       return;
     }
 
@@ -122,7 +133,7 @@ const RSVPSlideout: React.FC<RSVPSlideoutProps> = ({ isOpen, onClose }) => {
     if (formData.hasPlusOne && formData.plusOneCode.trim()) {
       const validPromoCode = process.env.NEXT_PUBLIC_PROMO_CODE;
       if (formData.plusOneCode.trim() !== validPromoCode) {
-        alert('Invalid plus one code. Please check your code and try again.');
+        setErrors({ plusOneCode: 'Invalid plus one code. Please check your code and try again.' });
         return;
       }
     }
@@ -513,8 +524,23 @@ const RSVPSlideout: React.FC<RSVPSlideoutProps> = ({ isOpen, onClose }) => {
                         onChange={handleInputChange}
                         placeholder="Enter the code provided by Joel & Stephanie"
                         required
+                        style={{
+                          borderColor: errors.plusOneCode ? '#ef4444' : '#ddd',
+                          borderWidth: errors.plusOneCode ? '2px' : '1px'
+                        }}
                       />
-                      <small>This code was provided to you by the bride and groom</small>
+                      {errors.plusOneCode && (
+                        <small style={{
+                          color: '#ef4444',
+                          fontWeight: '500',
+                          marginTop: '0.5rem'
+                        }}>
+                          {errors.plusOneCode}
+                        </small>
+                      )}
+                      {!errors.plusOneCode && (
+                        <small>This code was provided to you by the bride and groom</small>
+                      )}
                     </div>
                   )}
                 </div>

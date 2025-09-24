@@ -45,12 +45,22 @@ const OptimizedMiddleSection: React.FC = () => {
       markers: false,
     });
 
-    const heartSvg = document.querySelector('.heart-svg');
-    const sunSvg = document.querySelector('.sun-svg');
-    const cloudSvg = document.querySelector('.cloud-svg');
+    const heartSvg = document.querySelector('.heart-svg') as HTMLElement;
+    const sunSvg = document.querySelector('.sun-svg') as HTMLElement;
+    const cloudSvg = document.querySelector('.cloud-svg') as HTMLElement;
+
+    // Track current state to prevent conflicts
+    let currentText = "6th February, 2026";
+    let currentSvg: HTMLElement | null = heartSvg;
 
     // Helper function to animate text with split effect
     const animateTextTransition = (newText: string, svgToShow: HTMLElement | null, svgToHide: HTMLElement[]) => {
+      // Prevent unnecessary transitions
+      if (currentText === newText) return;
+
+      currentText = newText;
+      currentSvg = svgToShow;
+
       // Set new text content with split chars
       textElement.innerHTML = splitTextIntoChars(newText);
 
@@ -68,52 +78,80 @@ const OptimizedMiddleSection: React.FC = () => {
         }
       );
 
-      // Handle SVG transitions
-      if (svgToShow) gsap.to(svgToShow, { opacity: 1, scale: 1, duration: 0.6 });
+      // Handle SVG transitions with better timing
       svgToHide.forEach(svg => {
-        if (svg) gsap.to(svg, { opacity: 0, scale: 0.7, duration: 0.4 });
+        if (svg && svg !== svgToShow) {
+          gsap.to(svg, { opacity: 0, scale: 0.7, duration: 0.3 });
+        }
       });
+
+      // Delay showing new SVG to prevent overlap
+      if (svgToShow) {
+        gsap.to(svgToShow, {
+          opacity: 1,
+          scale: 1,
+          duration: 0.5,
+          delay: 0.2
+        });
+      }
     };
 
-    // Text change triggers - using split text animations
+    // Balanced text transitions - each phrase gets equal duration
+    // Transition 1 -> 2: At end of div1 (33% through)
     ScrollTrigger.create({
       trigger: div1,
       start: "bottom-=50 top",
-      end: "bottom+50 top",
-      scrub: true,
+      end: "bottom top",
       onUpdate: self => {
         const progress = self.progress;
-        if (progress < 0.5) {
-          if (!textElement.textContent.includes("Welcome to our wedding")) {
-            animateTextTransition("Welcome to our wedding", heartSvg, [sunSvg, cloudSvg]);
-          }
-        } else {
-          if (!textElement.textContent.includes("We can't wait to see you all")) {
-            animateTextTransition("We can't wait to see you all", sunSvg, [heartSvg, cloudSvg]);
-          }
+        if (progress > 0.5) {
+          animateTextTransition("Together February 6th", sunSvg, [heartSvg, cloudSvg]);
         }
       },
       id: "text-1-to-2"
     });
 
+    // Transition 2 -> 3: At end of div2 (66% through)
     ScrollTrigger.create({
       trigger: div2,
       start: "bottom-=50 top",
-      end: "bottom+50 top",
-      scrub: true,
+      end: "bottom top",
       onUpdate: self => {
         const progress = self.progress;
-        if (progress < 0.5) {
-          if (!textElement.textContent.includes("We can't wait to see you all")) {
-            animateTextTransition("We can't wait to see you all", sunSvg, [heartSvg, cloudSvg]);
-          }
-        } else {
-          if (!textElement.textContent.includes("On our special day")) {
-            animateTextTransition("On our special day", cloudSvg, [heartSvg, sunSvg]);
-          }
+        if (progress > 0.5) {
+          animateTextTransition("Love begins February 6th", cloudSvg, [heartSvg, sunSvg]);
         }
       },
       id: "text-2-to-3"
+    });
+
+    // REVERSE TRANSITIONS
+    // Transition 2 -> 1: Going back up through div2 (not div1)
+    ScrollTrigger.create({
+      trigger: div2,
+      start: "top-=50 bottom",
+      end: "top bottom",
+      onUpdate: self => {
+        const progress = self.progress;
+        if (progress < 0.5) {
+          animateTextTransition("6th February, 2026", heartSvg, [sunSvg, cloudSvg]);
+        }
+      },
+      id: "text-2-to-1"
+    });
+
+    // Transition 3 -> 2: Going back up through div3
+    ScrollTrigger.create({
+      trigger: div3,
+      start: "top-=50 bottom",
+      end: "top bottom",
+      onUpdate: self => {
+        const progress = self.progress;
+        if (progress < 0.5) {
+          animateTextTransition("Together February 6th", sunSvg, [heartSvg, cloudSvg]);
+        }
+      },
+      id: "text-3-to-2"
     });
 
 
@@ -138,29 +176,29 @@ const OptimizedMiddleSection: React.FC = () => {
     >
       <div ref={div1Ref} className="section-div">
         <div className="squares-container">
-          <img src="/images/middle_section_images/01_proposal_portrait.jpg" alt="Proposal portrait" className="red-square portrait" style={{ top: '15%', right: '12%' }} />
-          <img src="/images/middle_section_images/02_proposal_tall.jpg" alt="Proposal tall" className="red-square portrait-tall" style={{ top: '55%', left: '5%' }} />
-          <img src="/images/middle_section_images/03_proposal_landscape.jpg" alt="Proposal landscape" className="red-square" style={{ top: '85%', right: '25%' }} />
+          <img src="/images/compressed_Joel Proposes to Steph-22.jpg" alt="Proposal portrait" className="red-square portrait" style={{ top: '15%', right: '12%' }} />
+          <img src="/images/compressed_Joel Proposes to Steph-103.jpg" alt="Proposal tall" className="red-square portrait-tall" style={{ top: '55%', left: '5%' }} />
+          <img src="/images/compressed_LKCK6467.JPG" alt="Proposal landscape" className="red-square" style={{ top: '85%', right: '25%' }} />
         </div>
       </div>
       <div ref={div2Ref} className="section-div">
         <div className="squares-container">
-          <img src="/images/middle_section_images/04_couple_landscape.jpg" alt="Couple landscape" className="red-square" style={{ top: '12%', left: '8%' }} />
-          <img src="/images/middle_section_images/05_couple_large.jpg" alt="Couple large portrait" className="red-square portrait-large" style={{ top: '40%', right: '10%' }} />
-          <img src="/images/middle_section_images/06_couple_portrait.jpg" alt="Couple portrait" className="red-square portrait" style={{ top: '80%', left: '15%' }} />
+          <img src="/images/compressed_LKCK6595.JPG" alt="Couple landscape" className="red-square" style={{ top: '12%', left: '8%' }} />
+          <img src="/images/compressed_joel and steph-05191.jpg" alt="Couple large portrait" className="red-square portrait-large" style={{ top: '40%', right: '10%' }} />
+          <img src="/images/compressed_LKCK6601.JPG" alt="Couple portrait" className="red-square portrait" style={{ top: '80%', left: '15%' }} />
         </div>
       </div>
       <div ref={div3Ref} className="section-div">
         <div className="squares-container">
-          <img src="/images/middle_section_images/07_engagement_tall.jpg" alt="Engagement tall portrait" className="red-square portrait-tall" style={{ top: '10%', right: '15%' }} />
-          <img src="/images/middle_section_images/08_engagement_large.jpg" alt="Engagement large portrait" className="red-square portrait-large" style={{ top: '45%', left: '8%' }} />
-          <div className="red-square" style={{ top: '85%', right: '20%' }}></div>
+          <img src="/images/compressed_Joel Proposes to Steph-114.jpg" alt="Engagement tall portrait" className="red-square portrait-tall" style={{ top: '10%', right: '15%' }} />
+          <img src="/images/compressed_joel and steph-05237.jpg" alt="Engagement large portrait" className="red-square portrait-large" style={{ top: '45%', left: '8%' }} />
+          <img src="/images/compressed_Joel Proposes to Steph-130.jpg" alt="Beautiful moment" className="red-square" style={{ top: '85%', right: '20%' }} />
         </div>
       </div>
       <div ref={div4Ref} className="section-div">
         <div className="squares-container">
-          <div className="red-square" style={{ top: '18%', left: '12%' }}></div>
-          <div className="red-square" style={{ top: '50%', right: '8%' }}></div>
+          <img src="/images/compressed_LKCK6632.JPG" alt="Engagement photo" className="red-square" style={{ top: '18%', left: '12%' }} />
+          <img src="/images/compressed_joel and steph-05263.jpg" alt="Couple portrait" className="red-square" style={{ top: '50%', right: '8%' }} />
         </div>
       </div>
 
@@ -170,7 +208,7 @@ const OptimizedMiddleSection: React.FC = () => {
           <img src="/sun.svg" alt="" className="background-svg sun-svg" />
           <img src="/cloud.svg" alt="" className="background-svg cloud-svg" />
         </div>
-        <h2>Welcome to our wedding</h2>
+        <h2>6th February, 2026</h2>
       </div>
 
       <style jsx>{`
@@ -228,7 +266,9 @@ const OptimizedMiddleSection: React.FC = () => {
           font-weight: 600;
           margin: 0;
           letter-spacing: -0.02em;
-          color: #1a1a1a;
+          color: #4a4a4a;
+          position: relative;
+          z-index: 10;
         }
 
         .squares-container {
@@ -319,7 +359,7 @@ const OptimizedMiddleSection: React.FC = () => {
           top: 50%;
           left: 50%;
           transform: translate(-50%, -50%);
-          z-index: 1000;
+          z-index: 1;
           pointer-events: none;
         }
 

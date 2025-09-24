@@ -20,43 +20,6 @@ export default function Home() {
   const openRSVPForm = () => setIsRSVPFormOpen(true);
   const closeRSVPForm = () => setIsRSVPFormOpen(false);
 
-  // Footer reveal animation
-  useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger);
-
-    const footer = document.getElementById('rsvp');
-    const pageContent = document.querySelector('.page-content');
-
-    if (footer && pageContent) {
-      // Start with footer visible at bottom but slide up on scroll
-      gsap.set(footer, { y: 0 }); // Make footer visible by default
-
-      // Create scroll trigger for subtle footer reveal effect
-      ScrollTrigger.create({
-        trigger: pageContent,
-        start: 'bottom bottom+=200',
-        end: 'bottom bottom',
-        scrub: 1,
-        onUpdate: (self) => {
-          const progress = self.progress;
-          // Subtle slide up effect
-          gsap.to(footer, {
-            y: -10 * progress,
-            duration: 0.2,
-            ease: 'power1.out'
-          });
-        }
-      });
-    }
-
-    return () => {
-      ScrollTrigger.getAll().forEach(trigger => {
-        if (trigger.trigger === pageContent) {
-          trigger.kill();
-        }
-      });
-    };
-  }, []);
 
   return (
     <>
@@ -101,19 +64,12 @@ export default function Home() {
         <PhotoSection />
         <div style={{ height: '4vh' }}></div>
         <FAQSection />
-        {/* Extra spacing to allow footer to be revealed underneath */}
-        <div style={{ height: '200px' }}></div>
-      </div>
+        <div style={{ height: '4vh' }}></div>
 
-      {/* Footer positioned underneath to be revealed by scroll */}
-      <div id="rsvp" style={{
-        position: 'fixed',
-        bottom: 0,
-        left: 0,
-        right: 0,
-        zIndex: 5
-      }}>
-        <Footer onOpenRSVPForm={openRSVPForm} />
+        {/* Footer inside content container */}
+        <div id="rsvp">
+          <Footer onOpenRSVPForm={openRSVPForm} />
+        </div>
       </div>
 
       {/* RSVP Slideout - positioned at top level */}

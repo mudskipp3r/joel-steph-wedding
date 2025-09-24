@@ -13,22 +13,33 @@ const Navigation: React.FC<NavigationProps> = ({ isRSVPFormOpen = false, onOpenR
   const [isScrolled, setIsScrolled] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
+  const [scrollingUp, setScrollingUp] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
+      const scrollDifference = lastScrollY - currentScrollY;
 
       // Update scrolled state
       setIsScrolled(currentScrollY > 50);
 
-      // Show/hide navigation based on scroll direction
-      if (currentScrollY > lastScrollY && currentScrollY > 100) {
-        // Scrolling down & past 100px - hide nav
-        setIsVisible(false);
-        setIsOpen(false); // Close mobile menu when hiding
-      } else {
-        // Scrolling up or at top - show nav
+      // At top of page - always show nav
+      if (currentScrollY <= 50) {
         setIsVisible(true);
+        setScrollingUp(false);
+      } else {
+        // Determine scroll direction with threshold to avoid jitter
+        if (scrollDifference > 3) {
+          // Scrolling up with sufficient movement
+          setScrollingUp(true);
+          setIsVisible(true);
+        } else if (scrollDifference < -3) {
+          // Scrolling down with sufficient movement
+          setScrollingUp(false);
+          setIsVisible(false);
+          setIsOpen(false); // Close mobile menu when hiding
+        }
+        // If scrollDifference is between -3 and 3, maintain current state (no change)
       }
 
       setLastScrollY(currentScrollY);
@@ -96,29 +107,6 @@ const Navigation: React.FC<NavigationProps> = ({ isRSVPFormOpen = false, onOpenR
           className="desktop-nav"
         >
           <button
-            onClick={() => scrollToSection('our-story')}
-            style={{
-              background: 'none',
-              border: 'none',
-              fontFamily: 'Instrument Sans, sans-serif',
-              fontSize: '1rem',
-              fontWeight: '500',
-              color: isScrolled ? '#1a1a1a' : 'white',
-              cursor: 'pointer',
-              transition: 'all 0.3s ease',
-              padding: '0.5rem 0',
-              textDecoration: 'none',
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.color = '#FF6B6B';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.color = isScrolled ? '#1a1a1a' : 'white';
-            }}
-          >
-            Our Story
-          </button>
-          <button
             onClick={() => scrollToSection('timeline')}
             style={{
               background: 'none',
@@ -139,7 +127,7 @@ const Navigation: React.FC<NavigationProps> = ({ isRSVPFormOpen = false, onOpenR
               e.currentTarget.style.color = isScrolled ? '#1a1a1a' : 'white';
             }}
           >
-            Timeline
+            Schedule
           </button>
           <button
             onClick={() => scrollToSection('venues')}
@@ -162,7 +150,35 @@ const Navigation: React.FC<NavigationProps> = ({ isRSVPFormOpen = false, onOpenR
               e.currentTarget.style.color = isScrolled ? '#1a1a1a' : 'white';
             }}
           >
-            Venues
+            Venue
+          </button>
+          <button
+            onClick={() => {
+              const element = document.querySelector('.faq-section');
+              if (element) {
+                element.scrollIntoView({ behavior: 'smooth' });
+              }
+            }}
+            style={{
+              background: 'none',
+              border: 'none',
+              fontFamily: 'Instrument Sans, sans-serif',
+              fontSize: '1rem',
+              fontWeight: '500',
+              color: isScrolled ? '#1a1a1a' : 'white',
+              cursor: 'pointer',
+              transition: 'all 0.3s ease',
+              padding: '0.5rem 0',
+              textDecoration: 'none',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.color = '#FF6B6B';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.color = isScrolled ? '#1a1a1a' : 'white';
+            }}
+          >
+            FAQ
           </button>
           <Button
             size="small"
@@ -215,23 +231,6 @@ const Navigation: React.FC<NavigationProps> = ({ isRSVPFormOpen = false, onOpenR
         className="mobile-menu"
       >
         <button
-          onClick={() => scrollToSection('our-story')}
-          style={{
-            background: 'none',
-            border: 'none',
-            fontFamily: 'Instrument Sans, sans-serif',
-            fontSize: '1.1rem',
-            fontWeight: '500',
-            color: '#1a1a1a',
-            cursor: 'pointer',
-            padding: '1rem 0',
-            textAlign: 'left',
-            borderBottom: '1px solid rgba(0, 0, 0, 0.1)',
-          }}
-        >
-          Our Story
-        </button>
-        <button
           onClick={() => scrollToSection('timeline')}
           style={{
             background: 'none',
@@ -246,7 +245,7 @@ const Navigation: React.FC<NavigationProps> = ({ isRSVPFormOpen = false, onOpenR
             borderBottom: '1px solid rgba(0, 0, 0, 0.1)',
           }}
         >
-          Timeline
+          Schedule
         </button>
         <button
           onClick={() => scrollToSection('venues')}
@@ -263,7 +262,29 @@ const Navigation: React.FC<NavigationProps> = ({ isRSVPFormOpen = false, onOpenR
             borderBottom: '1px solid rgba(0, 0, 0, 0.1)',
           }}
         >
-          Venues
+          Venue
+        </button>
+        <button
+          onClick={() => {
+            const element = document.querySelector('.faq-section');
+            if (element) {
+              element.scrollIntoView({ behavior: 'smooth' });
+            }
+          }}
+          style={{
+            background: 'none',
+            border: 'none',
+            fontFamily: 'Instrument Sans, sans-serif',
+            fontSize: '1.1rem',
+            fontWeight: '500',
+            color: '#1a1a1a',
+            cursor: 'pointer',
+            padding: '1rem 0',
+            textAlign: 'left',
+            borderBottom: '1px solid rgba(0, 0, 0, 0.1)',
+          }}
+        >
+          FAQ
         </button>
         <Button
           size="medium"

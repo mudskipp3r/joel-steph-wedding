@@ -4,6 +4,12 @@ import React, { useEffect } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
+interface SectionConfig {
+  selector: string;
+  backgroundColor: string;
+  name: string;
+}
+
 const BackgroundColorManager: React.FC = () => {
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
@@ -11,125 +17,65 @@ const BackgroundColorManager: React.FC = () => {
     // Store triggers for cleanup
     const triggers: ScrollTrigger[] = [];
 
-    // Background colors with transition to dark at schedule section
-    const colors = [
-      '#faf9f6', // HeroSection - off-white
-      '#faf9f6', // MiddleSection - off-white
-      '#1a1a2e', // ScheduleSection - dark navy
-      '#16213e', // ScrollAnimationSection - dark blue
-      '#0f1419', // PhotoSection - very dark
-      '#1a1a2e', // RSVPSection - back to dark navy
-      '#16213e'  // FAQSection - dark blue
+    // Define sections and their background colors
+    const sections: SectionConfig[] = [
+      { selector: '.mwg_effect006', backgroundColor: '#faf9f6', name: 'MiddleSection' },
+      { selector: '[data-timeline-section]', backgroundColor: '#EBE3D8', name: 'TimelineSection' },
+      { selector: '.venue-section', backgroundColor: '#754936', name: 'VenueSection' },
+      { selector: '.photo-section', backgroundColor: '#1a1a2e', name: 'PhotoSection' },
+      { selector: '.rsvp-section', backgroundColor: '#16213e', name: 'RSVPSection' },
+      { selector: '.faq-section', backgroundColor: '#0f1419', name: 'FAQSection' }
     ];
 
-    const sections = [
-      '.hero-section',
-      '.mwg_effect006', // MiddleSection
-      '.schedule-section',
-      '.animation-section', // ScrollAnimationSection
-      '.photo-section',
-      '.rsvp-section',
-      '.faq-section'
-    ];
+    // Set initial background color (first section)
+    gsap.set(document.body, { backgroundColor: sections[0].backgroundColor });
+    gsap.set('.page-content', { backgroundColor: sections[0].backgroundColor });
 
-    // Set initial background color
-    gsap.set(document.body, { backgroundColor: colors[0] });
+    // Create scroll triggers for each section
+    sections.forEach((section, index) => {
+      const element = document.querySelector(section.selector);
 
-    // Create trigger based on middle section position
-    const middleSection = document.querySelector('.mwg_effect006');
+      if (element) {
+        console.log(`Setting up trigger for ${section.name}`);
 
-    if (middleSection) {
-      console.log('Setting up background trigger 50vh above bottom of middle section');
+        const trigger = ScrollTrigger.create({
+          trigger: element,
+          start: 'top center',
+          end: 'bottom center',
+          markers: false, // Set to true for debugging
+          onEnter: () => {
+            console.log(`Entering ${section.name} - changing to ${section.backgroundColor}`);
+            gsap.to(document.body, {
+              backgroundColor: section.backgroundColor,
+              duration: 1.5,
+              ease: 'power2.out'
+            });
+            gsap.to('.page-content', {
+              backgroundColor: section.backgroundColor,
+              duration: 1.5,
+              ease: 'power2.out'
+            });
+          },
+          onEnterBack: () => {
+            console.log(`Re-entering ${section.name} - changing to ${section.backgroundColor}`);
+            gsap.to(document.body, {
+              backgroundColor: section.backgroundColor,
+              duration: 1.5,
+              ease: 'power2.out'
+            });
+            gsap.to('.page-content', {
+              backgroundColor: section.backgroundColor,
+              duration: 1.5,
+              ease: 'power2.out'
+            });
+          }
+        });
 
-      const trigger = ScrollTrigger.create({
-        trigger: middleSection,
-        start: '70% center', // Trigger at 70% through the middle section
-        end: '80% center', // Complete transition by 80%
-        markers: true, // Show markers for debugging
-        onEnter: () => {
-          console.log('Transition point reached - changing to beige background');
-          gsap.to(document.body, {
-            backgroundColor: '#EBE3D8',
-            duration: 1.5,
-            ease: 'power2.out'
-          });
-          gsap.to('.page-content', {
-            backgroundColor: '#EBE3D8',
-            duration: 1.5,
-            ease: 'power2.out'
-          });
-          // Keep schedule title dark for good contrast on beige
-          gsap.to('.schedule-title', {
-            color: '#2c3e50',
-            duration: 1.5,
-            ease: 'power2.out'
-          });
-        },
-        onLeaveBack: () => {
-          console.log('Transition point left - changing back to light background');
-          gsap.to(document.body, {
-            backgroundColor: '#faf9f6',
-            duration: 1.5,
-            ease: 'power2.out'
-          });
-          gsap.to('.page-content', {
-            backgroundColor: '#faf9f6',
-            duration: 1.5,
-            ease: 'power2.out'
-          });
-          // Change schedule title back to black
-          gsap.to('.schedule-title', {
-            color: '#2c3e50',
-            duration: 1.5,
-            ease: 'power2.out'
-          });
-        }
-      });
-      triggers.push(trigger);
-    } else {
-      console.warn('Middle section not found');
-    }
-
-    // Add trigger for when leaving schedule section
-    const timelineSection = document.querySelector('[data-timeline-section]');
-    if (timelineSection) {
-      console.log('Setting up trigger for leaving schedule section');
-
-      const scheduleExitTrigger = ScrollTrigger.create({
-        trigger: timelineSection,
-        start: 'bottom center',
-        markers: true,
-        onEnter: () => {
-          console.log('Left schedule section - changing background color');
-          gsap.to(document.body, {
-            backgroundColor: '#2C5F2D', // Deep forest green background after schedule
-            duration: 1.5,
-            ease: 'power2.out'
-          });
-          gsap.to('.page-content', {
-            backgroundColor: '#2C5F2D', // Deep forest green background after schedule
-            duration: 1.5,
-            ease: 'power2.out'
-          });
-        },
-        onLeaveBack: () => {
-          console.log('Re-entering schedule section - back to beige');
-          gsap.to(document.body, {
-            backgroundColor: '#faf9f6', // Back to original cream
-            duration: 1.5,
-            ease: 'power2.out'
-          });
-          gsap.to('.page-content', {
-            backgroundColor: '#EBE3D8', // Back to beige
-            duration: 1.5,
-            ease: 'power2.out'
-          });
-        }
-      });
-      triggers.push(scheduleExitTrigger);
-    } else {
-      console.warn('Timeline section not found');
-    }
+        triggers.push(trigger);
+      } else {
+        console.warn(`${section.name} with selector "${section.selector}" not found`);
+      }
+    });
 
     return () => {
       triggers.forEach(trigger => trigger.kill());

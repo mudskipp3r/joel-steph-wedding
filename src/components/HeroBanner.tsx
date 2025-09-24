@@ -38,7 +38,7 @@ const HeroBanner: React.FC<HeroBannerProps> = ({
       <div style={{
         position: 'absolute',
         bottom: 'calc(5% + 2px)', // 2px above the date - almost touching
-        right: '4%',
+        right: '8%', // Moved left from 4% to 8%
         maxWidth: '600px',
         display: 'flex',
         flexDirection: 'column',

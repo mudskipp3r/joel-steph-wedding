@@ -116,7 +116,7 @@ const TimelineSection: React.FC = () => {
       style={{
         position: 'relative',
         height: '400vh', // Extended height for scroll
-        background: '#EBE3D8' // Consistent beige background
+        background: 'transparent' // No background - managed by BackgroundColorManager
       }}
     >
       {/* Pinned Container */}

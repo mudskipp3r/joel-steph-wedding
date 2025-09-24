@@ -4,7 +4,6 @@ import ScheduleSection from "../components/ScheduleSection";
 import TimelineSection from "../components/TimelineSection";
 import VenueSection from "../components/VenueSection";
 import PhotoSection from "../components/PhotoSection";
-import RSVPSection from "../components/RSVPSection";
 import FAQSection from "../components/FAQSection";
 import SimpleFooter from "../components/SimpleFooter";
 import BackgroundColorManager from "../components/BackgroundColorManager";
@@ -40,8 +39,6 @@ export default function Home() {
         <VenueSection />
         <div style={{ height: '8vh' }}></div>
         <PhotoSection />
-        <div style={{ height: '8vh' }}></div>
-        <RSVPSection />
         <div style={{ height: '8vh' }}></div>
         <FAQSection />
       </div>

@@ -2,11 +2,25 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
+import Button from './Button';
 
-const SimpleFooter: React.FC = () => {
+interface SimpleFooterProps {
+  isRSVPFormOpen?: boolean;
+  onOpenRSVPForm?: () => void;
+  onCloseRSVPForm?: () => void;
+}
+
+const SimpleFooter: React.FC<SimpleFooterProps> = ({
+  isRSVPFormOpen = false,
+  onOpenRSVPForm,
+  onCloseRSVPForm
+}) => {
   const footerRef = useRef<HTMLDivElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
-  const [isPanelOpen, setIsPanelOpen] = useState(false);
+  const [internalPanelOpen, setInternalPanelOpen] = useState(false);
+
+  // Use external control if props are provided, otherwise use internal state
+  const isPanelOpen = isRSVPFormOpen ?? internalPanelOpen;
 
   // RSVP Form State
   const [formData, setFormData] = useState({
@@ -29,6 +43,17 @@ const SimpleFooter: React.FC = () => {
         // Hide body scrollbar and prevent scroll
         document.body.style.overflow = 'hidden';
         document.documentElement.style.overflow = 'hidden';
+
+        // Ensure panel can scroll with all input methods including trackpads
+        panel.style.overflowY = 'auto';
+        panel.style.overflowX = 'hidden';
+        panel.style.WebkitOverflowScrolling = 'touch';
+        panel.style.scrollBehavior = 'smooth';
+
+        // Enable trackpad scrolling
+        panel.addEventListener('wheel', function(e) {
+          e.stopPropagation();
+        }, { passive: true });
 
         // Slide panel in from right
         gsap.fromTo(panel,
@@ -106,15 +131,23 @@ const SimpleFooter: React.FC = () => {
     console.log('RSVP Form Data:', formData);
     alert('Thank you for your RSVP! We will be in touch soon.');
     // Close panel after successful submission
-    setIsPanelOpen(false);
+    closePanel();
   };
 
   const openPanel = () => {
-    setIsPanelOpen(true);
+    if (onOpenRSVPForm) {
+      onOpenRSVPForm();
+    } else {
+      setInternalPanelOpen(true);
+    }
   };
 
   const closePanel = () => {
-    setIsPanelOpen(false);
+    if (onCloseRSVPForm) {
+      onCloseRSVPForm();
+    } else {
+      setInternalPanelOpen(false);
+    }
   };
 
   // Cleanup on component unmount
@@ -184,7 +217,7 @@ const SimpleFooter: React.FC = () => {
             gap: '0.5rem'
           }}
         >
-          <span>✨</span>
+          <span></span>
           RSVP
         </button>
       </footer>
@@ -219,19 +252,21 @@ const SimpleFooter: React.FC = () => {
           width: '100vw',
           maxWidth: '500px',
           height: '100vh',
-          background: '#FFF0E2',
+          background: 'white',
           zIndex: 9999,
           transform: 'translateX(100%)',
           boxShadow: '-10px 0 30px rgba(0, 0, 0, 0.2)',
           overflowY: 'auto',
-          overflowX: 'hidden'
+          overflowX: 'hidden',
+          WebkitOverflowScrolling: 'touch', // Smooth scrolling on iOS
+          scrollBehavior: 'smooth'
         }}
       >
         {/* Panel Header */}
         <div className="panel-header" style={{
           position: 'sticky',
           top: 0,
-          background: '#FFF0E2',
+          background: 'white',
           padding: '1.5rem 2rem',
           borderBottom: '2px solid rgba(44, 62, 80, 0.1)',
           display: 'flex',
@@ -250,22 +285,21 @@ const SimpleFooter: React.FC = () => {
             onClick={closePanel}
             className="close-button"
             style={{
-              background: 'rgba(102, 126, 234, 0.1)',
-              color: '#667eea',
-              border: '2px solid #667eea',
-              padding: '0.75rem',
-              fontSize: '1.2rem',
-              borderRadius: '50%',
+              background: 'none',
+              color: '#999',
+              border: 'none',
+              padding: '0.5rem',
+              fontSize: '1.5rem',
               cursor: 'pointer',
               transition: 'all 0.3s ease',
-              width: '45px',
-              height: '45px',
+              width: '40px',
+              height: '40px',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center'
             }}
           >
-            ✕
+            ×
           </button>
         </div>
 
@@ -273,10 +307,12 @@ const SimpleFooter: React.FC = () => {
         <div className="panel-content" style={{
           padding: '2rem',
           paddingTop: '1rem',
+          paddingBottom: '3rem', // Extra bottom padding for scrolling
           width: '100%',
           boxSizing: 'border-box',
           wordWrap: 'break-word',
-          overflowWrap: 'break-word'
+          overflowWrap: 'break-word',
+          minHeight: 'calc(100vh - 120px)' // Ensure content is scrollable
         }}>
           <p style={{
             fontFamily: 'Instrument Sans, sans-serif',
@@ -381,7 +417,7 @@ const SimpleFooter: React.FC = () => {
                   />
                   <label htmlFor="attending-yes" className="radio-label">
                     <span className="radio-custom"></span>
-                    Yes, I'll be there! 🎉
+                    Yes, I'll be there!
                   </label>
                 </div>
                 <div className="radio-option">
@@ -395,7 +431,7 @@ const SimpleFooter: React.FC = () => {
                   />
                   <label htmlFor="attending-no" className="radio-label">
                     <span className="radio-custom"></span>
-                    Sorry, can't make it 💔
+                    Sorry, can't make it
                   </label>
                 </div>
               </div>
@@ -465,9 +501,9 @@ const SimpleFooter: React.FC = () => {
               />
             </div>
 
-            <button type="submit" className="rsvp-submit">
-              {formData.attendance === 'yes' ? '✨ Send RSVP' : '💌 Send Response'}
-            </button>
+            <Button type="submit" size="large">
+              {formData.attendance === 'yes' ? 'Send RSVP' : 'Send Response'}
+            </Button>
           </form>
         </div>
       </div>
@@ -579,10 +615,10 @@ const SimpleFooter: React.FC = () => {
         .form-group input[type="email"],
         .form-group input[type="tel"],
         .form-group textarea {
-          padding: 1rem 1.25rem;
-          border: 2px solid #e1e8ed;
-          border-radius: 12px;
-          font-size: 1rem;
+          padding: 1rem;
+          border: 1px solid #ddd;
+          border-radius: 4px;
+          font-size: 16px; /* Prevent iOS zoom on focus */
           font-family: 'Instrument Sans', sans-serif;
           background: white;
           transition: all 0.3s ease;
@@ -590,6 +626,7 @@ const SimpleFooter: React.FC = () => {
           width: 100%;
           max-width: 100%;
           box-sizing: border-box;
+          -webkit-appearance: none; /* Remove iOS default styling */
         }
 
         .form-group input:focus,
@@ -757,31 +794,8 @@ const SimpleFooter: React.FC = () => {
           }
         }
 
-        .rsvp-submit {
-          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-          color: white;
-          border: none;
-          padding: 1.25rem 2.5rem;
-          font-size: 1.2rem;
-          font-weight: 600;
-          font-family: 'Instrument Sans', sans-serif;
-          border-radius: 50px;
-          cursor: pointer;
-          transition: all 0.3s ease;
-          margin-top: 1rem;
-          align-self: center;
-          min-width: 200px;
-          box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
-        }
 
-        .rsvp-submit:hover {
-          transform: translateY(-3px);
-          box-shadow: 0 15px 40px rgba(102, 126, 234, 0.4);
-        }
 
-        .rsvp-submit:active {
-          transform: translateY(-1px);
-        }
 
         .rsvp-cta-button:hover:not(:disabled) {
           transform: translateY(-2px) !important;
@@ -849,13 +863,17 @@ const SimpleFooter: React.FC = () => {
         }
 
         .close-button:hover {
-          background: rgba(102, 126, 234, 0.2) !important;
+          color: #666 !important;
           transform: scale(1.1);
         }
 
         /* Panel specific styles */
         .rsvp-panel {
           min-width: 0; /* Prevent flex/grid items from overflowing */
+          /* Ensure trackpad scrolling works */
+          scroll-behavior: smooth;
+          -webkit-overflow-scrolling: touch;
+          -ms-overflow-style: -ms-autohiding-scrollbar;
         }
 
         .rsvp-panel * {
@@ -900,6 +918,16 @@ const SimpleFooter: React.FC = () => {
           .panel-content {
             padding: 1.5rem !important;
             padding-top: 1rem !important;
+            padding-bottom: 4rem !important;
+            /* Ensure smooth scrolling on mobile */
+            -webkit-overflow-scrolling: touch;
+          }
+
+          .rsvp-panel {
+            /* Improve mobile scrolling performance */
+            -webkit-overflow-scrolling: touch !important;
+            /* Prevent zoom on form inputs on iOS */
+            -webkit-text-size-adjust: 100%;
           }
 
           .form-row {
@@ -930,10 +958,6 @@ const SimpleFooter: React.FC = () => {
             padding: 0.75rem;
           }
 
-          .rsvp-submit {
-            padding: 1rem 2rem;
-            font-size: 1.1rem;
-          }
 
           .marquee-container {
             height: 60px;

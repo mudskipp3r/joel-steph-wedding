@@ -35,7 +35,7 @@ const OptimizedMiddleSection: React.FC = () => {
       end: () => `+=${window.innerHeight * 3}`,
       pin: pinnedText,
       pinSpacing: false,
-      markers: true,
+      markers: false,
     });
 
     const heartSvg = document.querySelector('.heart-svg');
@@ -64,7 +64,6 @@ const OptimizedMiddleSection: React.FC = () => {
           if (cloudSvg) gsap.set(cloudSvg, { opacity: 0 });
         }
       },
-      markers: { startColor: "blue", endColor: "blue", fontSize: "12px", fontWeight: "bold", indent: 120 },
       id: "text-1-to-2"
     });
 
@@ -89,7 +88,6 @@ const OptimizedMiddleSection: React.FC = () => {
           if (cloudSvg) gsap.set(cloudSvg, { opacity: (progress - 0.5) * 2, scale: 0.7 + ((progress - 0.5) * 0.6) });
         }
       },
-      markers: { startColor: "purple", endColor: "purple", fontSize: "12px", fontWeight: "bold", indent: 140 },
       id: "text-2-to-3"
     });
 
@@ -114,7 +112,6 @@ const OptimizedMiddleSection: React.FC = () => {
       }}
     >
       <div ref={div1Ref} className="section-div">
-        <div className="div-label">DIV 1</div>
         <div className="squares-container">
           <img src="/images/middle_section_images/Joel Proposes to Steph-103.jpg" alt="" className="red-square portrait" style={{ top: '15%', right: '12%' }} />
           <img src="/images/middle_section_images/Joel Proposes to Steph-139.jpg" alt="" className="red-square portrait-tall" style={{ top: '55%', left: '5%' }} />
@@ -122,7 +119,6 @@ const OptimizedMiddleSection: React.FC = () => {
         </div>
       </div>
       <div ref={div2Ref} className="section-div">
-        <div className="div-label">DIV 2</div>
         <div className="squares-container">
           <img src="/images/middle_section_images/Joel Proposes to Steph-212.jpg" alt="" className="red-square" style={{ top: '12%', left: '8%' }} />
           <img src="/images/middle_section_images/Joel Proposes to Steph-216.jpg" alt="" className="red-square portrait-large" style={{ top: '40%', right: '10%' }} />
@@ -130,7 +126,6 @@ const OptimizedMiddleSection: React.FC = () => {
         </div>
       </div>
       <div ref={div3Ref} className="section-div">
-        <div className="div-label">DIV 3</div>
         <div className="squares-container">
           <img src="/images/middle_section_images/Joel Proposes to Steph-255.jpg" alt="" className="red-square portrait-tall" style={{ top: '10%', right: '15%' }} />
           <img src="/images/middle_section_images/LKCK6595.JPG" alt="" className="red-square portrait-large" style={{ top: '45%', left: '8%' }} />
@@ -138,7 +133,6 @@ const OptimizedMiddleSection: React.FC = () => {
         </div>
       </div>
       <div ref={div4Ref} className="section-div">
-        <div className="div-label">DIV 4</div>
         <div className="squares-container">
           <div className="red-square" style={{ top: '18%', left: '12%' }}></div>
           <div className="red-square" style={{ top: '50%', right: '8%' }}></div>
@@ -168,7 +162,7 @@ const OptimizedMiddleSection: React.FC = () => {
           justify-content: center;
           text-align: center;
           padding: 40px;
-          border: 2px solid rgba(44, 62, 80, 0.2);
+          border: none;
           box-sizing: border-box;
           color: #2c3e50;
           position: relative;
@@ -192,19 +186,6 @@ const OptimizedMiddleSection: React.FC = () => {
         }
 
 
-        .div-label {
-          position: absolute;
-          top: 10px;
-          left: 10px;
-          background: rgba(0, 0, 0, 0.8);
-          color: white;
-          padding: 5px 10px;
-          border-radius: 4px;
-          font-family: 'Instrument Sans', sans-serif;
-          font-size: 14px;
-          font-weight: bold;
-          z-index: 1000;
-        }
 
         #pinned-text-element {
           position: absolute;
@@ -222,7 +203,7 @@ const OptimizedMiddleSection: React.FC = () => {
           font-weight: 600;
           margin: 0;
           letter-spacing: -0.02em;
-          color: #F58E7F;
+          color: #1a1a1a;
         }
 
         .squares-container {
@@ -331,15 +312,15 @@ const OptimizedMiddleSection: React.FC = () => {
 
         .heart-svg {
           opacity: 1;
-          filter: drop-shadow(0 4px 20px rgba(245, 142, 127, 0.3));
+          filter: drop-shadow(0 4px 20px rgba(255, 107, 107, 0.3)) hue-rotate(0deg) saturate(1.2) brightness(1.1);
         }
 
         .sun-svg {
-          filter: drop-shadow(0 4px 20px rgba(255, 193, 7, 0.3)) hue-rotate(20deg) saturate(1.2);
+          filter: drop-shadow(0 4px 20px rgba(217, 149, 13, 0.3)) hue-rotate(35deg) saturate(1.4) brightness(1.2);
         }
 
         .cloud-svg {
-          filter: drop-shadow(0 4px 20px rgba(102, 126, 234, 0.3)) hue-rotate(-10deg) saturate(0.8) brightness(1.1);
+          filter: drop-shadow(0 4px 20px rgba(102, 126, 234, 0.3)) hue-rotate(280deg) saturate(1.1) brightness(1.3);
         }
 
         @media (max-width: 768px) {

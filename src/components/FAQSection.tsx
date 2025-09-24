@@ -306,7 +306,7 @@ const FAQSection: React.FC = () => {
           display: flex;
           align-items: center;
           justify-content: center;
-          color: #999;
+          color: #FF6B6B;
         }
 
         .faq-icon-right {
@@ -314,8 +314,8 @@ const FAQSection: React.FC = () => {
           display: flex;
           align-items: center;
           justify-content: center;
-          color: #666;
-          transition: transform 0.3s ease;
+          color: #FF6B6B;
+          transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .faq-text {

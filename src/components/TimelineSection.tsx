@@ -3,6 +3,7 @@
 import React, { useRef, useEffect } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import Button from './Button';
 
 const TimelineSection: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -200,20 +201,9 @@ const TimelineSection: React.FC = () => {
                 Please arrive at least 30 mins early to be seated
               </div>
 
-              <button style={{
-                fontFamily: 'Instrument Sans, sans-serif',
-                fontSize: '1rem',
-                fontWeight: '500',
-                color: 'white',
-                background: '#FF6B6B',
-                border: 'none',
-                borderRadius: '25px',
-                padding: '14px 28px',
-                cursor: 'pointer',
-                transition: 'all 0.3s ease'
-              }}>
+              <Button>
                 Add to calendar
-              </button>
+              </Button>
             </div>
 
             {/* Circle 2 - Reception */}
@@ -275,20 +265,9 @@ const TimelineSection: React.FC = () => {
                 Celebrate with us! Dinner, dancing, and drinks
               </div>
 
-              <button style={{
-                fontFamily: 'Instrument Sans, sans-serif',
-                fontSize: '1rem',
-                fontWeight: '500',
-                color: 'white',
-                background: '#FF6B6B',
-                border: 'none',
-                borderRadius: '25px',
-                padding: '14px 28px',
-                cursor: 'pointer',
-                transition: 'all 0.3s ease'
-              }}>
+              <Button>
                 Add to calendar
-              </button>
+              </Button>
             </div>
           </div>
         </div>

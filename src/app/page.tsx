@@ -1,3 +1,7 @@
+'use client';
+
+import React, { useState } from 'react';
+import Navigation from "../components/Navigation";
 import HeroSection from "../components/HeroSection";
 import OptimizedMiddleSection from "../components/OptimizedMiddleSection";
 import TimelineSection from "../components/TimelineSection";
@@ -8,10 +12,21 @@ import SimpleFooter from "../components/SimpleFooter";
 import BackgroundColorManager from "../components/BackgroundColorManager";
 
 export default function Home() {
+  const [isRSVPFormOpen, setIsRSVPFormOpen] = useState(false);
+
+  const openRSVPForm = () => setIsRSVPFormOpen(true);
+  const closeRSVPForm = () => setIsRSVPFormOpen(false);
+
   return (
     <>
+      <Navigation
+        isRSVPFormOpen={isRSVPFormOpen}
+        onOpenRSVPForm={openRSVPForm}
+      />
       <BackgroundColorManager />
-      <HeroSection />
+      <div id="hero">
+        <HeroSection />
+      </div>
 
       {/* Spacer for fixed hero section */}
       <div style={{ height: '100vh' }}></div>
@@ -30,11 +45,17 @@ export default function Home() {
         boxShadow: '0 10px 30px rgba(0, 0, 0, 0.1)',
         minHeight: '100vh'
       }}>
-        <OptimizedMiddleSection />
+        <div id="our-story">
+          <OptimizedMiddleSection />
+        </div>
         <div style={{ height: '4vh' }}></div>
-        <TimelineSection />
+        <div id="timeline">
+          <TimelineSection />
+        </div>
         <div style={{ height: '8vh' }}></div>
-        <VenueSection />
+        <div id="venues">
+          <VenueSection />
+        </div>
         <div style={{ height: '8vh' }}></div>
         <PhotoSection />
         <div style={{ height: '4vh' }}></div>
@@ -42,7 +63,13 @@ export default function Home() {
         <div style={{ height: '4vh' }}></div>
 
         {/* Footer at the bottom of content */}
-        <SimpleFooter />
+        <div id="rsvp">
+          <SimpleFooter
+            isRSVPFormOpen={isRSVPFormOpen}
+            onOpenRSVPForm={openRSVPForm}
+            onCloseRSVPForm={closeRSVPForm}
+          />
+        </div>
       </div>
     </>
   );

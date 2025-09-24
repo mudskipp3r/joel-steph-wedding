@@ -158,7 +158,7 @@ const VenueSection: React.FC = () => {
       className="venue-section"
       style={{
         padding: '3rem 2rem',
-        background: 'transparent', // No background - managed by BackgroundColorManager
+        background: 'transparent', // Background managed by BackgroundColorManager
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
@@ -170,7 +170,7 @@ const VenueSection: React.FC = () => {
         style={{
           fontFamily: 'Cardo, serif',
           fontSize: 'clamp(3rem, 6vw, 5rem)',
-          color: 'white',
+          color: '#1a1a1a',
           fontWeight: '400',
           letterSpacing: '-0.02em',
           margin: '0',
@@ -213,45 +213,24 @@ const VenueSection: React.FC = () => {
         ))}
       </div>
 
-      {/* Map Container with Overlay */}
-      <div
+      {/* Desktop and Mobile Container */}
+      <div className="venues-container"
         style={{
-          position: 'relative',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '2rem',
           width: '100%',
-          maxWidth: '1000px', // Larger map
-          height: '600px', // Larger height
-          borderRadius: '20px',
-          overflow: 'hidden',
-          boxShadow: '0 20px 40px rgba(0, 0, 0, 0.3)',
-          border: '3px solid white'
+          maxWidth: '1200px'
         }}
       >
-        <div
-          ref={mapRef}
+        {/* Venue Information Card - Mobile First */}
+        <div className="venue-info-card"
           style={{
-            width: '100%',
-            height: '100%'
-          }}
-        />
-
-        {/* Overlaid Venue Information */}
-        <div
-          style={{
-            position: 'absolute',
-            top: '8px',
-            left: '8px',
-            bottom: '8px',
-            width: 'calc(30% - 8px)', // Expanded to 30% to fit more content
-            background: 'rgba(255, 255, 255, 0.95)',
-            borderRadius: '12px',
-            padding: '1.5rem',
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'flex-start',
-            boxShadow: '0 10px 20px rgba(0, 0, 0, 0.3)',
-            transition: 'all 0.3s ease',
-            backdropFilter: 'blur(5px)',
-            overflowY: 'auto'
+            background: 'white',
+            borderRadius: '20px',
+            padding: '2rem',
+            boxShadow: '0 10px 30px rgba(0, 0, 0, 0.1)',
+            border: '1px solid rgba(0, 0, 0, 0.1)'
           }}
         >
           {/* Venue Header */}
@@ -322,7 +301,7 @@ const VenueSection: React.FC = () => {
               e.currentTarget.style.background = '#4285F4';
             }}
           >
-            🗺️ Open in Google Maps
+            Open in Google Maps
           </button>
 
           {/* Parking Information */}
@@ -336,7 +315,7 @@ const VenueSection: React.FC = () => {
                 marginBottom: '0.5rem'
               }}
             >
-              🚗 Parking
+              Parking
             </h5>
             <p
               style={{
@@ -363,7 +342,7 @@ const VenueSection: React.FC = () => {
                 marginBottom: '0.5rem'
               }}
             >
-              🚊 Public Transport
+              Public Transport
             </h5>
             <div style={{ marginBottom: '0.5rem' }}>
               <p
@@ -376,7 +355,7 @@ const VenueSection: React.FC = () => {
                   marginBottom: '0.25rem'
                 }}
               >
-                🚂 Train:
+                Train:
               </p>
               <p
                 style={{
@@ -403,7 +382,7 @@ const VenueSection: React.FC = () => {
                   marginBottom: '0.25rem'
                 }}
               >
-                🚌 Bus:
+                Bus:
               </p>
               <p
                 style={{
@@ -421,7 +400,57 @@ const VenueSection: React.FC = () => {
             </div>
           </div>
         </div>
+
+        {/* Map Container - Separate on Mobile */}
+        <div className="map-container"
+          style={{
+            position: 'relative',
+            width: '100%',
+            height: '400px',
+            borderRadius: '20px',
+            overflow: 'hidden',
+            boxShadow: '0 10px 30px rgba(0, 0, 0, 0.1)',
+            border: '1px solid rgba(0, 0, 0, 0.1)'
+          }}
+        >
+          <div
+            ref={mapRef}
+            style={{
+              width: '100%',
+              height: '100%'
+            }}
+          />
+        </div>
       </div>
+
+      <style jsx>{`
+        @media (min-width: 1024px) {
+          .venues-container {
+            flex-direction: row !important;
+            align-items: flex-start !important;
+          }
+
+          .venue-info-card {
+            flex: 0 0 400px !important;
+            max-width: 400px !important;
+          }
+
+          .map-container {
+            flex: 1 !important;
+            height: 600px !important;
+          }
+        }
+
+        @media (max-width: 768px) {
+          .venue-info-card {
+            padding: 1.5rem !important;
+          }
+
+          .map-container {
+            height: 350px !important;
+          }
+        }
+      `}</style>
     </section>
   );
 };

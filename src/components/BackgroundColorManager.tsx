@@ -7,7 +7,9 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 interface SectionConfig {
   selector: string;
   backgroundColor: string;
+  nextBackgroundColor?: string;
   name: string;
+  gradientDirection?: string;
 }
 
 const BackgroundColorManager: React.FC = () => {
@@ -17,60 +19,122 @@ const BackgroundColorManager: React.FC = () => {
     // Store triggers for cleanup
     const triggers: ScrollTrigger[] = [];
 
-    // Define sections and their background colors using new palette
+    // Define sections and their background colors with smooth transitions
     const sections: SectionConfig[] = [
-      { selector: '.optimized-middle-section', backgroundColor: '#F0E9E1', name: 'OptimizedMiddleSection' }, // warm-ivory
-      { selector: '[data-timeline-section]', backgroundColor: '#EBE3D8', name: 'TimelineSection' }, // stone-beige
-      { selector: '.venue-section', backgroundColor: '#4A4643', name: 'VenueSection' }, // charcoal
-      { selector: '.photo-section', backgroundColor: '#F4C5AF', name: 'PhotoSection' }, // soft-peach
-      { selector: '.faq-section', backgroundColor: '#D0DBE1', name: 'FAQSection' } // dusty-blue
+      {
+        selector: '.optimized-middle-section',
+        backgroundColor: '#F0E9E1',
+        nextBackgroundColor: '#EBE3D8',
+        name: 'OptimizedMiddleSection',
+        gradientDirection: 'to bottom'
+      },
+      {
+        selector: '[data-timeline-section]',
+        backgroundColor: '#EBE3D8',
+        nextBackgroundColor: '#FFF0E2',
+        name: 'TimelineSection',
+        gradientDirection: 'to bottom'
+      },
+      {
+        selector: '.venue-section',
+        backgroundColor: '#FFF0E2',
+        nextBackgroundColor: '#F4C5AF',
+        name: 'VenueSection',
+        gradientDirection: 'to bottom'
+      },
+      {
+        selector: '.photo-section',
+        backgroundColor: '#F4C5AF',
+        nextBackgroundColor: '#D0DBE1',
+        name: 'PhotoSection',
+        gradientDirection: 'to bottom'
+      },
+      {
+        selector: '.faq-section',
+        backgroundColor: '#D0DBE1',
+        nextBackgroundColor: '#E8E8E8',
+        name: 'FAQSection',
+        gradientDirection: 'to bottom'
+      }
     ];
 
     // Set initial background color (first section)
     gsap.set(document.body, { backgroundColor: sections[0].backgroundColor });
     gsap.set('.page-content', { backgroundColor: sections[0].backgroundColor });
 
-    // Create scroll triggers for each section
+    // Create smooth gradient transitions between sections
     sections.forEach((section, index) => {
       const element = document.querySelector(section.selector);
+      const nextSection = sections[index + 1];
 
       if (element) {
-        console.log(`Setting up trigger for ${section.name}`);
+        console.log(`Setting up gradient trigger for ${section.name}`);
 
-        const trigger = ScrollTrigger.create({
+        // Create gradient transition at the end of each section
+        if (section.nextBackgroundColor) {
+          const trigger = ScrollTrigger.create({
+            trigger: element,
+            start: 'bottom bottom',
+            end: 'bottom top',
+            scrub: 1,
+            markers: false,
+            onUpdate: (self) => {
+              const progress = self.progress;
+              const fromColor = section.backgroundColor;
+              const toColor = section.nextBackgroundColor!;
+
+              // Create smooth gradient background
+              const gradient = `linear-gradient(${section.gradientDirection},
+                ${fromColor} ${Math.max(0, (1 - progress) * 100)}%,
+                ${toColor} ${Math.min(100, progress * 100 + 50)}%)`;
+
+              gsap.set(document.body, { background: gradient });
+              gsap.set('.page-content', { background: gradient });
+            }
+          });
+
+          triggers.push(trigger);
+        }
+
+        // Solid color trigger for when fully in section
+        const solidTrigger = ScrollTrigger.create({
           trigger: element,
           start: 'top center',
           end: 'bottom center',
-          markers: false, // Set to true for debugging
+          markers: false,
           onEnter: () => {
-            console.log(`Entering ${section.name} - changing to ${section.backgroundColor}`);
+            console.log(`Fully entering ${section.name}`);
             gsap.to(document.body, {
               backgroundColor: section.backgroundColor,
-              duration: 1.5,
+              background: section.backgroundColor,
+              duration: 0.8,
               ease: 'power2.out'
             });
             gsap.to('.page-content', {
               backgroundColor: section.backgroundColor,
-              duration: 1.5,
+              background: section.backgroundColor,
+              duration: 0.8,
               ease: 'power2.out'
             });
           },
           onEnterBack: () => {
-            console.log(`Re-entering ${section.name} - changing to ${section.backgroundColor}`);
+            console.log(`Re-entering ${section.name}`);
             gsap.to(document.body, {
               backgroundColor: section.backgroundColor,
-              duration: 1.5,
+              background: section.backgroundColor,
+              duration: 0.8,
               ease: 'power2.out'
             });
             gsap.to('.page-content', {
               backgroundColor: section.backgroundColor,
-              duration: 1.5,
+              background: section.backgroundColor,
+              duration: 0.8,
               ease: 'power2.out'
             });
           }
         });
 
-        triggers.push(trigger);
+        triggers.push(solidTrigger);
       } else {
         console.warn(`${section.name} with selector "${section.selector}" not found`);
       }

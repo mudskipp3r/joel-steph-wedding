@@ -128,12 +128,10 @@ const MiddleSection: React.FC = () => {
             gsap.set(heart1, { opacity: fadeOpacity });
             gsap.set(heart2, { opacity: fadeOpacity });
 
-            // Fade in transition element
-            const transitionOpacity = Math.min(fadeProgress * 2, 1);
-            const transitionY = 100 - (fadeProgress * 100);
+            // Remove transition element animation - keeping it hidden
             gsap.set(transition, {
-              opacity: transitionOpacity,
-              y: transitionY
+              opacity: 0,
+              y: 100
             });
           } else {
             // Hide text and heart if we're above the threshold

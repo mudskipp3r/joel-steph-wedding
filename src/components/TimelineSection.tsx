@@ -165,28 +165,60 @@ const TimelineSection: React.FC = () => {
               bottom: '0'
             }}
           >
-            {/* Circle 1 - Simple beige dot like reference */}
+            {/* Title Section - No pip, just content */}
+            <div
+              style={{
+                position: 'absolute',
+                left: 'calc(23% + 3rem)',
+                top: '30vh', // First position
+                transform: 'translateY(-50%)',
+                zIndex: 15
+              }}
+            >
+              <div style={{
+                fontFamily: 'Instrument Serif, serif',
+                fontSize: '4rem',
+                color: '#1a1a1a',
+                fontWeight: '400',
+                marginBottom: '1rem',
+                lineHeight: '0.9',
+                letterSpacing: '-0.02em'
+              }}>
+                The Day's Timeline
+              </div>
+              <div style={{
+                fontFamily: 'Instrument Sans, sans-serif',
+                fontSize: '1.2rem',
+                color: '#666666',
+                fontWeight: '400',
+                lineHeight: '1.4'
+              }}>
+                Join us for our special day
+              </div>
+            </div>
+
+            {/* Circle 1 - Ceremony */}
             <div
               style={{
                 position: 'absolute',
                 left: '23%',
                 transform: 'translateX(-50%)',
-                top: '130vh', // Move ceremony to be the main focus
+                top: '130vh', // Second position
                 width: '12px',
                 height: '12px',
-                background: '#c8beb7', // Light beige like reference
+                background: '#c8beb7',
                 borderRadius: '50%',
                 zIndex: 20
               }}
             />
 
-            {/* Content - Ceremony section matching reference exactly */}
+            {/* Content - Ceremony section */}
             <div
               style={{
                 position: 'absolute',
-                left: 'calc(23% + 3rem)', // More space from timeline like reference
+                left: 'calc(23% + 3rem)',
                 top: '130vh',
-                transform: 'translateY(-50%)', // Center vertically with pip
+                transform: 'translateY(-50%)',
                 zIndex: 15
               }}
             >
@@ -236,6 +268,85 @@ const TimelineSection: React.FC = () => {
                 background: '#FF6B6B', // Same coral as time
                 border: 'none',
                 borderRadius: '25px', // More rounded like reference
+                padding: '14px 28px',
+                cursor: 'pointer',
+                transition: 'all 0.3s ease'
+              }}>
+                Add to calendar
+              </button>
+            </div>
+
+            {/* Circle 2 - Reception */}
+            <div
+              style={{
+                position: 'absolute',
+                left: '23%',
+                transform: 'translateX(-50%)',
+                top: '230vh', // Third position
+                width: '12px',
+                height: '12px',
+                background: '#c8beb7',
+                borderRadius: '50%',
+                zIndex: 20
+              }}
+            />
+
+            {/* Content - Reception section */}
+            <div
+              style={{
+                position: 'absolute',
+                left: 'calc(23% + 3rem)',
+                top: '230vh',
+                transform: 'translateY(-50%)',
+                zIndex: 15
+              }}
+            >
+              {/* Time - coral color */}
+              <div style={{
+                fontFamily: 'Instrument Sans, sans-serif',
+                fontSize: '3.5rem',
+                color: '#FF6B6B',
+                fontWeight: '400',
+                marginBottom: '0.5rem',
+                lineHeight: '1'
+              }}>
+                6:30 pm
+              </div>
+
+              {/* Title - large black serif */}
+              <div style={{
+                fontFamily: 'Instrument Serif, serif',
+                fontSize: '5.5rem',
+                color: '#1a1a1a',
+                fontWeight: '400',
+                marginBottom: '1.5rem',
+                lineHeight: '0.9',
+                letterSpacing: '-0.02em'
+              }}>
+                Reception
+              </div>
+
+              {/* Subtitle - gray text */}
+              <div style={{
+                fontFamily: 'Instrument Sans, sans-serif',
+                fontSize: '1.1rem',
+                color: '#666666',
+                fontWeight: '400',
+                marginBottom: '2rem',
+                lineHeight: '1.4'
+              }}>
+                Celebrate with us! Dinner, dancing, and drinks
+              </div>
+
+              {/* Button - coral rounded */}
+              <button style={{
+                fontFamily: 'Instrument Sans, sans-serif',
+                fontSize: '1rem',
+                fontWeight: '500',
+                color: 'white',
+                background: '#FF6B6B',
+                border: 'none',
+                borderRadius: '25px',
                 padding: '14px 28px',
                 cursor: 'pointer',
                 transition: 'all 0.3s ease'

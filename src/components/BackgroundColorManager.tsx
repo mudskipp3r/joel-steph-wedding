@@ -17,13 +17,13 @@ const BackgroundColorManager: React.FC = () => {
     // Store triggers for cleanup
     const triggers: ScrollTrigger[] = [];
 
-    // Define sections and their background colors
+    // Define sections and their background colors using new palette
     const sections: SectionConfig[] = [
-      { selector: '.optimized-middle-section', backgroundColor: '#faf9f6', name: 'OptimizedMiddleSection' },
-      { selector: '[data-timeline-section]', backgroundColor: '#EBE3D8', name: 'TimelineSection' },
-      { selector: '.venue-section', backgroundColor: '#754936', name: 'VenueSection' },
-      { selector: '.photo-section', backgroundColor: '#F6C6AF', name: 'PhotoSection' },
-      { selector: '.faq-section', backgroundColor: '#0f1419', name: 'FAQSection' }
+      { selector: '.optimized-middle-section', backgroundColor: '#F0E9E1', name: 'OptimizedMiddleSection' }, // warm-ivory
+      { selector: '[data-timeline-section]', backgroundColor: '#EBE3D8', name: 'TimelineSection' }, // stone-beige
+      { selector: '.venue-section', backgroundColor: '#4A4643', name: 'VenueSection' }, // charcoal
+      { selector: '.photo-section', backgroundColor: '#F4C5AF', name: 'PhotoSection' }, // soft-peach
+      { selector: '.faq-section', backgroundColor: '#D0DBE1', name: 'FAQSection' } // dusty-blue
     ];
 
     // Set initial background color (first section)

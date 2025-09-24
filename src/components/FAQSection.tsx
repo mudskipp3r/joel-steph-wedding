@@ -7,51 +7,75 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 interface FAQItem {
   question: string;
   answer: string;
+  category: string;
 }
 
 const FAQSection: React.FC = () => {
   const [openItems, setOpenItems] = useState<number[]>([]);
+  const [activeCategory, setActiveCategory] = useState<string>('General');
+
+  const categories = ['General', 'Ceremony', 'Reception', 'Travel'];
 
   const faqData: FAQItem[] = [
     {
       question: "What is the dress code?",
-      answer: "We're going for cocktail attire! Think dressy but comfortable. Ladies, feel free to wear a nice dress or dressy separates. Gentlemen, a suit or dress shirt with slacks would be perfect. Please avoid white (that's for the bride!) and overly casual clothing like jeans or sneakers."
+      answer: "We're going for cocktail attire! Think dressy but comfortable. Ladies, feel free to wear a nice dress or dressy separates. Gentlemen, a suit or dress shirt with slacks would be perfect. Please avoid white (that's for the bride!) and overly casual clothing like jeans or sneakers.",
+      category: "General"
     },
     {
       question: "When should I RSVP by?",
-      answer: "Please RSVP by [DATE]. This helps us finalize numbers with our caterer and venue. If your plans change after you RSVP, please let us know as soon as possible!"
+      answer: "Please RSVP by March 15th, 2025. This helps us finalize numbers with our caterer and venue. If your plans change after you RSVP, please let us know as soon as possible!",
+      category: "General"
     },
     {
       question: "Can I bring a plus-one?",
-      answer: "Due to venue capacity, we're only able to accommodate the guests specifically named on your invitation. If you have any questions about your invitation, please reach out to us directly."
+      answer: "Due to venue capacity, we're only able to accommodate the guests specifically named on your invitation. If you have any questions about your invitation, please reach out to us directly.",
+      category: "General"
     },
     {
-      question: "Will there be an open bar?",
-      answer: "Yes! We'll have beer, wine, and signature cocktails available throughout the reception. We want everyone to celebrate and have a great time!"
+      question: "What time should I arrive for the ceremony?",
+      answer: "Please arrive at least 30 minutes before the ceremony starts at 3:00 PM. This gives you time to find parking, get seated, and settle in before we begin.",
+      category: "Ceremony"
     },
     {
-      question: "Is the venue wheelchair accessible?",
-      answer: "Yes, both the ceremony and reception venues are fully wheelchair accessible. If you have any specific accessibility needs, please let us know when you RSVP so we can ensure everything is accommodated."
-    },
-    {
-      question: "What if it rains?",
-      answer: "We have a beautiful indoor backup plan at the same venue! The celebration will be just as magical rain or shine."
-    },
-    {
-      question: "Are children welcome?",
-      answer: "We love your little ones, but we've decided to have an adult-only celebration. We hope this gives you a chance to relax and enjoy the evening! If you need help arranging childcare, please let us know."
-    },
-    {
-      question: "Where should I park?",
-      answer: "There's plenty of free parking available at the venue. Valet service will also be provided for your convenience."
+      question: "Will the ceremony be indoors or outdoors?",
+      answer: "The ceremony will be held indoors at Saint Brigid's Catholic Church. The church is fully air-conditioned for your comfort.",
+      category: "Ceremony"
     },
     {
       question: "Can I take photos during the ceremony?",
-      answer: "We're having an unplugged ceremony, so please keep phones and cameras away during the 'I do's. Our professional photographer will capture everything! Feel free to take photos during cocktail hour and the reception."
+      answer: "We're having an unplugged ceremony, so please keep phones and cameras away during the 'I do's. Our professional photographer will capture everything! Feel free to take photos during cocktail hour and the reception.",
+      category: "Ceremony"
     },
     {
-      question: "Do you have a gift registry?",
-      answer: "Your presence is the only present we need! If you'd like to give a gift, we've set up a small registry at [STORE] or would greatly appreciate contributions to our honeymoon fund."
+      question: "Will there be an open bar?",
+      answer: "Yes! We'll have beer, wine, and signature cocktails available throughout the reception. We want everyone to celebrate and have a great time!",
+      category: "Reception"
+    },
+    {
+      question: "What if I have dietary restrictions?",
+      answer: "Please let us know about any dietary restrictions when you RSVP. Our caterer can accommodate most dietary needs including vegetarian, vegan, and gluten-free options.",
+      category: "Reception"
+    },
+    {
+      question: "Are children welcome?",
+      answer: "We love your little ones, but we've decided to have an adult-only celebration. We hope this gives you a chance to relax and enjoy the evening! If you need help arranging childcare, please let us know.",
+      category: "Reception"
+    },
+    {
+      question: "Where should I park?",
+      answer: "There's plenty of free parking available at both the ceremony and reception venues. Detailed parking information will be provided with your invitation.",
+      category: "Travel"
+    },
+    {
+      question: "Are there hotel room blocks?",
+      answer: "Yes! We have room blocks at two hotels near the reception venue. Please check our wedding website for booking links and discount codes.",
+      category: "Travel"
+    },
+    {
+      question: "Is there transportation between venues?",
+      answer: "The ceremony and reception venues are about 20 minutes apart by car. We recommend arranging your own transportation or carpooling with other guests.",
+      category: "Travel"
     }
   ];
 
@@ -61,22 +85,20 @@ const FAQSection: React.FC = () => {
     const section = document.querySelector('.faq-section');
     const faqItems = document.querySelectorAll('.faq-item');
 
-    // Store triggers for cleanup
     const triggers: ScrollTrigger[] = [];
 
     if (section && faqItems.length > 0) {
-      // Stagger animation for FAQ items
       const staggerTrigger = ScrollTrigger.create({
         trigger: section,
         start: 'top 70%',
         animation: gsap.fromTo(faqItems, {
           opacity: 0,
-          y: 30
+          y: 20
         }, {
           opacity: 1,
           y: 0,
-          duration: 0.8,
-          stagger: 0.1,
+          duration: 0.6,
+          stagger: 0.08,
           ease: 'power2.out'
         })
       });
@@ -84,17 +106,14 @@ const FAQSection: React.FC = () => {
     }
 
     return () => {
-      // Cleanup all triggers
       triggers.forEach(trigger => trigger.kill());
-
-      // Kill any remaining ScrollTriggers for this component
       ScrollTrigger.getAll().forEach(trigger => {
         if (trigger.trigger?.classList?.contains('faq-section')) {
           trigger.kill();
         }
       });
     };
-  }, []);
+  }, [activeCategory]);
 
   const toggleFAQ = (index: number) => {
     setOpenItems(prev => {
@@ -106,31 +125,70 @@ const FAQSection: React.FC = () => {
     });
   };
 
+  const filteredFAQs = faqData.filter(item => item.category === activeCategory);
+
   return (
     <section
       className="faq-section"
       style={{
         position: 'relative',
         zIndex: 3,
-        background: 'transparent' // Managed by BackgroundColorManager
+        background: 'transparent',
+        padding: '80px 20px',
+        minHeight: '100vh'
       }}
     >
       <div className="faq-container">
         <div className="faq-header">
-          <h2>Frequently Asked Questions</h2>
-          <p>Everything you need to know about our special day</p>
+          <h2>Frequently asked questions</h2>
+          <p>These are the most commonly asked questions about our wedding.<br/>
+             Can't find what you're looking for? <a href="mailto:joel.steph@wedding.com">Contact us</a></p>
+        </div>
+
+        <div className="category-pills">
+          {categories.map(category => (
+            <button
+              key={category}
+              className={`category-pill ${activeCategory === category ? 'active' : ''}`}
+              onClick={() => setActiveCategory(category)}
+              style={{
+                fontFamily: 'Instrument Sans, sans-serif',
+                fontSize: '0.9rem',
+                fontWeight: activeCategory === category ? '600' : '500',
+                padding: '10px 20px',
+                borderRadius: '25px',
+                border: activeCategory === category ? 'none' : '1px solid #e0e0e0',
+                background: activeCategory === category ? '#1a1a1a' : 'white',
+                color: activeCategory === category ? 'white' : '#666',
+                cursor: 'pointer',
+                transition: 'all 0.3s ease',
+                marginRight: '10px'
+              }}
+            >
+              {category}
+            </button>
+          ))}
         </div>
 
         <div className="faq-list">
-          {faqData.map((item, index) => (
+          {filteredFAQs.map((item, index) => (
             <div key={index} className="faq-item">
               <button
                 className={`faq-question ${openItems.includes(index) ? 'open' : ''}`}
                 onClick={() => toggleFAQ(index)}
               >
-                <span>{item.question}</span>
-                <span className="faq-icon">
-                  {openItems.includes(index) ? '−' : '+'}
+                <span className="faq-icon-left">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                    <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                  </svg>
+                </span>
+                <span className="faq-text">{item.question}</span>
+                <span className="faq-icon-right">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <polyline points={openItems.includes(index) ? "18 15 12 9 6 15" : "6 9 12 15 18 9"}></polyline>
+                  </svg>
                 </span>
               </button>
 
@@ -146,101 +204,129 @@ const FAQSection: React.FC = () => {
 
       <style jsx>{`
         .faq-section {
-          background: transparent;
-          padding: 60px 20px 20px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
+          font-family: 'Instrument Sans', sans-serif;
         }
 
         .faq-container {
-          max-width: 900px;
+          max-width: 800px;
           width: 100%;
+          margin: 0 auto;
         }
 
         .faq-header {
           text-align: center;
-          margin-bottom: 60px;
+          margin-bottom: 50px;
         }
 
         .faq-header h2 {
-          font-family: 'Cardo', serif;
-          font-size: clamp(3rem, 8vw, 6rem);
+          font-family: 'Instrument Sans', sans-serif;
+          font-size: 2.5rem;
           font-weight: 600;
-          color: white;
+          color: #1a1a1a;
           margin-bottom: 15px;
           letter-spacing: -0.02em;
         }
 
         .faq-header p {
           font-family: 'Instrument Sans', sans-serif;
-          font-size: clamp(1rem, 2vw, 1.3rem);
-          color: rgba(255, 255, 255, 0.9);
+          font-size: 1rem;
+          color: #666;
           line-height: 1.6;
+        }
+
+        .faq-header a {
+          color: #F58E7F;
+          text-decoration: underline;
+          transition: opacity 0.3s ease;
+        }
+
+        .faq-header a:hover {
+          opacity: 0.8;
+        }
+
+        .category-pills {
+          display: flex;
+          justify-content: center;
+          margin-bottom: 40px;
+          flex-wrap: wrap;
+          gap: 10px;
         }
 
         .faq-list {
           display: flex;
           flex-direction: column;
-          gap: 15px;
+          gap: 0;
         }
 
         .faq-item {
-          background: rgba(255, 255, 255, 0.1);
-          border-radius: 24px;
-          backdrop-filter: blur(20px);
-          border: 2px solid rgba(255, 255, 255, 0.2);
+          background: white;
+          border: 1px solid #e5e5e5;
+          border-bottom: none;
           overflow: hidden;
           transition: all 0.3s ease;
-          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
         }
 
-        .faq-item:hover {
-          background: rgba(255, 255, 255, 0.15);
-          border-color: rgba(245, 142, 127, 0.4);
-          box-shadow: 0 12px 40px rgba(245, 142, 127, 0.2);
-          transform: translateY(-2px);
+        .faq-item:first-child {
+          border-top-left-radius: 12px;
+          border-top-right-radius: 12px;
+        }
+
+        .faq-item:last-child {
+          border-bottom: 1px solid #e5e5e5;
+          border-bottom-left-radius: 12px;
+          border-bottom-right-radius: 12px;
         }
 
         .faq-question {
           width: 100%;
-          padding: 25px 30px;
-          background: none;
+          padding: 20px 24px;
+          background: white;
           border: none;
           text-align: left;
           cursor: pointer;
           display: flex;
-          justify-content: space-between;
           align-items: center;
+          gap: 16px;
           font-family: 'Instrument Sans', sans-serif;
-          font-size: 1.1rem;
-          font-weight: 600;
-          color: white;
-          transition: all 0.3s ease;
+          font-size: 1rem;
+          font-weight: 500;
+          color: #1a1a1a;
+          transition: all 0.2s ease;
         }
 
         .faq-question:hover {
-          background: rgba(245, 142, 127, 0.1);
+          background: #fafafa;
         }
 
         .faq-question.open {
-          background: rgba(245, 142, 127, 0.15);
-          color: white;
+          background: #fafafa;
         }
 
-        .faq-icon {
-          font-size: 1.5rem;
-          font-weight: bold;
-          color: #F58E7F;
-          transition: all 0.3s ease;
-          min-width: 30px;
-          text-align: center;
+        .faq-icon-left {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: #999;
+        }
+
+        .faq-icon-right {
+          margin-left: auto;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: #666;
+          transition: transform 0.3s ease;
+        }
+
+        .faq-text {
+          flex: 1;
         }
 
         .faq-answer {
           max-height: 0;
           overflow: hidden;
-          transition: all 0.4s ease;
+          transition: max-height 0.3s ease;
+          background: #fafafa;
         }
 
         .faq-answer.open {
@@ -248,10 +334,10 @@ const FAQSection: React.FC = () => {
         }
 
         .faq-answer-content {
-          padding: 0 30px 30px 30px;
-          color: rgba(255, 255, 255, 0.9);
-          line-height: 1.7;
-          font-size: 1rem;
+          padding: 0 24px 20px 60px;
+          color: #666;
+          line-height: 1.6;
+          font-size: 0.95rem;
           font-family: 'Instrument Sans', sans-serif;
         }
 
@@ -260,26 +346,24 @@ const FAQSection: React.FC = () => {
             padding: 60px 15px;
           }
 
-          .faq-question {
-            padding: 20px 25px;
-            font-size: 1rem;
+          .faq-header h2 {
+            font-size: 2rem;
           }
 
-          .faq-answer-content {
-            padding: 0 25px 25px 25px;
+          .faq-question {
+            padding: 18px 20px;
             font-size: 0.95rem;
           }
 
-          .faq-header h2 {
-            font-size: clamp(2rem, 8vw, 3rem);
+          .faq-answer-content {
+            padding: 0 20px 18px 52px;
+            font-size: 0.9rem;
           }
 
-          .faq-header p {
-            font-size: 1rem;
-          }
-
-          .faq-icon {
-            font-size: 1.3rem;
+          .category-pills {
+            justify-content: flex-start;
+            overflow-x: auto;
+            padding-bottom: 10px;
           }
         }
       `}</style>

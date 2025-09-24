@@ -38,6 +38,10 @@ const OptimizedMiddleSection: React.FC = () => {
       markers: true,
     });
 
+    const heartSvg = document.querySelector('.heart-svg');
+    const sunSvg = document.querySelector('.sun-svg');
+    const cloudSvg = document.querySelector('.cloud-svg');
+
     // Text change triggers - using direct onUpdate instead of timelines for scrub
     ScrollTrigger.create({
       trigger: div1,
@@ -49,9 +53,15 @@ const OptimizedMiddleSection: React.FC = () => {
         if (progress < 0.5) {
           textElement.textContent = "Welcome to our wedding";
           gsap.set(textElement, { opacity: 1 - (progress * 2), y: -20 * progress });
+          if (heartSvg) gsap.set(heartSvg, { opacity: 1 - (progress * 2), scale: 1 - (progress * 0.3) });
+          if (sunSvg) gsap.set(sunSvg, { opacity: 0 });
+          if (cloudSvg) gsap.set(cloudSvg, { opacity: 0 });
         } else {
           textElement.textContent = "We can't wait to see you all";
           gsap.set(textElement, { opacity: (progress - 0.5) * 2, y: -20 * (1 - progress) });
+          if (heartSvg) gsap.set(heartSvg, { opacity: 0 });
+          if (sunSvg) gsap.set(sunSvg, { opacity: (progress - 0.5) * 2, scale: 0.7 + ((progress - 0.5) * 0.6) });
+          if (cloudSvg) gsap.set(cloudSvg, { opacity: 0 });
         }
       },
       markers: { startColor: "blue", endColor: "blue", fontSize: "12px", fontWeight: "bold", indent: 120 },
@@ -68,9 +78,15 @@ const OptimizedMiddleSection: React.FC = () => {
         if (progress < 0.5) {
           textElement.textContent = "We can't wait to see you all";
           gsap.set(textElement, { opacity: 1 - (progress * 2), y: -20 * progress });
+          if (sunSvg) gsap.set(sunSvg, { opacity: 1 - (progress * 2), scale: 1 - (progress * 0.3) });
+          if (heartSvg) gsap.set(heartSvg, { opacity: 0 });
+          if (cloudSvg) gsap.set(cloudSvg, { opacity: 0 });
         } else {
           textElement.textContent = "On our special day";
           gsap.set(textElement, { opacity: (progress - 0.5) * 2, y: -20 * (1 - progress) });
+          if (sunSvg) gsap.set(sunSvg, { opacity: 0 });
+          if (heartSvg) gsap.set(heartSvg, { opacity: 0 });
+          if (cloudSvg) gsap.set(cloudSvg, { opacity: (progress - 0.5) * 2, scale: 0.7 + ((progress - 0.5) * 0.6) });
         }
       },
       markers: { startColor: "purple", endColor: "purple", fontSize: "12px", fontWeight: "bold", indent: 140 },
@@ -100,47 +116,41 @@ const OptimizedMiddleSection: React.FC = () => {
       <div ref={div1Ref} className="section-div">
         <div className="div-label">DIV 1</div>
         <div className="squares-container">
-          <div className="red-square" style={{ top: '10%', left: '15%', width: '60px', height: '60px' }}></div>
-          <div className="red-square" style={{ top: '20%', right: '20%', width: '80px', height: '40px' }}></div>
-          <div className="red-square" style={{ top: '35%', left: '10%', width: '40px', height: '80px' }}></div>
-          <div className="red-square" style={{ top: '70%', right: '15%', width: '50px', height: '50px' }}></div>
-          <div className="red-square" style={{ top: '85%', left: '25%', width: '70px', height: '35px' }}></div>
-          <div className="red-square overlap" style={{ top: '45%', right: '10%', width: '45px', height: '45px' }}></div>
+          <img src="/images/middle_section_images/Joel Proposes to Steph-103.jpg" alt="" className="red-square portrait" style={{ top: '15%', right: '12%' }} />
+          <img src="/images/middle_section_images/Joel Proposes to Steph-139.jpg" alt="" className="red-square portrait-tall" style={{ top: '55%', left: '5%' }} />
+          <img src="/images/middle_section_images/Joel Proposes to Steph-153.jpg" alt="" className="red-square" style={{ top: '85%', right: '25%' }} />
         </div>
       </div>
       <div ref={div2Ref} className="section-div">
         <div className="div-label">DIV 2</div>
         <div className="squares-container">
-          <div className="red-square" style={{ top: '5%', left: '20%', width: '55px', height: '55px' }}></div>
-          <div className="red-square" style={{ top: '15%', right: '25%', width: '40px', height: '70px' }}></div>
-          <div className="red-square" style={{ top: '30%', left: '8%', width: '65px', height: '45px' }}></div>
-          <div className="red-square overlap" style={{ top: '52%', left: '12%', width: '40px', height: '40px' }}></div>
-          <div className="red-square" style={{ top: '75%', right: '18%', width: '75px', height: '35px' }}></div>
-          <div className="red-square" style={{ top: '90%', left: '30%', width: '50px', height: '60px' }}></div>
+          <img src="/images/middle_section_images/Joel Proposes to Steph-212.jpg" alt="" className="red-square" style={{ top: '12%', left: '8%' }} />
+          <img src="/images/middle_section_images/Joel Proposes to Steph-216.jpg" alt="" className="red-square portrait-large" style={{ top: '40%', right: '10%' }} />
+          <img src="/images/middle_section_images/Joel Proposes to Steph-242.jpg" alt="" className="red-square portrait" style={{ top: '80%', left: '15%' }} />
         </div>
       </div>
       <div ref={div3Ref} className="section-div">
         <div className="div-label">DIV 3</div>
         <div className="squares-container">
-          <div className="red-square" style={{ top: '8%', right: '22%', width: '50px', height: '65px' }}></div>
-          <div className="red-square" style={{ top: '25%', left: '18%', width: '70px', height: '40px' }}></div>
-          <div className="red-square overlap" style={{ top: '48%', right: '8%', width: '35px', height: '35px' }}></div>
-          <div className="red-square" style={{ top: '65%', left: '12%', width: '45px', height: '55px' }}></div>
-          <div className="red-square" style={{ top: '82%', right: '25%', width: '60px', height: '45px' }}></div>
+          <img src="/images/middle_section_images/Joel Proposes to Steph-255.jpg" alt="" className="red-square portrait-tall" style={{ top: '10%', right: '15%' }} />
+          <img src="/images/middle_section_images/LKCK6595.JPG" alt="" className="red-square portrait-large" style={{ top: '45%', left: '8%' }} />
+          <div className="red-square" style={{ top: '85%', right: '20%' }}></div>
         </div>
       </div>
       <div ref={div4Ref} className="section-div">
         <div className="div-label">DIV 4</div>
         <div className="squares-container">
-          <div className="red-square" style={{ top: '12%', left: '22%', width: '45px', height: '75px' }}></div>
-          <div className="red-square" style={{ top: '28%', right: '12%', width: '65px', height: '50px' }}></div>
-          <div className="red-square" style={{ top: '42%', left: '8%', width: '55px', height: '55px' }}></div>
-          <div className="red-square overlap" style={{ top: '58%', right: '20%', width: '40px', height: '40px' }}></div>
-          <div className="red-square" style={{ top: '78%', left: '15%', width: '50px', height: '70px' }}></div>
+          <div className="red-square" style={{ top: '18%', left: '12%' }}></div>
+          <div className="red-square" style={{ top: '50%', right: '8%' }}></div>
         </div>
       </div>
 
       <div id="pinned-text-element">
+        <div className="svg-background">
+          <img src="/heart.svg" alt="" className="background-svg heart-svg" />
+          <img src="/sun.svg" alt="" className="background-svg sun-svg" />
+          <img src="/cloud.svg" alt="" className="background-svg cloud-svg" />
+        </div>
         <h2>Welcome to our wedding</h2>
       </div>
 
@@ -181,17 +191,6 @@ const OptimizedMiddleSection: React.FC = () => {
           opacity: 0.8;
         }
 
-        .section-div:nth-child(1) {
-          background: rgba(245, 142, 127, 0.1);
-        }
-
-        .section-div:nth-child(2) {
-          background: rgba(102, 126, 234, 0.1);
-        }
-
-        .section-div:nth-child(3) {
-          background: rgba(118, 75, 162, 0.1);
-        }
 
         .div-label {
           position: absolute;
@@ -232,19 +231,129 @@ const OptimizedMiddleSection: React.FC = () => {
           left: 0;
           width: 100%;
           height: 100vh;
-          z-index: 500;
+          z-index: 2500;
         }
 
         .red-square {
           position: absolute;
           background: red;
-          border-radius: 4px;
+          border-radius: 16px;
           opacity: 0.8;
+          width: 240px;
+          height: 240px;
+          object-fit: cover;
+        }
+
+        .red-square.portrait {
+          width: 210px;
+          height: 315px;
+        }
+
+        .red-square.portrait-tall {
+          width: 225px;
+          height: 340px;
+        }
+
+        .red-square.portrait-large {
+          width: 270px;
+          height: 405px;
+        }
+
+        @media (max-width: 768px) {
+          .red-square {
+            width: 180px;
+            height: 180px;
+          }
+
+          .red-square.portrait {
+            width: 150px;
+            height: 225px;
+          }
+
+          .red-square.portrait-tall {
+            width: 165px;
+            height: 248px;
+          }
+
+          .red-square.portrait-large {
+            width: 195px;
+            height: 293px;
+          }
+        }
+
+        @media (max-width: 480px) {
+          .red-square {
+            width: 135px;
+            height: 135px;
+          }
+
+          .red-square.portrait {
+            width: 120px;
+            height: 180px;
+          }
+
+          .red-square.portrait-tall {
+            width: 128px;
+            height: 192px;
+          }
+
+          .red-square.portrait-large {
+            width: 150px;
+            height: 225px;
+          }
         }
 
         .red-square.overlap {
           z-index: 2100;
           opacity: 0.9;
+        }
+
+        .svg-background {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          z-index: -1;
+          pointer-events: none;
+        }
+
+        .background-svg {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          width: 200px;
+          height: 200px;
+          opacity: 0;
+          transition: opacity 0.3s ease;
+          pointer-events: none;
+        }
+
+        .heart-svg {
+          opacity: 1;
+          filter: drop-shadow(0 4px 20px rgba(245, 142, 127, 0.3));
+        }
+
+        .sun-svg {
+          filter: drop-shadow(0 4px 20px rgba(255, 193, 7, 0.3)) hue-rotate(20deg) saturate(1.2);
+        }
+
+        .cloud-svg {
+          filter: drop-shadow(0 4px 20px rgba(102, 126, 234, 0.3)) hue-rotate(-10deg) saturate(0.8) brightness(1.1);
+        }
+
+        @media (max-width: 768px) {
+          .background-svg {
+            width: 150px;
+            height: 150px;
+          }
+        }
+
+        @media (max-width: 480px) {
+          .background-svg {
+            width: 120px;
+            height: 120px;
+          }
         }
 
 

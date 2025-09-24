@@ -20,7 +20,7 @@ export default function Home() {
       <div className="page-content" style={{
         position: 'relative',
         zIndex: 10,
-        background: '#faf9f6',
+        background: '#F0E9E1',
         borderTopLeftRadius: 'clamp(20px, 5vw, 40px)',
         borderTopRightRadius: 'clamp(20px, 5vw, 40px)',
         paddingTop: 'clamp(40px, 8vw, 60px)',

@@ -115,7 +115,13 @@ const TimelineSection: React.FC = () => {
       data-timeline-section
       style={{
         position: 'relative',
-        height: '400vh' // Extended height for scroll
+        height: '400vh', // Extended height for scroll
+        background: `linear-gradient(to bottom,
+          #faf9f6 0%,
+          #f2ebe2 20%,
+          #EBE3D8 40%,
+          #EBE3D8 100%
+        )` // Smooth transition from cream to beige
       }}
     >
       {/* Pinned Container */}
@@ -133,13 +139,13 @@ const TimelineSection: React.FC = () => {
           style={{
             position: 'absolute',
             inset: '2rem',
-            background: '#F58E7F', // Bride's coral color
+            background: 'white', // White card background
             borderRadius: '40px',
-            boxShadow: '0 20px 60px rgba(245, 142, 127, 0.3)',
+            boxShadow: '0 20px 60px rgba(0, 0, 0, 0.1)',
             overflow: 'hidden' // Clip any content outside this container
           }}
         >
-          {/* Fixed Vertical Line - inside background container */}
+          {/* Fixed Vertical Line - thin gray line like reference */}
           <div
             style={{
               position: 'absolute',
@@ -147,9 +153,8 @@ const TimelineSection: React.FC = () => {
               transform: 'translateX(-50%)',
               top: '0',
               bottom: '0',
-              width: '3px',
-              background: 'rgba(255, 255, 255, 0.8)',
-              boxShadow: '0 0 15px rgba(255, 255, 255, 0.4)',
+              width: '1px',
+              background: '#d0d0d0', // Light gray line like reference
               zIndex: 10
             }}
           />
@@ -165,56 +170,85 @@ const TimelineSection: React.FC = () => {
               bottom: '0'
             }}
           >
-            {/* Circle 1 */}
+            {/* Circle 1 - Simple beige dot like reference */}
             <div
               style={{
                 position: 'absolute',
-                left: '23%', // Adjusted for being inside the inset container
+                left: '23%',
                 transform: 'translateX(-50%)',
-                top: '30vh',
-                width: '24px',
-                height: '24px',
-                background: 'white',
+                top: '130vh', // Move ceremony to be the main focus
+                width: '12px',
+                height: '12px',
+                background: '#c8beb7', // Light beige like reference
                 borderRadius: '50%',
-                border: '4px solid white',
-                boxShadow: '0 0 20px rgba(255,255,255,0.8)',
                 zIndex: 20
               }}
             />
 
-            {/* Circle 2 */}
+            {/* Content - Ceremony section matching reference exactly */}
             <div
               style={{
                 position: 'absolute',
-                left: '23%', // Adjusted for being inside the inset container
-                transform: 'translateX(-50%)',
+                left: 'calc(23% + 3rem)', // More space from timeline like reference
                 top: '130vh',
-                width: '24px',
-                height: '24px',
-                background: 'white',
-                borderRadius: '50%',
-                border: '4px solid white',
-                boxShadow: '0 0 20px rgba(255,255,255,0.8)',
-                zIndex: 20
+                transform: 'translateY(-50%)', // Center vertically with pip
+                zIndex: 15
               }}
-            />
+            >
+              {/* Time - coral color like reference */}
+              <div style={{
+                fontFamily: 'Instrument Sans, sans-serif',
+                fontSize: '3.5rem', // Larger like reference
+                color: '#FF6B6B', // Brighter coral like reference
+                fontWeight: '400', // Lighter weight
+                marginBottom: '0.5rem',
+                lineHeight: '1'
+              }}>
+                3:00 pm
+              </div>
 
-            {/* Circle 3 */}
-            <div
-              style={{
-                position: 'absolute',
-                left: '23%', // Adjusted for being inside the inset container
-                transform: 'translateX(-50%)',
-                top: '230vh',
-                width: '24px',
-                height: '24px',
-                background: 'white',
-                borderRadius: '50%',
-                border: '4px solid white',
-                boxShadow: '0 0 20px rgba(255,255,255,0.8)',
-                zIndex: 20
-              }}
-            />
+              {/* Title - large black serif */}
+              <div style={{
+                fontFamily: 'Instrument Serif, serif',
+                fontSize: '5.5rem', // Much larger like reference
+                color: '#1a1a1a', // Pure black like reference
+                fontWeight: '400', // Not bold
+                marginBottom: '1.5rem',
+                lineHeight: '0.9',
+                letterSpacing: '-0.02em'
+              }}>
+                Ceremony
+              </div>
+
+              {/* Subtitle - smaller gray text */}
+              <div style={{
+                fontFamily: 'Instrument Sans, sans-serif',
+                fontSize: '1.1rem',
+                color: '#666666', // Gray like reference
+                fontWeight: '400',
+                marginBottom: '2rem',
+                lineHeight: '1.4'
+              }}>
+                Please arrive at least 30 mins early to be seated
+              </div>
+
+              {/* Button - coral rounded */}
+              <button style={{
+                fontFamily: 'Instrument Sans, sans-serif',
+                fontSize: '1rem',
+                fontWeight: '500',
+                color: 'white',
+                background: '#FF6B6B', // Same coral as time
+                border: 'none',
+                borderRadius: '25px', // More rounded like reference
+                padding: '14px 28px',
+                cursor: 'pointer',
+                transition: 'all 0.3s ease'
+              }}>
+                Add to calendar
+              </button>
+            </div>
+
           </div>
         </div>
       </div>

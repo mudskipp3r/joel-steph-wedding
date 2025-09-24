@@ -199,7 +199,7 @@ const SimpleFooter: React.FC<SimpleFooterProps> = ({
       <form
         name="wedding-rsvp"
         data-netlify="true"
-        hidden
+        style={{ display: 'none' }}
       >
         <input type="text" name="fullName" />
         <input type="email" name="email" />

@@ -4,24 +4,13 @@ import React, { useEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 import Button from './Button';
 
-interface SimpleFooterProps {
-  isRSVPFormOpen?: boolean;
-  onOpenRSVPForm?: () => void;
-  onCloseRSVPForm?: () => void;
+interface RSVPSlideoutProps {
+  isOpen: boolean;
+  onClose: () => void;
 }
 
-const SimpleFooter: React.FC<SimpleFooterProps> = ({
-  isRSVPFormOpen = false,
-  onOpenRSVPForm,
-  onCloseRSVPForm
-}) => {
-  const footerRef = useRef<HTMLDivElement>(null);
+const RSVPSlideout: React.FC<RSVPSlideoutProps> = ({ isOpen, onClose }) => {
   const panelRef = useRef<HTMLDivElement>(null);
-  const [internalPanelOpen, setInternalPanelOpen] = useState(false);
-
-  // Use external control if props are provided, otherwise use internal state
-  const isPanelOpen = isRSVPFormOpen ?? internalPanelOpen;
-
 
   // RSVP Form State
   const [formData, setFormData] = useState({
@@ -41,12 +30,12 @@ const SimpleFooter: React.FC<SimpleFooterProps> = ({
     const panel = panelRef.current;
 
     if (panel) {
-      if (isPanelOpen) {
+      if (isOpen) {
         // Hide body scrollbar and prevent scroll
         document.body.style.overflow = 'hidden';
         document.documentElement.style.overflow = 'hidden';
 
-        // Ensure panel can scroll with all input methods including trackpads
+        // Ensure panel can scroll
         panel.style.overflowY = 'auto';
         panel.style.overflowX = 'hidden';
         (panel.style as any).WebkitOverflowScrolling = 'touch';
@@ -84,12 +73,12 @@ const SimpleFooter: React.FC<SimpleFooterProps> = ({
 
     // Cleanup function
     return () => {
-      if (!isPanelOpen) {
+      if (!isOpen) {
         document.body.style.overflow = 'auto';
         document.documentElement.style.overflow = 'auto';
       }
     };
-  }, [isPanelOpen]);
+  }, [isOpen]);
 
   // RSVP Form Handlers
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -139,7 +128,7 @@ const SimpleFooter: React.FC<SimpleFooterProps> = ({
     }
 
     try {
-      // Create FormData from the form element (like your old form)
+      // Create FormData from the form element
       const formData = new FormData(e.target as HTMLFormElement);
 
       // Ensure default values for fields that might be blank or unchecked
@@ -159,7 +148,7 @@ const SimpleFooter: React.FC<SimpleFooterProps> = ({
         formData.set('message', 'No message provided');
       }
 
-      // Submit to Netlify exactly like your old working form
+      // Submit to Netlify
       const response = await fetch("/", {
         method: "POST",
         headers: {
@@ -179,23 +168,6 @@ const SimpleFooter: React.FC<SimpleFooterProps> = ({
     }
   };
 
-  const openPanel = () => {
-    console.log('openPanel called, onOpenRSVPForm:', onOpenRSVPForm);
-    if (onOpenRSVPForm) {
-      onOpenRSVPForm();
-    } else {
-      setInternalPanelOpen(true);
-    }
-  };
-
-  const closePanel = () => {
-    if (onCloseRSVPForm) {
-      onCloseRSVPForm();
-    } else {
-      setInternalPanelOpen(false);
-    }
-  };
-
   const handleReturnToSite = () => {
     // Reset form and submission state
     setFormData({
@@ -209,7 +181,7 @@ const SimpleFooter: React.FC<SimpleFooterProps> = ({
       message: ''
     });
     setIsSubmitted(false);
-    closePanel();
+    onClose();
   };
 
   // Cleanup on component unmount
@@ -239,45 +211,6 @@ const SimpleFooter: React.FC<SimpleFooterProps> = ({
         <textarea name="message"></textarea>
       </form>
 
-      {/* Traditional Footer */}
-      <footer
-        ref={footerRef}
-        className="simple-footer"
-        style={{
-          position: 'relative',
-          width: '100%',
-          height: '120px',
-          background: '#FFF0E2',
-          borderTopLeftRadius: '40px',
-          borderTopRightRadius: '40px',
-          padding: '1.5rem 2rem',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          boxShadow: '0 -5px 20px rgba(0, 0, 0, 0.05)'
-        }}
-      >
-        <div className="footer-main">
-          <h3 style={{
-            fontFamily: 'Cardo, serif',
-            fontSize: 'clamp(1.5rem, 3vw, 2rem)',
-            fontWeight: 400,
-            margin: 0,
-            color: '#2c3e50'
-          }}>Thank You</h3>
-          <p style={{
-            fontFamily: 'Instrument Sans, sans-serif',
-            fontSize: '0.9rem',
-            color: '#666',
-            margin: '0.25rem 0 0 0'
-          }}>We can't wait to celebrate with you</p>
-        </div>
-
-        <Button onClick={openPanel} size="large" style={{ borderRadius: '50px' }}>
-          RSVP
-        </Button>
-      </footer>
-
       {/* Backdrop Overlay */}
       <div
         className="backdrop-overlay"
@@ -289,12 +222,12 @@ const SimpleFooter: React.FC<SimpleFooterProps> = ({
           height: '100vh',
           background: 'rgba(0, 0, 0, 0.5)',
           zIndex: 999998,
-          opacity: isPanelOpen ? 1 : 0,
-          visibility: isPanelOpen ? 'visible' : 'hidden',
+          opacity: isOpen ? 1 : 0,
+          visibility: isOpen ? 'visible' : 'hidden',
           transition: 'opacity 0.4s ease, visibility 0.4s ease',
           backdropFilter: 'blur(2px)'
         }}
-        onClick={closePanel}
+        onClick={onClose}
       />
 
       {/* Slide-out RSVP Panel */}
@@ -306,7 +239,8 @@ const SimpleFooter: React.FC<SimpleFooterProps> = ({
           top: 0,
           right: 0,
           width: '100vw',
-          maxWidth: '500px',
+          maxWidth: '33.33vw',
+          minWidth: '400px',
           height: '100vh',
           background: 'white',
           zIndex: 999999,
@@ -314,7 +248,7 @@ const SimpleFooter: React.FC<SimpleFooterProps> = ({
           boxShadow: '-10px 0 30px rgba(0, 0, 0, 0.2)',
           overflowY: 'auto',
           overflowX: 'hidden',
-          WebkitOverflowScrolling: 'touch', // Smooth scrolling on iOS
+          WebkitOverflowScrolling: 'touch',
           scrollBehavior: 'smooth'
         }}
       >
@@ -338,7 +272,7 @@ const SimpleFooter: React.FC<SimpleFooterProps> = ({
             color: '#2c3e50'
           }}>RSVP</h2>
           <button
-            onClick={closePanel}
+            onClick={onClose}
             className="close-button"
             style={{
               background: 'none',
@@ -363,12 +297,12 @@ const SimpleFooter: React.FC<SimpleFooterProps> = ({
         <div className="panel-content" style={{
           padding: '2rem',
           paddingTop: '1rem',
-          paddingBottom: '3rem', // Extra bottom padding for scrolling
+          paddingBottom: '3rem',
           width: '100%',
           boxSizing: 'border-box',
           wordWrap: 'break-word',
           overflowWrap: 'break-word',
-          minHeight: 'calc(100vh - 120px)' // Ensure content is scrollable
+          minHeight: 'calc(100vh - 120px)'
         }}>
           <p style={{
             fontFamily: 'Instrument Sans, sans-serif',
@@ -623,89 +557,7 @@ const SimpleFooter: React.FC<SimpleFooterProps> = ({
       </div>
 
       <style jsx>{`
-        .footer-content {
-          padding: 3rem 2rem 2rem;
-          color: #2c3e50;
-          width: 100%;
-          max-width: 800px;
-          margin: 0 auto;
-          display: flex;
-          flex-direction: column;
-          justify-content: flex-start;
-          align-items: center;
-          min-height: 100%;
-        }
-
-        /* RSVP Form Styles */
-        .rsvp-section {
-          width: 100%;
-          margin-bottom: 3rem;
-        }
-
-        .rsvp-header {
-          text-align: center;
-          margin-bottom: 2rem;
-        }
-
-        .rsvp-header h2 {
-          font-family: 'Cardo', serif;
-          font-size: clamp(3rem, 6vw, 4.5rem);
-          font-weight: 400;
-          color: #2c3e50;
-          margin-bottom: 1rem;
-          letter-spacing: -0.02em;
-        }
-
-        .rsvp-header p {
-          font-family: 'Instrument Sans', sans-serif;
-          font-size: 1.1rem;
-          color: #666;
-          line-height: 1.6;
-          max-width: 500px;
-          margin: 0 auto;
-        }
-
-        .deadline-notice {
-          display: flex;
-          align-items: center;
-          gap: 1rem;
-          background: linear-gradient(135deg, #FF6B6B, #FF8E53);
-          color: white;
-          padding: 1.5rem;
-          border-radius: 16px;
-          margin-bottom: 2.5rem;
-          box-shadow: 0 8px 25px rgba(255, 107, 107, 0.3);
-        }
-
-        .deadline-icon {
-          font-size: 2rem;
-          flex-shrink: 0;
-        }
-
-        .deadline-text {
-          display: flex;
-          flex-direction: column;
-          gap: 0.25rem;
-        }
-
-        .deadline-text strong {
-          font-family: 'Instrument Sans', sans-serif;
-          font-size: 1.2rem;
-          font-weight: 700;
-        }
-
-        .deadline-text span {
-          font-family: 'Instrument Sans', sans-serif;
-          font-size: 0.95rem;
-          opacity: 0.95;
-        }
-
-        .rsvp-form {
-          display: flex;
-          flex-direction: column;
-          gap: 2rem;
-        }
-
+        /* Form Styles */
         .form-row {
           display: grid;
           grid-template-columns: 1fr 1fr;
@@ -732,7 +584,7 @@ const SimpleFooter: React.FC<SimpleFooterProps> = ({
           padding: 1rem;
           border: 1px solid #ddd;
           border-radius: 4px;
-          font-size: 16px; /* Prevent iOS zoom on focus */
+          font-size: 16px;
           font-family: 'Instrument Sans', sans-serif;
           background: white;
           transition: all 0.3s ease;
@@ -740,7 +592,7 @@ const SimpleFooter: React.FC<SimpleFooterProps> = ({
           width: 100%;
           max-width: 100%;
           box-sizing: border-box;
-          -webkit-appearance: none; /* Remove iOS default styling */
+          -webkit-appearance: none;
         }
 
         .form-group input:focus,
@@ -908,84 +760,9 @@ const SimpleFooter: React.FC<SimpleFooterProps> = ({
           }
         }
 
-
-
-
-
-        /* Footer Styles */
-        .footer-main {
-          text-align: center;
-          margin-bottom: 2rem;
-          padding-top: 2rem;
-          border-top: 2px solid rgba(44, 62, 80, 0.1);
-        }
-
-        .footer-main h3 {
-          font-family: 'Cardo', serif;
-          font-size: clamp(2rem, 4vw, 3rem);
-          font-weight: 400;
-          margin-bottom: 1rem;
-          color: #2c3e50;
-          letter-spacing: -0.02em;
-        }
-
-        .footer-main p {
-          font-family: 'Instrument Sans', sans-serif;
-          font-size: clamp(1rem, 2vw, 1.3rem);
-          line-height: 1.6;
-          margin-bottom: 0.8rem;
-          opacity: 0.8;
-          max-width: 600px;
-          color: #666;
-        }
-
-        .marquee-container {
-          width: 100%;
-          height: 80px;
-          overflow: hidden;
-          display: flex;
-          align-items: center;
-          border-top: 1px solid rgba(44, 62, 80, 0.2);
-          padding-top: 1rem;
-          position: relative;
-          margin-top: 2rem;
-        }
-
-        .marquee-wrapper {
-          display: flex;
-          white-space: nowrap;
-          will-change: transform;
-        }
-
-        .marquee-text {
-          font-family: 'Cardo', serif;
-          font-size: clamp(1.5rem, 4vw, 2.5rem);
-          font-weight: 400;
-          opacity: 0.6;
-          letter-spacing: 0.1em;
-          padding-right: 3rem;
-          display: inline-block;
-          color: #2c3e50;
-        }
-
         .close-button:hover {
           color: #666 !important;
           transform: scale(1.1);
-        }
-
-        /* Panel specific styles */
-        .rsvp-panel {
-          min-width: 0; /* Prevent flex/grid items from overflowing */
-          /* Ensure trackpad scrolling works */
-          scroll-behavior: smooth;
-          -webkit-overflow-scrolling: touch;
-          -ms-overflow-style: -ms-autohiding-scrollbar;
-        }
-
-        .rsvp-panel * {
-          max-width: 100%;
-          word-wrap: break-word;
-          overflow-wrap: break-word;
         }
 
         /* Backdrop overlay styles */
@@ -994,60 +771,22 @@ const SimpleFooter: React.FC<SimpleFooterProps> = ({
         }
 
         @media (max-width: 768px) {
-          .simple-footer {
-            height: 100px !important;
-            padding: 1rem !important;
-            flex-direction: column;
-            text-align: center;
-            gap: 1rem;
-          }
-
-          .footer-main h3 {
-            font-size: 1.25rem !important;
-          }
-
-          .footer-main p {
-            font-size: 0.8rem !important;
-          }
-
-
           .rsvp-panel {
             width: 100vw !important;
             max-width: none !important;
+            min-width: 100vw !important;
           }
 
           .panel-content {
             padding: 1.5rem !important;
             padding-top: 1rem !important;
             padding-bottom: 4rem !important;
-            /* Ensure smooth scrolling on mobile */
             -webkit-overflow-scrolling: touch;
-          }
-
-          .rsvp-panel {
-            /* Improve mobile scrolling performance */
-            -webkit-overflow-scrolling: touch !important;
-            /* Prevent zoom on form inputs on iOS */
-            -webkit-text-size-adjust: 100%;
           }
 
           .form-row {
             grid-template-columns: 1fr;
             gap: 1.5rem;
-          }
-
-          .rsvp-header h2 {
-            font-size: clamp(2.5rem, 8vw, 3.5rem);
-          }
-
-          .deadline-notice {
-            flex-direction: column;
-            text-align: center;
-            gap: 0.5rem;
-          }
-
-          .deadline-icon {
-            font-size: 1.5rem;
           }
 
           .radio-group {
@@ -1058,16 +797,10 @@ const SimpleFooter: React.FC<SimpleFooterProps> = ({
             font-size: 1rem;
             padding: 0.75rem;
           }
-
-
-          .marquee-container {
-            height: 60px;
-            padding-top: 0.8rem;
-          }
         }
       `}</style>
     </>
   );
 };
 
-export default SimpleFooter;
+export default RSVPSlideout;

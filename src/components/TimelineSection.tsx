@@ -84,22 +84,69 @@ const TimelineSection: React.FC = () => {
           style={{
             position: 'absolute',
             inset: '2rem',
-            background: 'white',
+            background: 'linear-gradient(135deg, #ffffff 0%, #fefefe 50%, #ffffff 100%)',
             borderRadius: '40px',
-            boxShadow: '0 20px 60px rgba(0, 0, 0, 0.1)',
+            boxShadow: '0 20px 60px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.8)',
             overflow: 'hidden'
           }}
         >
-          {/* Fixed Vertical Line */}
+          {/* Decorative background pattern */}
+          <div
+            style={{
+              position: 'absolute',
+              top: '0',
+              left: '0',
+              right: '0',
+              bottom: '0',
+              opacity: 0.03,
+              backgroundImage: `
+                radial-gradient(circle at 25% 25%, #FF6B6B 2px, transparent 2px),
+                radial-gradient(circle at 75% 75%, #FF6B6B 1px, transparent 1px)
+              `,
+              backgroundSize: '60px 60px, 40px 40px',
+              backgroundPosition: '0 0, 20px 20px',
+              pointerEvents: 'none'
+            }}
+          />
+
+          {/* Subtle corner decorations */}
+          <div
+            style={{
+              position: 'absolute',
+              top: '2rem',
+              right: '2rem',
+              width: '100px',
+              height: '100px',
+              background: 'radial-gradient(circle, rgba(255, 107, 107, 0.05) 0%, transparent 70%)',
+              borderRadius: '50%',
+              pointerEvents: 'none'
+            }}
+          />
+
+          <div
+            style={{
+              position: 'absolute',
+              bottom: '2rem',
+              left: '2rem',
+              width: '80px',
+              height: '80px',
+              background: 'radial-gradient(circle, rgba(255, 107, 107, 0.04) 0%, transparent 70%)',
+              borderRadius: '50%',
+              pointerEvents: 'none'
+            }}
+          />
+          {/* Fixed Vertical Line - Thicker with gradient */}
           <div
             style={{
               position: 'absolute',
               left: '23%',
               transform: 'translateX(-50%)',
-              top: '0',
-              bottom: '0',
-              width: '1px',
-              background: '#d0d0d0',
+              top: '2rem',
+              bottom: '2rem',
+              width: '4px',
+              background: 'linear-gradient(to bottom, rgba(255, 107, 107, 0.3) 0%, rgba(255, 107, 107, 0.8) 20%, rgba(255, 107, 107, 0.8) 80%, rgba(255, 107, 107, 0.3) 100%)',
+              borderRadius: '2px',
+              boxShadow: '0 2px 10px rgba(255, 107, 107, 0.2)',
               zIndex: 10
             }}
           />
@@ -148,17 +195,19 @@ const TimelineSection: React.FC = () => {
               </div>
             </div>
 
-            {/* Circle 1 - Ceremony */}
+            {/* Circle 1 - Ceremony - Enhanced */}
             <div
               style={{
                 position: 'absolute',
                 left: '23%',
                 transform: 'translateX(-50%)',
                 top: '130vh',
-                width: '12px',
-                height: '12px',
-                background: '#c8beb7',
+                width: '18px',
+                height: '18px',
+                background: '#FF6B6B',
                 borderRadius: '50%',
+                border: '3px solid white',
+                boxShadow: '0 4px 15px rgba(255, 107, 107, 0.3), inset 0 1px 3px rgba(255, 255, 255, 0.5)',
                 zIndex: 20
               }}
             />
@@ -212,17 +261,19 @@ const TimelineSection: React.FC = () => {
               </Button>
             </div>
 
-            {/* Circle 2 - Reception */}
+            {/* Circle 2 - Reception - Enhanced */}
             <div
               style={{
                 position: 'absolute',
                 left: '23%',
                 transform: 'translateX(-50%)',
                 top: '230vh',
-                width: '12px',
-                height: '12px',
-                background: '#c8beb7',
+                width: '18px',
+                height: '18px',
+                background: '#FF6B6B',
                 borderRadius: '50%',
+                border: '3px solid white',
+                boxShadow: '0 4px 15px rgba(255, 107, 107, 0.3), inset 0 1px 3px rgba(255, 255, 255, 0.5)',
                 zIndex: 20
               }}
             />

@@ -74,7 +74,7 @@ const Navigation: React.FC<NavigationProps> = ({ isRSVPFormOpen = false, onOpenR
         {/* Logo/Brand */}
         <div
           style={{
-            fontFamily: 'Cardo, serif',
+            fontFamily: 'Instrument Sans, sans-serif',
             fontSize: '1.5rem',
             fontWeight: '400',
             color: isScrolled ? '#1a1a1a' : 'white',
@@ -83,7 +83,7 @@ const Navigation: React.FC<NavigationProps> = ({ isRSVPFormOpen = false, onOpenR
           }}
           onClick={() => scrollToSection('hero')}
         >
-          Joel & Stephanie
+          Stephanie<strong>and</strong>Joel
         </div>
 
         {/* Desktop Navigation */}

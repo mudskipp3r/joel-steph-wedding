@@ -48,28 +48,28 @@ const PhotoCarousel: React.FC = () => {
 
   const photos = [
     {
-      src: "/images/Joel Proposes to Steph-22.jpg",
-      alt: "Joel and Stephanie engagement photo"
+      src: "/images/carousel/carousel_22.jpg",
+      alt: "Joel and Stephanie engagement photo - romantic moment"
     },
     {
-      src: "/images/Joel Proposes to Steph-43.jpg",
-      alt: "Joel and Stephanie engagement photo"
+      src: "/images/carousel/carousel_43.jpg",
+      alt: "Joel and Stephanie engagement photo - celebration"
     },
     {
-      src: "/images/Joel Proposes to Steph-103.jpg",
-      alt: "Joel and Stephanie engagement photo"
+      src: "/images/carousel/carousel_103.jpg",
+      alt: "Joel and Stephanie engagement photo - portrait"
     },
     {
-      src: "/images/Joel Proposes to Steph-139.jpg",
-      alt: "Joel and Stephanie engagement photo"
+      src: "/images/carousel/carousel_139.jpg",
+      alt: "Joel and Stephanie engagement photo - intimate moment"
     },
     {
-      src: "/images/Joel Proposes to Steph-145.jpg",
-      alt: "Joel and Stephanie engagement photo"
+      src: "/images/carousel/carousel_145.jpg",
+      alt: "Joel and Stephanie engagement photo - joyful scene"
     },
     {
-      src: "/images/Joel Proposes to Steph-149.jpg",
-      alt: "Joel and Stephanie engagement photo"
+      src: "/images/carousel/carousel_149.jpg",
+      alt: "Joel and Stephanie engagement photo - beautiful setting"
     }
   ];
 

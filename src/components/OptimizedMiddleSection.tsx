@@ -28,6 +28,13 @@ const OptimizedMiddleSection: React.FC = () => {
     const textElement = pinnedText.querySelector('h2');
     if (!textElement) return;
 
+    // Helper function to create text split animation
+    const splitTextIntoChars = (text: string) => {
+      return text.split('').map((char, index) =>
+        `<span class="char-${index}" style="display: inline-block; opacity: 0; transform: translateY(20px);">${char === ' ' ? '&nbsp;' : char}</span>`
+      ).join('');
+    };
+
     // Pin the text to center when div 1 top hits screen top
     ScrollTrigger.create({
       trigger: div1,
@@ -42,7 +49,33 @@ const OptimizedMiddleSection: React.FC = () => {
     const sunSvg = document.querySelector('.sun-svg');
     const cloudSvg = document.querySelector('.cloud-svg');
 
-    // Text change triggers - using direct onUpdate instead of timelines for scrub
+    // Helper function to animate text with split effect
+    const animateTextTransition = (newText: string, svgToShow: HTMLElement | null, svgToHide: HTMLElement[]) => {
+      // Set new text content with split chars
+      textElement.innerHTML = splitTextIntoChars(newText);
+
+      // Animate characters in with stagger
+      const chars = textElement.querySelectorAll(`[class*="char-"]`);
+      gsap.fromTo(chars,
+        { opacity: 0, y: 20, rotationX: -90 },
+        {
+          opacity: 1,
+          y: 0,
+          rotationX: 0,
+          duration: 0.8,
+          stagger: 0.03,
+          ease: "back.out(1.7)"
+        }
+      );
+
+      // Handle SVG transitions
+      if (svgToShow) gsap.to(svgToShow, { opacity: 1, scale: 1, duration: 0.6 });
+      svgToHide.forEach(svg => {
+        if (svg) gsap.to(svg, { opacity: 0, scale: 0.7, duration: 0.4 });
+      });
+    };
+
+    // Text change triggers - using split text animations
     ScrollTrigger.create({
       trigger: div1,
       start: "bottom-=50 top",
@@ -51,17 +84,13 @@ const OptimizedMiddleSection: React.FC = () => {
       onUpdate: self => {
         const progress = self.progress;
         if (progress < 0.5) {
-          textElement.textContent = "Welcome to our wedding";
-          gsap.set(textElement, { opacity: 1 - (progress * 2), y: -20 * progress });
-          if (heartSvg) gsap.set(heartSvg, { opacity: 1 - (progress * 2), scale: 1 - (progress * 0.3) });
-          if (sunSvg) gsap.set(sunSvg, { opacity: 0 });
-          if (cloudSvg) gsap.set(cloudSvg, { opacity: 0 });
+          if (!textElement.textContent.includes("Welcome to our wedding")) {
+            animateTextTransition("Welcome to our wedding", heartSvg, [sunSvg, cloudSvg]);
+          }
         } else {
-          textElement.textContent = "We can't wait to see you all";
-          gsap.set(textElement, { opacity: (progress - 0.5) * 2, y: -20 * (1 - progress) });
-          if (heartSvg) gsap.set(heartSvg, { opacity: 0 });
-          if (sunSvg) gsap.set(sunSvg, { opacity: (progress - 0.5) * 2, scale: 0.7 + ((progress - 0.5) * 0.6) });
-          if (cloudSvg) gsap.set(cloudSvg, { opacity: 0 });
+          if (!textElement.textContent.includes("We can't wait to see you all")) {
+            animateTextTransition("We can't wait to see you all", sunSvg, [heartSvg, cloudSvg]);
+          }
         }
       },
       id: "text-1-to-2"
@@ -75,17 +104,13 @@ const OptimizedMiddleSection: React.FC = () => {
       onUpdate: self => {
         const progress = self.progress;
         if (progress < 0.5) {
-          textElement.textContent = "We can't wait to see you all";
-          gsap.set(textElement, { opacity: 1 - (progress * 2), y: -20 * progress });
-          if (sunSvg) gsap.set(sunSvg, { opacity: 1 - (progress * 2), scale: 1 - (progress * 0.3) });
-          if (heartSvg) gsap.set(heartSvg, { opacity: 0 });
-          if (cloudSvg) gsap.set(cloudSvg, { opacity: 0 });
+          if (!textElement.textContent.includes("We can't wait to see you all")) {
+            animateTextTransition("We can't wait to see you all", sunSvg, [heartSvg, cloudSvg]);
+          }
         } else {
-          textElement.textContent = "On our special day";
-          gsap.set(textElement, { opacity: (progress - 0.5) * 2, y: -20 * (1 - progress) });
-          if (sunSvg) gsap.set(sunSvg, { opacity: 0 });
-          if (heartSvg) gsap.set(heartSvg, { opacity: 0 });
-          if (cloudSvg) gsap.set(cloudSvg, { opacity: (progress - 0.5) * 2, scale: 0.7 + ((progress - 0.5) * 0.6) });
+          if (!textElement.textContent.includes("On our special day")) {
+            animateTextTransition("On our special day", cloudSvg, [heartSvg, sunSvg]);
+          }
         }
       },
       id: "text-2-to-3"
@@ -113,22 +138,22 @@ const OptimizedMiddleSection: React.FC = () => {
     >
       <div ref={div1Ref} className="section-div">
         <div className="squares-container">
-          <img src="/images/middle_section_images/Joel Proposes to Steph-103.jpg" alt="" className="red-square portrait" style={{ top: '15%', right: '12%' }} />
-          <img src="/images/middle_section_images/Joel Proposes to Steph-139.jpg" alt="" className="red-square portrait-tall" style={{ top: '55%', left: '5%' }} />
-          <img src="/images/middle_section_images/Joel Proposes to Steph-153.jpg" alt="" className="red-square" style={{ top: '85%', right: '25%' }} />
+          <img src="/images/middle_section_images/01_proposal_portrait.jpg" alt="Proposal portrait" className="red-square portrait" style={{ top: '15%', right: '12%' }} />
+          <img src="/images/middle_section_images/02_proposal_tall.jpg" alt="Proposal tall" className="red-square portrait-tall" style={{ top: '55%', left: '5%' }} />
+          <img src="/images/middle_section_images/03_proposal_landscape.jpg" alt="Proposal landscape" className="red-square" style={{ top: '85%', right: '25%' }} />
         </div>
       </div>
       <div ref={div2Ref} className="section-div">
         <div className="squares-container">
-          <img src="/images/middle_section_images/Joel Proposes to Steph-212.jpg" alt="" className="red-square" style={{ top: '12%', left: '8%' }} />
-          <img src="/images/middle_section_images/Joel Proposes to Steph-216.jpg" alt="" className="red-square portrait-large" style={{ top: '40%', right: '10%' }} />
-          <img src="/images/middle_section_images/Joel Proposes to Steph-242.jpg" alt="" className="red-square portrait" style={{ top: '80%', left: '15%' }} />
+          <img src="/images/middle_section_images/04_couple_landscape.jpg" alt="Couple landscape" className="red-square" style={{ top: '12%', left: '8%' }} />
+          <img src="/images/middle_section_images/05_couple_large.jpg" alt="Couple large portrait" className="red-square portrait-large" style={{ top: '40%', right: '10%' }} />
+          <img src="/images/middle_section_images/06_couple_portrait.jpg" alt="Couple portrait" className="red-square portrait" style={{ top: '80%', left: '15%' }} />
         </div>
       </div>
       <div ref={div3Ref} className="section-div">
         <div className="squares-container">
-          <img src="/images/middle_section_images/Joel Proposes to Steph-255.jpg" alt="" className="red-square portrait-tall" style={{ top: '10%', right: '15%' }} />
-          <img src="/images/middle_section_images/LKCK6595.JPG" alt="" className="red-square portrait-large" style={{ top: '45%', left: '8%' }} />
+          <img src="/images/middle_section_images/07_engagement_tall.jpg" alt="Engagement tall portrait" className="red-square portrait-tall" style={{ top: '10%', right: '15%' }} />
+          <img src="/images/middle_section_images/08_engagement_large.jpg" alt="Engagement large portrait" className="red-square portrait-large" style={{ top: '45%', left: '8%' }} />
           <div className="red-square" style={{ top: '85%', right: '20%' }}></div>
         </div>
       </div>
@@ -219,7 +244,7 @@ const OptimizedMiddleSection: React.FC = () => {
           position: absolute;
           background: red;
           border-radius: 16px;
-          opacity: 0.8;
+          opacity: 1;
           width: 240px;
           height: 240px;
           object-fit: cover;
@@ -294,7 +319,7 @@ const OptimizedMiddleSection: React.FC = () => {
           top: 50%;
           left: 50%;
           transform: translate(-50%, -50%);
-          z-index: -1;
+          z-index: 1000;
           pointer-events: none;
         }
 
@@ -306,21 +331,22 @@ const OptimizedMiddleSection: React.FC = () => {
           width: 200px;
           height: 200px;
           opacity: 0;
-          transition: opacity 0.3s ease;
+          transition: opacity 0.15s ease;
           pointer-events: none;
+          z-index: -1;
         }
 
         .heart-svg {
           opacity: 1;
-          filter: drop-shadow(0 4px 20px rgba(255, 107, 107, 0.3)) hue-rotate(0deg) saturate(1.2) brightness(1.1);
+          filter: drop-shadow(0 4px 20px rgba(246, 198, 175, 0.3)) brightness(0) saturate(100%) invert(93%) sepia(15%) saturate(1151%) hue-rotate(317deg) brightness(94%) contrast(92%);
         }
 
         .sun-svg {
-          filter: drop-shadow(0 4px 20px rgba(217, 149, 13, 0.3)) hue-rotate(35deg) saturate(1.4) brightness(1.2);
+          filter: drop-shadow(0 4px 20px rgba(245, 142, 127, 0.3)) brightness(0) saturate(100%) invert(71%) sepia(51%) saturate(468%) hue-rotate(315deg) brightness(97%) contrast(91%);
         }
 
         .cloud-svg {
-          filter: drop-shadow(0 4px 20px rgba(102, 126, 234, 0.3)) hue-rotate(280deg) saturate(1.1) brightness(1.3);
+          filter: drop-shadow(0 4px 20px rgba(255, 207, 145, 0.3)) brightness(0) saturate(100%) invert(93%) sepia(56%) saturate(443%) hue-rotate(315deg) brightness(102%) contrast(94%);
         }
 
         @media (max-width: 768px) {

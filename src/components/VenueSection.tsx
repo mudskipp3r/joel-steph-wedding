@@ -168,8 +168,8 @@ const VenueSection: React.FC = () => {
     >
       <h2
         style={{
-          fontFamily: 'Cardo, serif',
-          fontSize: 'clamp(3rem, 6vw, 5rem)',
+          fontFamily: 'Instrument Serif, serif',
+          fontSize: 'clamp(3rem, 6vw, 4.5rem)',
           color: '#1a1a1a',
           fontWeight: '400',
           letterSpacing: '-0.02em',
@@ -182,30 +182,51 @@ const VenueSection: React.FC = () => {
 
       {/* Navigation Toggle */}
       <div
+        className="venue-toggle"
         style={{
           display: 'flex',
-          background: 'rgba(255, 255, 255, 0.9)',
+          background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.9))',
           borderRadius: '25px',
-          padding: '4px',
+          padding: '6px',
           gap: '4px',
-          boxShadow: '0 10px 20px rgba(0, 0, 0, 0.2)'
+          boxShadow: '0 10px 30px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.8)',
+          border: '1px solid rgba(255, 107, 107, 0.2)',
+          backdropFilter: 'blur(10px)'
         }}
       >
         {venues.map((venue, index) => (
           <button
             key={venue.id}
             onClick={() => switchToVenue(index)}
+            className="venue-toggle-button"
             style={{
               fontFamily: 'Instrument Sans, sans-serif',
               fontSize: '1rem',
-              fontWeight: '500',
-              padding: '12px 24px',
+              fontWeight: '600',
+              padding: '14px 28px',
               borderRadius: '20px',
               border: 'none',
               cursor: 'pointer',
               transition: 'all 0.3s ease',
-              background: activeVenue === index ? '#FF6B6B' : 'transparent',
+              background: activeVenue === index ?
+                'linear-gradient(135deg, #FF6B6B, #FF5252)' : 'transparent',
               color: activeVenue === index ? 'white' : '#666',
+              boxShadow: activeVenue === index ?
+                '0 4px 15px rgba(255, 107, 107, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2)' : 'none',
+              transform: activeVenue === index ? 'translateY(-1px)' : 'none',
+              minWidth: '120px'
+            }}
+            onMouseEnter={(e) => {
+              if (activeVenue !== index) {
+                e.currentTarget.style.background = 'rgba(255, 107, 107, 0.1)';
+                e.currentTarget.style.color = '#FF6B6B';
+              }
+            }}
+            onMouseLeave={(e) => {
+              if (activeVenue !== index) {
+                e.currentTarget.style.background = 'transparent';
+                e.currentTarget.style.color = '#666';
+              }
             }}
           >
             {venue.type}
@@ -226,23 +247,24 @@ const VenueSection: React.FC = () => {
         {/* Venue Information Card - Mobile First */}
         <div className="venue-info-card"
           style={{
-            background: 'white',
-            borderRadius: '20px',
-            padding: '2rem',
-            boxShadow: '0 10px 30px rgba(0, 0, 0, 0.1)',
-            border: '1px solid rgba(0, 0, 0, 0.1)'
+            background: 'linear-gradient(135deg, #ffffff 0%, #fefefe 50%, #ffffff 100%)',
+            borderRadius: '16px',
+            padding: '2.5rem',
+            boxShadow: '0 20px 60px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.8)',
+            border: '1px solid rgba(255, 107, 107, 0.1)'
           }}
         >
           {/* Venue Header */}
-          <div style={{ marginBottom: '1rem' }}>
+          <div style={{ marginBottom: '1.5rem' }}>
             <h3
               style={{
-                fontFamily: 'Cardo, serif',
-                fontSize: '1.6rem',
+                fontFamily: 'Instrument Serif, serif',
+                fontSize: '2rem',
                 color: '#1a1a1a',
                 fontWeight: '400',
-                marginBottom: '0.25rem',
-                textAlign: 'left'
+                marginBottom: '0.5rem',
+                textAlign: 'left',
+                letterSpacing: '-0.02em'
               }}
             >
               {venues[activeVenue].type}
@@ -250,7 +272,7 @@ const VenueSection: React.FC = () => {
             <h4
               style={{
                 fontFamily: 'Instrument Sans, sans-serif',
-                fontSize: '1rem',
+                fontSize: '1.1rem',
                 color: '#333',
                 fontWeight: '500',
                 marginBottom: '0.5rem',
@@ -262,12 +284,12 @@ const VenueSection: React.FC = () => {
             <p
               style={{
                 fontFamily: 'Instrument Sans, sans-serif',
-                fontSize: '0.85rem',
+                fontSize: '1rem',
                 color: '#666',
                 fontWeight: '400',
-                lineHeight: '1.3',
+                lineHeight: '1.4',
                 textAlign: 'left',
-                marginBottom: '1rem'
+                marginBottom: '1.5rem'
               }}
             >
               {venues[activeVenue].address}
@@ -279,40 +301,45 @@ const VenueSection: React.FC = () => {
             onClick={openGoogleMaps}
             style={{
               fontFamily: 'Instrument Sans, sans-serif',
-              fontSize: '0.9rem',
+              fontSize: '1rem',
               fontWeight: '500',
               color: 'white',
-              background: '#4285F4', // Google Maps blue
+              background: '#FF6B6B',
               border: 'none',
               borderRadius: '8px',
-              padding: '10px 16px',
+              padding: '14px 24px',
               cursor: 'pointer',
               transition: 'all 0.3s ease',
-              marginBottom: '1.5rem',
+              marginBottom: '2rem',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              gap: '6px'
+              gap: '8px',
+              boxShadow: '0 4px 15px rgba(255, 107, 107, 0.3)'
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.background = '#3367D6';
+              e.currentTarget.style.background = '#FF5252';
+              e.currentTarget.style.transform = 'translateY(-2px)';
+              e.currentTarget.style.boxShadow = '0 8px 25px rgba(255, 107, 107, 0.4)';
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.background = '#4285F4';
+              e.currentTarget.style.background = '#FF6B6B';
+              e.currentTarget.style.transform = 'translateY(0)';
+              e.currentTarget.style.boxShadow = '0 4px 15px rgba(255, 107, 107, 0.3)';
             }}
           >
             Open in Google Maps
           </button>
 
           {/* Parking Information */}
-          <div style={{ marginBottom: '1rem' }}>
+          <div style={{ marginBottom: '1.5rem' }}>
             <h5
               style={{
                 fontFamily: 'Instrument Sans, sans-serif',
-                fontSize: '0.9rem',
+                fontSize: '1rem',
                 color: '#1a1a1a',
                 fontWeight: '600',
-                marginBottom: '0.5rem'
+                marginBottom: '0.75rem'
               }}
             >
               Parking
@@ -320,10 +347,10 @@ const VenueSection: React.FC = () => {
             <p
               style={{
                 fontFamily: 'Instrument Sans, sans-serif',
-                fontSize: '0.8rem',
+                fontSize: '0.95rem',
                 color: '#666',
                 fontWeight: '400',
-                lineHeight: '1.3',
+                lineHeight: '1.4',
                 marginBottom: '0'
               }}
             >
@@ -336,35 +363,46 @@ const VenueSection: React.FC = () => {
             <h5
               style={{
                 fontFamily: 'Instrument Sans, sans-serif',
-                fontSize: '0.9rem',
+                fontSize: '1rem',
                 color: '#1a1a1a',
                 fontWeight: '600',
-                marginBottom: '0.5rem'
+                marginBottom: '0.75rem'
               }}
             >
               Public Transport
             </h5>
-            <div style={{ marginBottom: '0.5rem' }}>
+            <div style={{ marginBottom: '0.75rem' }}>
               <p
                 style={{
                   fontFamily: 'Instrument Sans, sans-serif',
-                  fontSize: '0.8rem',
+                  fontSize: '0.9rem',
                   color: '#666',
                   fontWeight: '500',
-                  lineHeight: '1.3',
-                  marginBottom: '0.25rem'
+                  lineHeight: '1.4',
+                  marginBottom: '0.25rem',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.5rem'
                 }}
               >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <rect x="1" y="3" width="15" height="13" rx="2"/>
+                  <path d="M16 16h3a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2H16"/>
+                  <circle cx="5.5" cy="18.5" r="2.5"/>
+                  <circle cx="10.5" cy="18.5" r="2.5"/>
+                  <path d="M5 15V9"/>
+                  <path d="M11 15V9"/>
+                </svg>
                 Train:
               </p>
               <p
                 style={{
                   fontFamily: 'Instrument Sans, sans-serif',
-                  fontSize: '0.75rem',
+                  fontSize: '0.85rem',
                   color: '#666',
                   fontWeight: '400',
-                  lineHeight: '1.3',
-                  marginBottom: '0.5rem',
+                  lineHeight: '1.4',
+                  marginBottom: '0.75rem',
                   paddingLeft: '1rem'
                 }}
               >
@@ -375,22 +413,33 @@ const VenueSection: React.FC = () => {
               <p
                 style={{
                   fontFamily: 'Instrument Sans, sans-serif',
-                  fontSize: '0.8rem',
+                  fontSize: '0.9rem',
                   color: '#666',
                   fontWeight: '500',
-                  lineHeight: '1.3',
-                  marginBottom: '0.25rem'
+                  lineHeight: '1.4',
+                  marginBottom: '0.25rem',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.5rem'
                 }}
               >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M8 6v6"/>
+                  <path d="M15 6v6"/>
+                  <path d="M2 12h19.6"/>
+                  <path d="M18 18h3s.5-1.7.8-2.8c.1-.4.2-.8.2-1.2V9.5a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v4.5c0 .4.1.8.2 1.2.3 1.1.8 2.8.8 2.8h3"/>
+                  <circle cx="7" cy="18" r="2"/>
+                  <circle cx="17" cy="18" r="2"/>
+                </svg>
                 Bus:
               </p>
               <p
                 style={{
                   fontFamily: 'Instrument Sans, sans-serif',
-                  fontSize: '0.75rem',
+                  fontSize: '0.85rem',
                   color: '#666',
                   fontWeight: '400',
-                  lineHeight: '1.3',
+                  lineHeight: '1.4',
                   marginBottom: '0',
                   paddingLeft: '1rem'
                 }}
@@ -448,6 +497,32 @@ const VenueSection: React.FC = () => {
 
           .map-container {
             height: 350px !important;
+          }
+
+          /* Mobile venue toggle improvements */
+          .venue-toggle {
+            width: 100% !important;
+            max-width: 400px !important;
+            margin: 0 auto !important;
+          }
+
+          .venue-toggle-button {
+            flex: 1 !important;
+            font-size: 1.1rem !important;
+            padding: 16px 20px !important;
+            font-weight: 700 !important;
+            min-width: auto !important;
+          }
+        }
+
+        @media (max-width: 480px) {
+          .venue-toggle {
+            padding: 8px !important;
+          }
+
+          .venue-toggle-button {
+            font-size: 1rem !important;
+            padding: 14px 16px !important;
           }
         }
       `}</style>

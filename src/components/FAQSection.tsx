@@ -12,9 +12,6 @@ interface FAQItem {
 
 const FAQSection: React.FC = () => {
   const [openItems, setOpenItems] = useState<number[]>([]);
-  const [activeCategory, setActiveCategory] = useState<string>('General');
-
-  const categories = ['General', 'Ceremony', 'Reception', 'Travel'];
 
   const faqData: FAQItem[] = [
     {
@@ -113,7 +110,7 @@ const FAQSection: React.FC = () => {
         }
       });
     };
-  }, [activeCategory]);
+  }, []);
 
   const toggleFAQ = (index: number) => {
     setOpenItems(prev => {
@@ -125,7 +122,8 @@ const FAQSection: React.FC = () => {
     });
   };
 
-  const filteredFAQs = faqData.filter(item => item.category === activeCategory);
+  // Show all FAQ items without filtering
+  const allFAQs = faqData;
 
   return (
     <section
@@ -140,38 +138,13 @@ const FAQSection: React.FC = () => {
     >
       <div className="faq-container">
         <div className="faq-header">
-          <h2>Frequently asked questions</h2>
-          <p>These are the most commonly asked questions about our wedding.<br/>
+          <h2>Frequently Asked Questions</h2>
+          <p>Everything you need to know about our special day.<br/>
              Can't find what you're looking for? <a href="mailto:joel.steph@wedding.com">Contact us</a></p>
         </div>
 
-        <div className="category-pills">
-          {categories.map(category => (
-            <button
-              key={category}
-              className={`category-pill ${activeCategory === category ? 'active' : ''}`}
-              onClick={() => setActiveCategory(category)}
-              style={{
-                fontFamily: 'Instrument Sans, sans-serif',
-                fontSize: '0.9rem',
-                fontWeight: activeCategory === category ? '600' : '500',
-                padding: '10px 20px',
-                borderRadius: '25px',
-                border: activeCategory === category ? 'none' : '1px solid #e0e0e0',
-                background: activeCategory === category ? '#1a1a1a' : 'white',
-                color: activeCategory === category ? 'white' : '#666',
-                cursor: 'pointer',
-                transition: 'all 0.3s ease',
-                marginRight: '10px'
-              }}
-            >
-              {category}
-            </button>
-          ))}
-        </div>
-
         <div className="faq-list">
-          {filteredFAQs.map((item, index) => (
+          {allFAQs.map((item, index) => (
             <div key={index} className="faq-item">
               <button
                 className={`faq-question ${openItems.includes(index) ? 'open' : ''}`}
@@ -219,17 +192,17 @@ const FAQSection: React.FC = () => {
         }
 
         .faq-header h2 {
-          font-family: 'Instrument Sans', sans-serif;
-          font-size: 2.5rem;
-          font-weight: 600;
+          font-family: 'Instrument Serif', serif;
+          font-size: clamp(3rem, 6vw, 4.5rem);
+          font-weight: 400;
           color: #1a1a1a;
-          margin-bottom: 15px;
+          margin-bottom: 1rem;
           letter-spacing: -0.02em;
         }
 
         .faq-header p {
           font-family: 'Instrument Sans', sans-serif;
-          font-size: 1rem;
+          font-size: 1.1rem;
           color: #666;
           line-height: 1.6;
         }
@@ -259,47 +232,48 @@ const FAQSection: React.FC = () => {
         }
 
         .faq-item {
-          background: white;
-          border: 1px solid #e5e5e5;
+          background: linear-gradient(135deg, #ffffff 0%, #fefefe 50%, #ffffff 100%);
+          border: 1px solid rgba(255, 107, 107, 0.1);
           border-bottom: none;
           overflow: hidden;
           transition: all 0.3s ease;
+          box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
         }
 
         .faq-item:first-child {
-          border-top-left-radius: 12px;
-          border-top-right-radius: 12px;
+          border-top-left-radius: 16px;
+          border-top-right-radius: 16px;
         }
 
         .faq-item:last-child {
-          border-bottom: 1px solid #e5e5e5;
-          border-bottom-left-radius: 12px;
-          border-bottom-right-radius: 12px;
+          border-bottom: 1px solid rgba(255, 107, 107, 0.1);
+          border-bottom-left-radius: 16px;
+          border-bottom-right-radius: 16px;
         }
 
         .faq-question {
           width: 100%;
-          padding: 20px 24px;
-          background: white;
+          padding: 24px 28px;
+          background: transparent;
           border: none;
           text-align: left;
           cursor: pointer;
           display: flex;
           align-items: center;
-          gap: 16px;
+          gap: 18px;
           font-family: 'Instrument Sans', sans-serif;
-          font-size: 1rem;
+          font-size: 1.1rem;
           font-weight: 500;
           color: #1a1a1a;
           transition: all 0.2s ease;
         }
 
         .faq-question:hover {
-          background: #fafafa;
+          background: rgba(255, 107, 107, 0.05);
         }
 
         .faq-question.open {
-          background: #fafafa;
+          background: rgba(255, 107, 107, 0.05);
         }
 
         .faq-icon-left {
@@ -326,7 +300,7 @@ const FAQSection: React.FC = () => {
           max-height: 0;
           overflow: hidden;
           transition: max-height 0.3s ease;
-          background: #fafafa;
+          background: rgba(255, 107, 107, 0.02);
         }
 
         .faq-answer.open {
@@ -334,10 +308,10 @@ const FAQSection: React.FC = () => {
         }
 
         .faq-answer-content {
-          padding: 0 24px 20px 60px;
+          padding: 0 28px 24px 66px;
           color: #666;
           line-height: 1.6;
-          font-size: 0.95rem;
+          font-size: 1rem;
           font-family: 'Instrument Sans', sans-serif;
         }
 

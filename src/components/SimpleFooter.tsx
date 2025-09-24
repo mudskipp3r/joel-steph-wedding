@@ -129,27 +129,16 @@ const SimpleFooter: React.FC<SimpleFooterProps> = ({
     }
 
     try {
-      // Create URL-encoded form data for Netlify submission
-      const submitData = new URLSearchParams();
-      submitData.append('form-name', 'wedding-rsvp');
-      submitData.append('fullName', formData.fullName);
-      submitData.append('email', formData.email);
-      submitData.append('phone', formData.phone);
-      submitData.append('attendance', formData.attendance);
-      submitData.append('hasPlusOne', formData.hasPlusOne ? 'yes' : 'no');
-      if (formData.hasPlusOne) {
-        submitData.append('plusOneCode', formData.plusOneCode);
-      }
-      submitData.append('dietaryRestrictions', formData.dietaryRestrictions);
-      submitData.append('message', formData.message);
+      // Create FormData from the form element (like your old form)
+      const formData = new FormData(e.target as HTMLFormElement);
 
-      // Submit to Netlify with correct headers
-      const response = await fetch('/', {
-        method: 'POST',
+      // Submit to Netlify exactly like your old working form
+      const response = await fetch("/", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
+          "Content-Type": "application/x-www-form-urlencoded",
         },
-        body: submitData.toString(),
+        body: new URLSearchParams(formData as any).toString(),
       });
 
       if (response.ok) {

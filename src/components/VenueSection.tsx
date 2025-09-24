@@ -1,30 +1,315 @@
 'use client';
 
-import React from 'react';
-import ScrollAnimationSection from './ScrollAnimationSection';
+import React, { useEffect, useRef, useState } from 'react';
+
+// Google Maps type declarations
+interface GoogleMapsApi {
+  maps: {
+    Map: new (element: HTMLElement, options: unknown) => GoogleMapsMap;
+    Marker: new (options: unknown) => GoogleMapsMarker;
+    Animation: {
+      DROP: unknown;
+    };
+    Size: new (width: number, height: number) => unknown;
+    Point: new (x: number, y: number) => unknown;
+    LatLng: new (lat: number, lng: number) => unknown;
+    LatLngBounds: new () => GoogleMapsLatLngBounds;
+  };
+}
+
+interface GoogleMapsMap {
+  setCenter: (latLng: unknown) => void;
+  setZoom: (zoom: number) => void;
+  fitBounds: (bounds: unknown) => void;
+}
+
+interface GoogleMapsMarker {
+  setMap: (map: GoogleMapsMap | null) => void;
+}
+
+interface GoogleMapsLatLngBounds {
+  extend: (latLng: unknown) => void;
+}
+
+declare global {
+  interface Window {
+    google?: GoogleMapsApi;
+  }
+}
+
+const venues = [
+  {
+    id: 1,
+    name: "Saint Brigid's Catholic Church",
+    address: "Livingstone Rd, Marrickville, NSW 2204",
+    coordinates: { lat: -33.9133, lng: 151.1553 },
+    type: "Ceremony"
+  },
+  {
+    id: 2,
+    name: "The Sky Ballroom",
+    address: "Level 3/462 Chapel Rd, Bankstown NSW 2200",
+    coordinates: { lat: -33.9198, lng: 151.0346 },
+    type: "Reception"
+  }
+];
 
 const VenueSection: React.FC = () => {
+  const mapRef = useRef<HTMLDivElement>(null);
+  const [map, setMap] = useState<GoogleMapsMap | null>(null);
+  const [markers, setMarkers] = useState<GoogleMapsMarker[]>([]);
+  const [activeVenue, setActiveVenue] = useState(0); // 0 for ceremony, 1 for reception
+
+  // Initialize Google Maps
+  const initializeMap = () => {
+    if (!mapRef.current || !window.google?.maps) {
+      console.log('Google Maps not ready, retrying...');
+      setTimeout(initializeMap, 500);
+      return;
+    }
+
+    try {
+      const newMap = new window.google!.maps.Map(mapRef.current, {
+        zoom: 15,
+        center: venues[0].coordinates, // Start with ceremony location
+        mapTypeId: 'roadmap',
+        styles: [
+          {
+            featureType: 'all',
+            elementType: 'geometry.fill',
+            stylers: [{ color: '#f8f8f8' }]
+          },
+          {
+            featureType: 'water',
+            elementType: 'geometry.fill',
+            stylers: [{ color: '#a8d1e0' }]
+          },
+          {
+            featureType: 'poi',
+            elementType: 'geometry.fill',
+            stylers: [{ color: '#e8f5e8' }]
+          }
+        ]
+      });
+
+      // Create markers for both venues
+      const newMarkers: GoogleMapsMarker[] = [];
+      venues.forEach((venue, index) => {
+        console.log(`Creating marker for ${venue.name} at`, venue.coordinates);
+        const marker = new window.google!.maps.Marker({
+          position: venue.coordinates,
+          map: newMap,
+          title: venue.name,
+          animation: window.google!.maps.Animation.DROP,
+          icon: {
+            url: `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(`
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="12" cy="12" r="8" fill="${index === 0 ? '#FF6B6B' : '#4ECDC4'}" stroke="white" stroke-width="2"/>
+                <text x="12" y="16" font-family="Arial" font-size="10" fill="white" text-anchor="middle">${index + 1}</text>
+              </svg>
+            `)}`,
+            scaledSize: new window.google!.maps.Size(32, 32),
+            anchor: new window.google!.maps.Point(16, 16)
+          }
+        });
+        newMarkers.push(marker);
+      });
+
+      console.log('Google Maps initialized with', newMarkers.length, 'markers');
+
+      setMap(newMap);
+      setMarkers(newMarkers);
+    } catch (error) {
+      console.error('Error initializing Google Maps:', error);
+    }
+  };
+
+  // Switch between venues
+  const switchToVenue = (venueIndex: number) => {
+    setActiveVenue(venueIndex);
+    if (map && venues[venueIndex]) {
+      const venue = venues[venueIndex];
+      map.setCenter(new window.google!.maps.LatLng(venue.coordinates.lat, venue.coordinates.lng));
+      map.setZoom(15);
+    }
+  };
+
+  // Load Google Maps API
+  useEffect(() => {
+    if (window.google?.maps) {
+      initializeMap();
+      return;
+    }
+
+    const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
+    if (!apiKey) {
+      console.error('Google Maps API key not found');
+      return;
+    }
+
+    const script = document.createElement('script');
+    script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=geometry&v=3.54`;
+    script.async = true;
+    script.defer = true;
+
+    script.onload = () => {
+      console.log('Google Maps script loaded');
+      setTimeout(initializeMap, 100);
+    };
+
+    script.onerror = (error) => {
+      console.error('Failed to load Google Maps script:', error);
+    };
+
+    document.head.appendChild(script);
+
+    return () => {
+      if (script.parentNode) {
+        document.head.removeChild(script);
+      }
+    };
+  }, []);
+
   return (
-    <section className="venue-section">
-      <h2 className="venues-title">Venues</h2>
-      <ScrollAnimationSection />
+    <section
+      className="venue-section"
+      style={{
+        padding: '4rem 2rem',
+        background: 'transparent', // No background - inherit red from page
+        minHeight: '100vh',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: '3rem'
+      }}
+    >
+      <h2
+        style={{
+          fontFamily: 'Instrument Serif, serif',
+          fontSize: 'clamp(3rem, 6vw, 5rem)',
+          color: 'white', // White text on red background
+          fontWeight: '400',
+          letterSpacing: '-0.02em',
+          margin: '0',
+          textAlign: 'center'
+        }}
+      >
+        Venues
+      </h2>
 
-      <style jsx>{`
-        .venue-section {
-          background: transparent;
-          padding: 80px 20px 0;
-        }
+      {/* Navigation Toggle */}
+      <div
+        style={{
+          display: 'flex',
+          background: 'rgba(255, 255, 255, 0.9)',
+          borderRadius: '25px',
+          padding: '4px',
+          gap: '4px',
+          boxShadow: '0 10px 20px rgba(0, 0, 0, 0.2)',
+          marginBottom: '1rem'
+        }}
+      >
+        {venues.map((venue, index) => (
+          <button
+            key={venue.id}
+            onClick={() => switchToVenue(index)}
+            style={{
+              fontFamily: 'Instrument Sans, sans-serif',
+              fontSize: '1rem',
+              fontWeight: '500',
+              padding: '12px 24px',
+              borderRadius: '20px',
+              border: 'none',
+              cursor: 'pointer',
+              transition: 'all 0.3s ease',
+              background: activeVenue === index ? '#FF6B6B' : 'transparent',
+              color: activeVenue === index ? 'white' : '#666',
+            }}
+          >
+            {venue.type}
+          </button>
+        ))}
+      </div>
 
-        .venues-title {
-          font-family: 'Instrument Serif', serif;
-          text-align: center;
-          font-size: clamp(3rem, 8vw, 6rem);
-          font-weight: 600;
-          color: white;
-          margin: 2rem 0 3rem;
-          letter-spacing: -0.02em;
-        }
-      `}</style>
+      {/* Map Container with Overlay */}
+      <div
+        style={{
+          position: 'relative',
+          width: '100%',
+          maxWidth: '800px',
+          height: '500px',
+          borderRadius: '20px',
+          overflow: 'hidden',
+          boxShadow: '0 20px 40px rgba(0, 0, 0, 0.3)',
+          border: '3px solid white'
+        }}
+      >
+        <div
+          ref={mapRef}
+          style={{
+            width: '100%',
+            height: '100%'
+          }}
+        />
+
+        {/* Overlaid Venue Information */}
+        <div
+          style={{
+            position: 'absolute',
+            top: '8px',
+            left: '8px',
+            bottom: '8px',
+            width: 'calc(25% - 8px)', // 1/4 of container minus padding
+            background: 'rgba(255, 255, 255, 0.95)',
+            borderRadius: '12px',
+            padding: '1.5rem',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            boxShadow: '0 10px 20px rgba(0, 0, 0, 0.3)',
+            transition: 'all 0.3s ease',
+            backdropFilter: 'blur(5px)'
+          }}
+        >
+          <h3
+            style={{
+              fontFamily: 'Instrument Serif, serif',
+              fontSize: '1.8rem',
+              color: '#1a1a1a',
+              fontWeight: '400',
+              marginBottom: '0.5rem',
+              textAlign: 'left'
+            }}
+          >
+            {venues[activeVenue].type}
+          </h3>
+          <h4
+            style={{
+              fontFamily: 'Instrument Sans, sans-serif',
+              fontSize: '1.1rem',
+              color: '#333',
+              fontWeight: '500',
+              marginBottom: '1rem',
+              textAlign: 'left'
+            }}
+          >
+            {venues[activeVenue].name}
+          </h4>
+          <p
+            style={{
+              fontFamily: 'Instrument Sans, sans-serif',
+              fontSize: '0.9rem',
+              color: '#666',
+              fontWeight: '400',
+              lineHeight: '1.4',
+              textAlign: 'left'
+            }}
+          >
+            {venues[activeVenue].address}
+          </p>
+        </div>
+      </div>
     </section>
   );
 };

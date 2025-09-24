@@ -2,7 +2,7 @@ import HeroSection from "../components/HeroSection";
 import MiddleSection from "../components/MiddleSection";
 import ScheduleSection from "../components/ScheduleSection";
 import TimelineSection from "../components/TimelineSection";
-import ScrollAnimationSection from "../components/ScrollAnimationSection";
+import VenueSection from "../components/VenueSection";
 import PhotoSection from "../components/PhotoSection";
 import RSVPSection from "../components/RSVPSection";
 import FAQSection from "../components/FAQSection";
@@ -35,7 +35,7 @@ export default function Home() {
       }}>
         <MiddleSection />
         <TimelineSection />
-        <ScrollAnimationSection />
+        <VenueSection />
         <PhotoSection />
         <RSVPSection />
         <FAQSection />

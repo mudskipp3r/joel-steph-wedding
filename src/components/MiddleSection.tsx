@@ -54,7 +54,7 @@ const MiddleSection: React.FC = () => {
 
           // Show text immediately when section starts (0% of scroll)
           const showTextThreshold = 0; // Start at top of section
-          const fadeOutThreshold = 0.70; // Start fading at 70% progress (earlier)
+          const fadeOutThreshold = 0.70; // Start fading at 70% progress
 
           if (progress >= showTextThreshold && progress < fadeOutThreshold) {
             // Normal animation phase
@@ -108,8 +108,9 @@ const MiddleSection: React.FC = () => {
               });
             }
           } else if (progress >= fadeOutThreshold) {
-            // Fade out phase - smooth transition to timeline
-            const fadeProgress = (progress - fadeOutThreshold) / (1 - fadeOutThreshold);
+            // Fade out phase - smooth transition to timeline (70% to 80%)
+            const fadeEndThreshold = 0.80;
+            const fadeProgress = Math.min((progress - fadeOutThreshold) / (fadeEndThreshold - fadeOutThreshold), 1);
             const fadeOpacity = 1 - fadeProgress;
             const fadeScale = 1 - (fadeProgress * 0.1); // Subtle scale down
             const fadeY = fadeProgress * -30; // Move up slightly

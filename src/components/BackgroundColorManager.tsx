@@ -44,10 +44,15 @@ const BackgroundColorManager: React.FC = () => {
       const trigger = ScrollTrigger.create({
         trigger: middleSection,
         start: '70% center', // Trigger at 70% through the middle section
-        end: 'bottom center',
+        end: '80% center', // Complete transition by 80%
         markers: true, // Show markers for debugging
         onEnter: () => {
           console.log('Transition point reached - changing to beige background');
+          gsap.to(document.body, {
+            backgroundColor: '#EBE3D8',
+            duration: 1.5,
+            ease: 'power2.out'
+          });
           gsap.to('.page-content', {
             backgroundColor: '#EBE3D8',
             duration: 1.5,
@@ -62,6 +67,11 @@ const BackgroundColorManager: React.FC = () => {
         },
         onLeaveBack: () => {
           console.log('Transition point left - changing back to light background');
+          gsap.to(document.body, {
+            backgroundColor: '#faf9f6',
+            duration: 1.5,
+            ease: 'power2.out'
+          });
           gsap.to('.page-content', {
             backgroundColor: '#faf9f6',
             duration: 1.5,
@@ -78,6 +88,47 @@ const BackgroundColorManager: React.FC = () => {
       triggers.push(trigger);
     } else {
       console.warn('Middle section not found');
+    }
+
+    // Add trigger for when leaving schedule section
+    const timelineSection = document.querySelector('[data-timeline-section]');
+    if (timelineSection) {
+      console.log('Setting up trigger for leaving schedule section');
+
+      const scheduleExitTrigger = ScrollTrigger.create({
+        trigger: timelineSection,
+        start: 'bottom center',
+        markers: true,
+        onEnter: () => {
+          console.log('Left schedule section - changing background color');
+          gsap.to(document.body, {
+            backgroundColor: '#2C5F2D', // Deep forest green background after schedule
+            duration: 1.5,
+            ease: 'power2.out'
+          });
+          gsap.to('.page-content', {
+            backgroundColor: '#2C5F2D', // Deep forest green background after schedule
+            duration: 1.5,
+            ease: 'power2.out'
+          });
+        },
+        onLeaveBack: () => {
+          console.log('Re-entering schedule section - back to beige');
+          gsap.to(document.body, {
+            backgroundColor: '#faf9f6', // Back to original cream
+            duration: 1.5,
+            ease: 'power2.out'
+          });
+          gsap.to('.page-content', {
+            backgroundColor: '#EBE3D8', // Back to beige
+            duration: 1.5,
+            ease: 'power2.out'
+          });
+        }
+      });
+      triggers.push(scheduleExitTrigger);
+    } else {
+      console.warn('Timeline section not found');
     }
 
     return () => {

@@ -25,9 +25,9 @@ export default function Home() {
         borderTopLeftRadius: '40px',
         borderTopRightRadius: '40px',
         paddingTop: '60px',
-        minHeight: '100vh',
         width: '100%',
-        margin: 0
+        margin: 0,
+        boxShadow: '0 10px 30px rgba(0, 0, 0, 0.1)'
       }}>
         <MiddleSection />
         <div style={{ height: '8vh' }}></div>
@@ -39,6 +39,8 @@ export default function Home() {
         <div style={{ height: '8vh' }}></div>
         <FAQSection />
         <div style={{ height: '8vh' }}></div>
+
+        {/* Footer at the bottom of content */}
         <SimpleFooter />
       </div>
     </>

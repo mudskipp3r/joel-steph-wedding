@@ -131,9 +131,8 @@ const FAQSection: React.FC = () => {
 
       <style jsx>{`
         .faq-section {
-          min-height: 100vh;
           background: transparent;
-          padding: 80px 20px;
+          padding: 60px 20px 20px;
           display: flex;
           align-items: center;
           justify-content: center;

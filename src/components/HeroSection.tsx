@@ -33,7 +33,7 @@ const HeroSection: React.FC = () => {
           zIndex: 1
         }}
       >
-        <source src="/images/AILoop.mp4" type="video/mp4" />
+        <source src="/images/HeroVideo.mp4" type="video/mp4" />
         {/* Fallback image if video doesn't load */}
         <img
           src="/images/LKCK6634.JPG"

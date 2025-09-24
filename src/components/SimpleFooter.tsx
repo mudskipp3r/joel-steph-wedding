@@ -142,7 +142,8 @@ const SimpleFooter: React.FC = () => {
           padding: '1.5rem 2rem',
           display: 'flex',
           alignItems: 'center',
-          justifyContent: 'space-between'
+          justifyContent: 'space-between',
+          boxShadow: '0 -5px 20px rgba(0, 0, 0, 0.05)'
         }}
       >
         <div className="footer-main">
@@ -188,6 +189,25 @@ const SimpleFooter: React.FC = () => {
         </button>
       </footer>
 
+      {/* Backdrop Overlay */}
+      <div
+        className="backdrop-overlay"
+        style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '100vw',
+          height: '100vh',
+          background: 'rgba(0, 0, 0, 0.5)',
+          zIndex: 9998,
+          opacity: isPanelOpen ? 1 : 0,
+          visibility: isPanelOpen ? 'visible' : 'hidden',
+          transition: 'opacity 0.4s ease, visibility 0.4s ease',
+          backdropFilter: 'blur(2px)'
+        }}
+        onClick={closePanel}
+      />
+
       {/* Slide-out RSVP Panel */}
       <div
         ref={panelRef}
@@ -203,7 +223,8 @@ const SimpleFooter: React.FC = () => {
           zIndex: 9999,
           transform: 'translateX(100%)',
           boxShadow: '-10px 0 30px rgba(0, 0, 0, 0.2)',
-          overflowY: 'auto'
+          overflowY: 'auto',
+          overflowX: 'hidden'
         }}
       >
         {/* Panel Header */}
@@ -251,7 +272,11 @@ const SimpleFooter: React.FC = () => {
         {/* Panel Content */}
         <div className="panel-content" style={{
           padding: '2rem',
-          paddingTop: '1rem'
+          paddingTop: '1rem',
+          width: '100%',
+          boxSizing: 'border-box',
+          wordWrap: 'break-word',
+          overflowWrap: 'break-word'
         }}>
           <p style={{
             fontFamily: 'Instrument Sans, sans-serif',
@@ -562,6 +587,9 @@ const SimpleFooter: React.FC = () => {
           background: white;
           transition: all 0.3s ease;
           outline: none;
+          width: 100%;
+          max-width: 100%;
+          box-sizing: border-box;
         }
 
         .form-group input:focus,
@@ -823,6 +851,22 @@ const SimpleFooter: React.FC = () => {
         .close-button:hover {
           background: rgba(102, 126, 234, 0.2) !important;
           transform: scale(1.1);
+        }
+
+        /* Panel specific styles */
+        .rsvp-panel {
+          min-width: 0; /* Prevent flex/grid items from overflowing */
+        }
+
+        .rsvp-panel * {
+          max-width: 100%;
+          word-wrap: break-word;
+          overflow-wrap: break-word;
+        }
+
+        /* Backdrop overlay styles */
+        .backdrop-overlay {
+          -webkit-backdrop-filter: blur(2px);
         }
 
         @media (max-width: 768px) {

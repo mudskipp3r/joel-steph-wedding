@@ -9,6 +9,7 @@ const MiddleSection: React.FC = () => {
   const pinContainerRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLDivElement>(null);
   const heartRef = useRef<HTMLDivElement>(null);
+  const transitionRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
@@ -17,8 +18,9 @@ const MiddleSection: React.FC = () => {
     const pinContainer = pinContainerRef.current;
     const text = textRef.current;
     const heart = heartRef.current;
+    const transition = transitionRef.current;
 
-    if (section && pinContainer && text && heart) {
+    if (section && pinContainer && text && heart && transition) {
       // Text phrases to cycle through
       const phrases = [
         "Welcome to our celebration",
@@ -32,6 +34,7 @@ const MiddleSection: React.FC = () => {
       text.textContent = phrases[0];
       gsap.set(text, { opacity: 0 });
       gsap.set(heart, { opacity: 0, scale: 0.8 });
+      gsap.set(transition, { opacity: 0, y: 100 });
 
       // Set initial state for heart images
       const heart1 = heart.querySelector('.heart-1');
@@ -51,10 +54,11 @@ const MiddleSection: React.FC = () => {
 
           // Show text immediately when section starts (0% of scroll)
           const showTextThreshold = 0; // Start at top of section
+          const fadeOutThreshold = 0.85; // Start fading at 85% progress
 
-          if (progress >= showTextThreshold) {
-            // Adjust progress for text changes (start from when text becomes visible)
-            const adjustedProgress = (progress - showTextThreshold) / (1 - showTextThreshold);
+          if (progress >= showTextThreshold && progress < fadeOutThreshold) {
+            // Normal animation phase
+            const adjustedProgress = (progress - showTextThreshold) / (fadeOutThreshold - showTextThreshold);
             const totalPhrases = phrases.length;
             const phraseProgress = adjustedProgress * totalPhrases;
             const newPhraseIndex = Math.floor(phraseProgress);
@@ -103,6 +107,34 @@ const MiddleSection: React.FC = () => {
                 }
               });
             }
+          } else if (progress >= fadeOutThreshold) {
+            // Fade out phase - smooth transition to timeline
+            const fadeProgress = (progress - fadeOutThreshold) / (1 - fadeOutThreshold);
+            const fadeOpacity = 1 - fadeProgress;
+            const fadeScale = 1 - (fadeProgress * 0.1); // Subtle scale down
+            const fadeY = fadeProgress * -30; // Move up slightly
+
+            gsap.set(text, {
+              opacity: fadeOpacity,
+              scale: fadeScale,
+              y: fadeY
+            });
+            gsap.set(heart, {
+              opacity: 0.05 * fadeOpacity,
+              scale: fadeScale
+            });
+
+            // Fade out heart images
+            gsap.set(heart1, { opacity: fadeOpacity });
+            gsap.set(heart2, { opacity: fadeOpacity });
+
+            // Fade in transition element
+            const transitionOpacity = Math.min(fadeProgress * 2, 1);
+            const transitionY = 100 - (fadeProgress * 100);
+            gsap.set(transition, {
+              opacity: transitionOpacity,
+              y: transitionY
+            });
           } else {
             // Hide text and heart if we're above the threshold
             if (gsap.getProperty(text, "opacity") !== 0) {
@@ -129,6 +161,14 @@ const MiddleSection: React.FC = () => {
         </div>
         <div ref={textRef} className="center-text">
           Welcome to our celebration
+        </div>
+        <div ref={transitionRef} className="transition-element">
+          <div className="transition-line"></div>
+          <div className="transition-hearts">
+            <span>♥</span>
+            <span>♥</span>
+            <span>♥</span>
+          </div>
         </div>
       </div>
 
@@ -323,6 +363,67 @@ const MiddleSection: React.FC = () => {
           line-height: 1.2;
           margin: 0;
           max-width: 80vw;
+        }
+
+        .transition-element {
+          position: absolute;
+          bottom: 10vh;
+          left: 50%;
+          transform: translateX(-50%);
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 1rem;
+        }
+
+        .transition-line {
+          width: 2px;
+          height: 80px;
+          background: linear-gradient(to bottom,
+            rgba(44, 62, 80, 0),
+            rgba(44, 62, 80, 0.3),
+            rgba(44, 62, 80, 0.6));
+          position: relative;
+        }
+
+        .transition-line::after {
+          content: '';
+          position: absolute;
+          bottom: -8px;
+          left: 50%;
+          transform: translateX(-50%);
+          width: 0;
+          height: 0;
+          border-left: 6px solid transparent;
+          border-right: 6px solid transparent;
+          border-top: 8px solid rgba(44, 62, 80, 0.6);
+        }
+
+        .transition-hearts {
+          display: flex;
+          gap: 1rem;
+          font-size: 1.2rem;
+          color: rgba(44, 62, 80, 0.3);
+          animation: pulse 2s ease-in-out infinite;
+        }
+
+        .transition-hearts span:nth-child(2) {
+          animation-delay: 0.3s;
+        }
+
+        .transition-hearts span:nth-child(3) {
+          animation-delay: 0.6s;
+        }
+
+        @keyframes pulse {
+          0%, 100% {
+            transform: scale(1);
+            opacity: 0.5;
+          }
+          50% {
+            transform: scale(1.1);
+            opacity: 0.8;
+          }
         }
 
       `}</style>

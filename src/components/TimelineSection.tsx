@@ -92,9 +92,10 @@ const TimelineSection: React.FC = () => {
         scrub: true,
         onUpdate: (self) => {
           const progress = self.progress;
-          const eventIndex = Math.floor(progress * events.length);
-          if (eventIndex < events.length && eventIndex >= 0) {
-            setActiveEvent(eventIndex);
+          const totalItems = events.length + 1; // +1 for title
+          const activeIndex = Math.floor(progress * totalItems);
+          if (activeIndex < totalItems && activeIndex >= 0) {
+            setActiveEvent(activeIndex);
           }
         }
       });
@@ -127,178 +128,94 @@ const TimelineSection: React.FC = () => {
           overflow: 'hidden'
         }}
       >
-        {/* Background */}
+        {/* Background container with clipping */}
         <div
           style={{
             position: 'absolute',
             inset: '2rem',
             background: '#F58E7F', // Bride's coral color
             borderRadius: '40px',
-            boxShadow: '0 20px 60px rgba(245, 142, 127, 0.3)'
+            boxShadow: '0 20px 60px rgba(245, 142, 127, 0.3)',
+            overflow: 'hidden' // Clip any content outside this container
           }}
         >
-          {/* Vertical Line - spans full height */}
+          {/* Fixed Vertical Line - inside background container */}
           <div
             style={{
               position: 'absolute',
-              left: '33.33%',  // Positioned at 1/3 from left
+              left: '23%', // Adjusted for being inside the inset container
+              transform: 'translateX(-50%)',
               top: '0',
               bottom: '0',
-              width: '2px',
-              background: 'rgba(255, 255, 255, 0.6)',
+              width: '3px',
+              background: 'rgba(255, 255, 255, 0.8)',
               boxShadow: '0 0 15px rgba(255, 255, 255, 0.4)',
-              zIndex: 5
+              zIndex: 10
             }}
           />
-        </div>
 
-        {/* Events Container - moves within pinned container */}
-        <div
-          ref={eventsRef}
-          style={{
-            position: 'absolute',
-            left: '33.33%',  // Aligned with vertical line
-            width: '60%',
-            maxWidth: '800px'
-          }}
-        >
-        {/* Title as first sliding element */}
-        <div
-          style={{
-            height: '100vh',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'flex-start',
-            padding: '2rem 2rem 2rem 4rem'  // Align with event content
-          }}
-        >
-          <h2 style={{
-            fontFamily: 'Instrument Serif, serif',
-            fontSize: 'clamp(3rem, 5vw, 4.5rem)',
-            color: 'white',
-            fontWeight: '400',
-            letterSpacing: '-0.02em',
-            textShadow: '0 3px 15px rgba(0,0,0,0.2)'
-          }}>
-            The Day's Timeline
-          </h2>
-        </div>
-        {events.map((event, index) => (
+          {/* Scrolling container with 3 circles - inside background container */}
           <div
-            key={event.id}
-            data-timeline-event-id={event.id}
-            className="timeline-item"
+            ref={eventsRef}
             style={{
-              height: '100vh',
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'center',
-              position: 'relative',
-              padding: '2rem'
+              position: 'absolute',
+              left: '0',
+              right: '0',
+              top: '0',
+              bottom: '0'
             }}
           >
-            {/* Timeline dot */}
+            {/* Circle 1 */}
             <div
-              className="timeline-dot"
               style={{
-              position: 'absolute',
-              left: '-14px',  // Fine-tuned to center dot on the line
-              top: '50%',
-              transform: 'translateY(-50%)',
-              width: '24px',
-              height: '24px',
-              background: activeEvent === index ? 'white' : 'rgba(255, 255, 255, 0.3)',
-              borderRadius: '50%',
-              border: activeEvent === index ? '4px solid white' : '4px solid rgba(255, 255, 255, 0.6)',
-              boxShadow: activeEvent === index ? '0 0 20px rgba(255,255,255,0.8)' : '0 4px 12px rgba(0,0,0,0.15)',
-              transition: 'all 0.4s ease',
-              zIndex: 10
-            }} />
+                position: 'absolute',
+                left: '23%', // Adjusted for being inside the inset container
+                transform: 'translateX(-50%)',
+                top: '30vh',
+                width: '24px',
+                height: '24px',
+                background: 'white',
+                borderRadius: '50%',
+                border: '4px solid white',
+                boxShadow: '0 0 20px rgba(255,255,255,0.8)',
+                zIndex: 20
+              }}
+            />
 
-            {/* Event content */}
-            <div style={{
-              background: 'transparent',
-              padding: '3rem 3rem 3rem 4rem',  // Add extra left padding to account for dot
-              transition: 'all 0.5s ease'
-            }}>
-              <div style={{
-                fontFamily: 'Instrument Sans, sans-serif',
-                fontSize: '3rem',
-                fontWeight: '700',
-                color: '#2c3e50',
-                marginBottom: '1rem',
-                lineHeight: '1',
-                textShadow: '0 2px 8px rgba(255,255,255,0.3)'
-              }}>
-                {event.time}
-              </div>
+            {/* Circle 2 */}
+            <div
+              style={{
+                position: 'absolute',
+                left: '23%', // Adjusted for being inside the inset container
+                transform: 'translateX(-50%)',
+                top: '130vh',
+                width: '24px',
+                height: '24px',
+                background: 'white',
+                borderRadius: '50%',
+                border: '4px solid white',
+                boxShadow: '0 0 20px rgba(255,255,255,0.8)',
+                zIndex: 20
+              }}
+            />
 
-              <h3 style={{
-                fontFamily: 'Instrument Serif, serif',
-                fontSize: '4.5rem',
-                fontWeight: '700',
-                color: 'white',
-                margin: '0 0 1.5rem 0',
-                letterSpacing: '-0.02em',
-                lineHeight: '0.9',
-                textShadow: '0 3px 15px rgba(0,0,0,0.2)'
-              }}>
-                {event.title}
-              </h3>
-
-              <div style={{
-                fontFamily: 'Instrument Sans, sans-serif',
-                fontSize: '1.4rem',
-                fontWeight: '600',
-                color: 'white',
-                marginBottom: '1rem',
-                textShadow: '0 1px 5px rgba(0,0,0,0.2)'
-              }}>
-                {event.location}
-              </div>
-
-              <div style={{
-                fontFamily: 'Instrument Sans, sans-serif',
-                fontSize: '1.1rem',
-                color: 'rgba(255, 255, 255, 0.9)',
-                lineHeight: '1.6',
-                marginBottom: '2rem'
-              }}>
-                {event.address}
-              </div>
-
-              <button
-                onClick={() => openInGoogleMaps(event)}
-                style={{
-                  fontFamily: 'Instrument Sans, sans-serif',
-                  padding: '1rem 2rem',
-                  background: 'rgba(255, 255, 255, 0.2)',
-                  backdropFilter: 'blur(10px)',
-                  color: 'white',
-                  border: '2px solid rgba(255, 255, 255, 0.3)',
-                  borderRadius: '12px',
-                  fontSize: '1rem',
-                  fontWeight: '600',
-                  cursor: 'pointer',
-                  transition: 'all 0.3s ease',
-                  boxShadow: '0 4px 15px rgba(0, 0, 0, 0.2)'
-                }}
-                onMouseOver={(e) => {
-                  e.currentTarget.style.background = 'rgba(255, 255, 255, 0.3)';
-                  e.currentTarget.style.transform = 'translateY(-2px)';
-                  e.currentTarget.style.boxShadow = '0 6px 20px rgba(0, 0, 0, 0.25)';
-                }}
-                onMouseOut={(e) => {
-                  e.currentTarget.style.background = 'rgba(255, 255, 255, 0.2)';
-                  e.currentTarget.style.transform = 'translateY(0)';
-                  e.currentTarget.style.boxShadow = '0 4px 15px rgba(0, 0, 0, 0.2)';
-                }}
-              >
-                Open in Google Maps
-              </button>
-            </div>
+            {/* Circle 3 */}
+            <div
+              style={{
+                position: 'absolute',
+                left: '23%', // Adjusted for being inside the inset container
+                transform: 'translateX(-50%)',
+                top: '230vh',
+                width: '24px',
+                height: '24px',
+                background: 'white',
+                borderRadius: '50%',
+                border: '4px solid white',
+                boxShadow: '0 0 20px rgba(255,255,255,0.8)',
+                zIndex: 20
+              }}
+            />
           </div>
-        ))}
         </div>
       </div>
     </div>

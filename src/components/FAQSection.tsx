@@ -84,7 +84,15 @@ const FAQSection: React.FC = () => {
     }
 
     return () => {
+      // Cleanup all triggers
       triggers.forEach(trigger => trigger.kill());
+
+      // Kill any remaining ScrollTriggers for this component
+      ScrollTrigger.getAll().forEach(trigger => {
+        if (trigger.trigger?.classList?.contains('faq-section')) {
+          trigger.kill();
+        }
+      });
     };
   }, []);
 
@@ -99,7 +107,14 @@ const FAQSection: React.FC = () => {
   };
 
   return (
-    <section className="faq-section">
+    <section
+      className="faq-section"
+      style={{
+        position: 'relative',
+        zIndex: 3,
+        background: 'transparent' // Managed by BackgroundColorManager
+      }}
+    >
       <div className="faq-container">
         <div className="faq-header">
           <h2>Frequently Asked Questions</h2>

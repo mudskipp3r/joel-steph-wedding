@@ -5,7 +5,14 @@ import PhotoCarousel from './PhotoCarousel';
 
 const PhotoSection: React.FC = () => {
   return (
-    <section className="photo-section">
+    <section
+      className="photo-section"
+      style={{
+        position: 'relative',
+        zIndex: 5,
+        background: 'transparent' // Managed by BackgroundColorManager
+      }}
+    >
       <PhotoCarousel />
     </section>
   );

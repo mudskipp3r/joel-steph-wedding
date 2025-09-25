@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import React, { useEffect, useRef } from 'react';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import React, { useEffect, useRef } from "react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 const OptimizedMiddleSection: React.FC = () => {
   const sectionRef = useRef<HTMLElement>(null);
@@ -10,6 +10,7 @@ const OptimizedMiddleSection: React.FC = () => {
   const div2Ref = useRef<HTMLDivElement>(null);
   const div3Ref = useRef<HTMLDivElement>(null);
   const div4Ref = useRef<HTMLDivElement>(null);
+  const pinnedTextRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
@@ -19,137 +20,70 @@ const OptimizedMiddleSection: React.FC = () => {
     const div2 = div2Ref.current;
     const div3 = div3Ref.current;
     const div4 = div4Ref.current;
+    const pinnedText = pinnedTextRef.current;
 
-    if (!section || !div1 || !div2 || !div3 || !div4) return;
+    if (!section || !div1 || !div2 || !div3 || !div4 || !pinnedText) return;
 
-    const pinnedText = document.querySelector('#pinned-text-element');
-    if (!pinnedText) return;
+    // Get SVG elements
+    const heartSvg = pinnedText.querySelector('.heart-svg') as HTMLElement;
+    const sunSvg = pinnedText.querySelector('.sun-svg') as HTMLElement;
+    const cloudSvg = pinnedText.querySelector('.cloud-svg') as HTMLElement;
 
-    const textElement = pinnedText.querySelector('h2');
-    if (!textElement) return;
+    if (!heartSvg || !sunSvg || !cloudSvg) return;
 
-    // Helper function to create text split animation
-    const splitTextIntoChars = (text: string) => {
-      return text.split('').map((char, index) =>
-        `<span class="char-${index}" style="display: inline-block; opacity: 0; transform: translateY(20px);">${char === ' ' ? '&nbsp;' : char}</span>`
-      ).join('');
-    };
+    // Text states for each section
+    const textStates = [
+      "Together we celebrate",
+      "With family and friends",
+      "Friday 6th February 2026"
+    ];
 
-    // Pin the text to center when div 1 top hits screen top
+    const svgStates = [heartSvg, sunSvg, cloudSvg];
+
+    // Set initial states - all SVGs hidden except first
+    gsap.set([sunSvg, cloudSvg], { autoAlpha: 0, scale: 0.7 });
+    gsap.set(heartSvg, { autoAlpha: 1, scale: 1 });
+
+    // Create a ScrollTrigger that updates pinned text and SVGs based on scroll progress
     ScrollTrigger.create({
-      trigger: div1,
+      trigger: section,
       start: "top top",
-      end: () => `+=${window.innerHeight * 3}`,
+      end: "bottom bottom",
+      scrub: true,
       pin: pinnedText,
       pinSpacing: false,
-      markers: true,
-    });
-
-    const heartSvg = document.querySelector('.heart-svg') as HTMLElement;
-    const sunSvg = document.querySelector('.sun-svg') as HTMLElement;
-    const cloudSvg = document.querySelector('.cloud-svg') as HTMLElement;
-
-    // Track current state to prevent conflicts
-    let currentText = "Together we celebrate";
-    let currentSvg: HTMLElement | null = heartSvg;
-
-    // Helper function to animate text with split effect
-    const animateTextTransition = (newText: string, svgToShow: HTMLElement | null, svgToHide: HTMLElement[]) => {
-      // Prevent unnecessary transitions
-      if (currentText === newText) return;
-
-      currentText = newText;
-      currentSvg = svgToShow;
-
-      // Set new text content with split chars
-      textElement.innerHTML = splitTextIntoChars(newText);
-
-      // Animate characters in with stagger
-      const chars = textElement.querySelectorAll(`[class*="char-"]`);
-      gsap.fromTo(chars,
-        { opacity: 0, y: 20, rotationX: -90 },
-        {
-          opacity: 1,
-          y: 0,
-          rotationX: 0,
-          duration: 0.8,
-          stagger: 0.03,
-          ease: "back.out(1.7)"
+      markers: false,
+      onUpdate: (self) => {
+        const progress = self.progress;
+        let index = 0;
+        if (progress >= 0.66) {
+          index = 2;
+        } else if (progress >= 0.33) {
+          index = 1;
+        } else {
+          index = 0;
         }
-      );
 
-      // Handle SVG transitions with better timing
-      svgToHide.forEach(svg => {
-        if (svg && svg !== svgToShow) {
-          gsap.to(svg, { opacity: 0, scale: 0.7, duration: 0.3 });
+        // Update text
+        const textContent = pinnedText.querySelector('.pinned-text-content');
+        if (textContent) {
+          textContent.textContent = textStates[index];
         }
-      });
 
-      // Delay showing new SVG to prevent overlap
-      if (svgToShow) {
-        gsap.to(svgToShow, {
-          opacity: 1,
-          scale: 1,
-          duration: 0.5,
-          delay: 0.2
+        // Update SVGs - show current, hide others
+        svgStates.forEach((svg, i) => {
+          if (i === index) {
+            gsap.to(svg, { autoAlpha: 1, scale: 1, duration: 0.3 });
+          } else {
+            gsap.to(svg, { autoAlpha: 0, scale: 0.7, duration: 0.3 });
+          }
         });
       }
-    };
-
-    // Unified text transitions with consistent trigger points
-    // Transition 1 -> 2: At end of div1
-    ScrollTrigger.create({
-      trigger: div1,
-      start: "bottom-=50 top",
-      end: "bottom top",
-      onUpdate: self => {
-        const progress = self.progress;
-        if (progress > 0.5) {
-          animateTextTransition("With family and friends", sunSvg, [heartSvg, cloudSvg]);
-        }
-      },
-      onLeave: () => {
-        // Ensure transition happens when leaving div1 going down
-        animateTextTransition("With family and friends", sunSvg, [heartSvg, cloudSvg]);
-      },
-      onEnterBack: () => {
-        // Ensure reverse transition happens when entering div1 going up
-        animateTextTransition("Together we celebrate", heartSvg, [sunSvg, cloudSvg]);
-      },
-      markers: true,
-      id: "text-1-to-2"
     });
-
-    // Transition 2 -> 3: At end of div2
-    ScrollTrigger.create({
-      trigger: div2,
-      start: "bottom-=50 top",
-      end: "bottom top",
-      onUpdate: self => {
-        const progress = self.progress;
-        if (progress > 0.5) {
-          animateTextTransition("Friday 6th February 2026", cloudSvg, [heartSvg, sunSvg]);
-        }
-      },
-      onLeave: () => {
-        // Ensure transition happens when leaving div2 going down
-        animateTextTransition("Friday 6th February 2026", cloudSvg, [heartSvg, sunSvg]);
-      },
-      onEnterBack: () => {
-        // Ensure reverse transition happens when entering div2 going up
-        animateTextTransition("With family and friends", sunSvg, [heartSvg, cloudSvg]);
-      },
-      markers: true,
-      id: "text-2-to-3"
-    });
-
-
 
     return () => {
-      ScrollTrigger.getAll().forEach(trigger => {
-        if (trigger.trigger === div1 || trigger.trigger === div2 || trigger.trigger === div3 || trigger.trigger === div4) {
-          trigger.kill();
-        }
+      ScrollTrigger.getAll().forEach((trigger) => {
+        trigger.kill();
       });
     };
   }, []);
@@ -159,46 +93,105 @@ const OptimizedMiddleSection: React.FC = () => {
       ref={sectionRef}
       className="optimized-middle-section"
       style={{
-        position: 'relative',
-        zIndex: 10
+        position: "relative",
+        zIndex: 10,
       }}
     >
       <div ref={div1Ref} className="section-div">
         <div className="squares-container">
-          <img src="/images/story-section1-proposal-portrait.webp" alt="Proposal portrait" className="red-square portrait" style={{ top: '15%', right: '12%' }} />
-          <img src="/images/story-section1-proposal-tall.webp" alt="Proposal tall" className="red-square portrait-tall" style={{ top: '55%', left: '5%' }} />
-          <img src="/images/story-section1-proposal-landscape.webp" alt="Proposal landscape" className="red-square" style={{ top: '85%', right: '25%' }} />
+          <img
+            src="/images/story-section1-proposal-portrait.webp"
+            alt="Proposal portrait"
+            className="red-square portrait"
+            style={{ top: "15%", right: "12%" }}
+          />
+          <img
+            src="/images/story-section1-proposal-tall.webp"
+            alt="Proposal tall"
+            className="red-square portrait-tall"
+            style={{ top: "55%", left: "5%" }}
+          />
+          <img
+            src="/images/story-section1-proposal-landscape.webp"
+            alt="Proposal landscape"
+            className="red-square"
+            style={{ top: "85%", right: "25%" }}
+          />
         </div>
       </div>
       <div ref={div2Ref} className="section-div">
         <div className="squares-container">
-          <img src="/images/story-section2-couple-landscape.webp" alt="Couple landscape" className="red-square" style={{ top: '12%', left: '8%' }} />
-          <img src="/images/story-section2-couple-portrait.webp" alt="Couple large portrait" className="red-square portrait-large" style={{ top: '40%', right: '10%' }} />
-          <img src="/images/story-section2-couple-small.webp" alt="Couple portrait" className="red-square portrait" style={{ top: '80%', left: '15%' }} />
+          <img
+            src="/images/story-section2-couple-landscape.webp"
+            alt="Couple landscape"
+            className="red-square"
+            style={{ top: "12%", left: "8%" }}
+          />
+          <img
+            src="/images/story-section2-couple-portrait.webp"
+            alt="Couple large portrait"
+            className="red-square portrait-large"
+            style={{ top: "40%", right: "10%" }}
+          />
+          <img
+            src="/images/story-section2-couple-small.webp"
+            alt="Couple portrait"
+            className="red-square portrait"
+            style={{ top: "80%", left: "15%" }}
+          />
         </div>
       </div>
       <div ref={div3Ref} className="section-div">
         <div className="squares-container">
-          <img src="/images/story-section3-engagement-tall.webp" alt="Engagement tall portrait" className="red-square portrait-tall" style={{ top: '10%', right: '15%' }} />
-          <img src="/images/story-section3-engagement-portrait.webp" alt="Engagement large portrait" className="red-square portrait-large" style={{ top: '45%', left: '8%' }} />
-          <img src="/images/story-section3-engagement-moment.webp" alt="Beautiful moment" className="red-square" style={{ top: '85%', right: '20%' }} />
+          <img
+            src="/images/story-section3-engagement-tall.webp"
+            alt="Engagement tall portrait"
+            className="red-square portrait-tall"
+            style={{ top: "10%", right: "15%" }}
+          />
+          <img
+            src="/images/story-section3-engagement-portrait.webp"
+            alt="Engagement large portrait"
+            className="red-square portrait-large"
+            style={{ top: "45%", left: "8%" }}
+          />
+          <img
+            src="/images/story-section3-engagement-moment.webp"
+            alt="Beautiful moment"
+            className="red-square"
+            style={{ top: "85%", right: "20%" }}
+          />
         </div>
       </div>
       <div ref={div4Ref} className="section-div">
         <div className="squares-container">
-          <img src="/images/story-section4-final-photo.webp" alt="Engagement photo" className="red-square" style={{ top: '18%', left: '12%' }} />
-          <img src="/images/story-section4-couple-portrait.webp" alt="Couple portrait" className="red-square" style={{ top: '50%', right: '8%' }} />
+          <img
+            src="/images/story-section4-final-photo.webp"
+            alt="Engagement photo"
+            className="red-square"
+            style={{ top: "18%", left: "12%" }}
+          />
+          <img
+            src="/images/story-section4-couple-portrait.webp"
+            alt="Couple portrait"
+            className="red-square"
+            style={{ top: "50%", right: "8%" }}
+          />
         </div>
       </div>
 
-      <div id="pinned-text-element">
+      <div className="pinned-text" ref={pinnedTextRef}>
         <div className="svg-background">
           <img src="/heart.svg" alt="" className="background-svg heart-svg" />
           <img src="/sun.svg" alt="" className="background-svg sun-svg" />
           <img src="/cloud.svg" alt="" className="background-svg cloud-svg" />
         </div>
-        <h2>Together we celebrate</h2>
+        <div className="pinned-text-content">
+          Together we celebrate
+        </div>
       </div>
+
+      <div style={{ height: "100vh" }}></div>
 
       <style jsx>{`
         .optimized-middle-section {
@@ -221,7 +214,7 @@ const OptimizedMiddleSection: React.FC = () => {
         }
 
         .section-div h2 {
-          font-family: 'Cardo', serif;
+          font-family: "Cardo", serif;
           font-size: clamp(2.5rem, 6vw, 4.5rem);
           font-weight: 600;
           margin: 0 0 20px 0;
@@ -229,7 +222,7 @@ const OptimizedMiddleSection: React.FC = () => {
         }
 
         .section-div p {
-          font-family: 'Instrument Sans', sans-serif;
+          font-family: "Instrument Sans", sans-serif;
           font-size: clamp(1.2rem, 2.5vw, 1.8rem);
           font-weight: 300;
           margin: 0;
@@ -237,9 +230,7 @@ const OptimizedMiddleSection: React.FC = () => {
           opacity: 0.8;
         }
 
-
-
-        #pinned-text-element {
+        .pinned-text {
           position: absolute;
           top: 50vh;
           left: 50vw;
@@ -247,22 +238,15 @@ const OptimizedMiddleSection: React.FC = () => {
           z-index: 2000;
           text-align: center;
           pointer-events: none;
-        }
-
-        #pinned-text-element h2 {
-          font-family: 'Cardo', serif;
-          font-size: clamp(2rem, 5vw, 4.5rem);
+          font-family: "Cardo", serif;
+          font-size: clamp(1.8rem, 4vw, 4.5rem);
           font-weight: 600;
-          margin: 0;
-          letter-spacing: -0.02em;
           color: #4a4a4a;
-          position: relative;
-          z-index: 10;
-          white-space: nowrap;
-          overflow: visible;
-          padding: 0 1rem;
-          max-width: calc(100vw - 2rem);
+          letter-spacing: -0.02em;
+          max-width: calc(100vw - 4rem);
           box-sizing: border-box;
+          line-height: 1.1;
+          opacity: 1;
         }
 
         .squares-container {
@@ -373,15 +357,26 @@ const OptimizedMiddleSection: React.FC = () => {
 
         .heart-svg {
           opacity: 1;
-          filter: drop-shadow(0 4px 20px rgba(246, 198, 175, 0.3)) brightness(0) saturate(100%) invert(93%) sepia(15%) saturate(1151%) hue-rotate(317deg) brightness(94%) contrast(92%);
+          filter: drop-shadow(0 4px 20px rgba(246, 198, 175, 0.3)) brightness(0)
+            saturate(100%) invert(93%) sepia(15%) saturate(1151%)
+            hue-rotate(317deg) brightness(94%) contrast(92%);
         }
 
         .sun-svg {
-          filter: drop-shadow(0 4px 20px rgba(245, 142, 127, 0.3)) brightness(0) saturate(100%) invert(71%) sepia(51%) saturate(468%) hue-rotate(315deg) brightness(97%) contrast(91%);
+          filter: drop-shadow(0 4px 20px rgba(245, 142, 127, 0.3)) brightness(0)
+            saturate(100%) invert(71%) sepia(51%) saturate(468%)
+            hue-rotate(315deg) brightness(97%) contrast(91%);
         }
 
         .cloud-svg {
-          filter: drop-shadow(0 4px 20px rgba(255, 207, 145, 0.3)) brightness(0) saturate(100%) invert(93%) sepia(56%) saturate(443%) hue-rotate(315deg) brightness(102%) contrast(94%);
+          filter: drop-shadow(0 4px 20px rgba(255, 207, 145, 0.3)) brightness(0)
+            saturate(100%) invert(93%) sepia(56%) saturate(443%)
+            hue-rotate(315deg) brightness(102%) contrast(94%);
+        }
+
+        .pinned-text-content {
+          position: relative;
+          z-index: 10;
         }
 
         @media (max-width: 768px) {
@@ -397,9 +392,6 @@ const OptimizedMiddleSection: React.FC = () => {
             height: 120px;
           }
         }
-
-
-
       `}</style>
     </section>
   );

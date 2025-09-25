@@ -176,28 +176,14 @@ const SimpleFooter: React.FC<SimpleFooterProps> = ({
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setErrors({});
-
-    // Validation for plus one code
-    if (formData.hasPlusOne && !plusOneEnabled) {
-      setErrors({ plusOneCode: 'Please verify your plus one code before submitting.' });
-      return;
-    }
-
     try {
-      const formElement = e.target as HTMLFormElement;
-      const formData = new FormData(formElement);
-
+      const form = e.target as HTMLFormElement;
       const response = await fetch("/", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-        body: new URLSearchParams(formData as any).toString(),
+        body: new FormData(form),
       });
-
       if (response.ok) {
         setIsSubmitted(true);
       } else {
@@ -236,25 +222,6 @@ const SimpleFooter: React.FC<SimpleFooterProps> = ({
 
   return (
     <>
-      {/* Hidden form for Netlify to detect at build time */}
-      <form
-        name="wedding-rsvp"
-        data-netlify="true"
-        netlify-honeypot="bot-field"
-        method="POST"
-        style={{ display: 'none' }}
-      >
-        <input type="hidden" name="form-name" value="wedding-rsvp" />
-        <input type="hidden" name="bot-field" />
-        <input type="text" name="fullName" />
-        <input type="email" name="email" />
-        <input type="tel" name="phone" />
-        <input type="text" name="attendance" />
-        <input type="text" name="hasPlusOne" />
-        <input type="text" name="plusOneCode" />
-        <input type="text" name="dietaryRestrictions" />
-        <textarea name="message"></textarea>
-      </form>
 
       {/* Traditional Footer */}
       <footer
@@ -541,15 +508,22 @@ const SimpleFooter: React.FC<SimpleFooterProps> = ({
             </div>
           ) : (
             /* RSVP Form */
-            <form className="rsvp-form" onSubmit={handleSubmit} style={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '2rem'
-          }}>
-            {/* Hidden field for Netlify */}
-            <input type="hidden" name="form-name" value="wedding-rsvp" />
-            {/* Hidden inputs to ensure default values are always sent */}
-            <input type="hidden" name="hasPlusOne" value={formData.hasPlusOne ? 'yes' : 'no'} />
+            <form
+              className="rsvp-form"
+              name="wedding-rsvp"
+              method="POST"
+              data-netlify="true"
+              netlify-honeypot="bot-field"
+              onSubmit={handleSubmit}
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '2rem'
+              }}
+            >
+              <input type="hidden" name="form-name" value="wedding-rsvp" />
+              <input type="hidden" name="bot-field" /> {/* Honeypot */}
+              <input type="hidden" name="hasPlusOne" value={formData.hasPlusOne ? 'yes' : 'no'} />
 
             {/* Full Name */}
             <div className="form-group">

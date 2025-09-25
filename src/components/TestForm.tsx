@@ -10,14 +10,29 @@ interface TestFormProps {
 const TestForm: React.FC<TestFormProps> = ({ isOpen, onClose }) => {
   const [isSubmitted, setIsSubmitted] = useState(false);
 
+  const encode = (data: Record<string, string>) => {
+    return Object.keys(data)
+      .map(key => encodeURIComponent(key) + "=" + encodeURIComponent(data[key]))
+      .join("&");
+  };
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
       const form = e.target as HTMLFormElement;
+      const formData = new FormData(form);
+      const data: Record<string, string> = {};
+
+      formData.forEach((value, key) => {
+        data[key] = value.toString();
+      });
+
       const response = await fetch("/", {
         method: "POST",
-        body: new FormData(form),
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: encode({ "form-name": "test-form", ...data })
       });
+
       if (response.ok) {
         setIsSubmitted(true);
       } else {

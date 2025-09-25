@@ -39,10 +39,10 @@ const OptimizedMiddleSection: React.FC = () => {
       "Friday 6th February 2026"
     ];
 
-    const svgStates = [heartSvg, sunSvg, cloudSvg];
+    const svgStates = [heartSvg, cloudSvg, sunSvg];
 
     // Set initial states - all SVGs hidden except first
-    gsap.set([sunSvg, cloudSvg], { autoAlpha: 0, scale: 0.7 });
+    gsap.set([cloudSvg, sunSvg], { autoAlpha: 0, scale: 0.7 });
     gsap.set(heartSvg, { autoAlpha: 1, scale: 1 });
 
     // Create a ScrollTrigger that updates pinned text and SVGs based on scroll progress
@@ -413,9 +413,6 @@ const OptimizedMiddleSection: React.FC = () => {
 
         .background-svg {
           position: absolute;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%);
           width: 200px;
           height: 200px;
           opacity: 0;
@@ -425,6 +422,9 @@ const OptimizedMiddleSection: React.FC = () => {
         }
 
         .heart-svg {
+          top: 45%;
+          left: 55%;
+          transform: translate(-50%, -50%);
           opacity: 1;
           filter: drop-shadow(0 4px 20px rgba(246, 198, 175, 0.3)) brightness(0)
             saturate(100%) invert(93%) sepia(15%) saturate(1151%)
@@ -432,12 +432,18 @@ const OptimizedMiddleSection: React.FC = () => {
         }
 
         .sun-svg {
+          top: 48%;
+          left: 52%;
+          transform: translate(-50%, -50%);
           filter: drop-shadow(0 4px 20px rgba(245, 142, 127, 0.3)) brightness(0)
             saturate(100%) invert(71%) sepia(51%) saturate(468%)
             hue-rotate(315deg) brightness(97%) contrast(91%);
         }
 
         .cloud-svg {
+          top: 55%;
+          left: 45%;
+          transform: translate(-50%, -50%);
           filter: drop-shadow(0 4px 20px rgba(208, 219, 225, 0.3)) brightness(0)
             saturate(100%) invert(90%) sepia(11%) saturate(153%)
             hue-rotate(168deg) brightness(96%) contrast(91%);

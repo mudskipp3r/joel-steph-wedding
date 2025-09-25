@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Netlify Forms Detection</title>
+</head>
+<body style="display: none;">
+    <!-- Hidden form for Netlify to detect -->
+    <form name="wedding-rsvp" netlify netlify-honeypot="bot-field" method="POST" action="/success">
+        <input type="hidden" name="form-name" value="wedding-rsvp" />
+        <input type="hidden" name="bot-field" />
+
+        <!-- All the fields that can be submitted -->
+        <input type="text" name="fullName" />
+        <input type="email" name="email" />
+        <input type="tel" name="phone" />
+        <input type="text" name="attendance" />
+        <input type="text" name="hasPlusOne" />
+        <input type="text" name="plusOneCode" />
+        <input type="text" name="dietaryRestrictions" />
+        <textarea name="message"></textarea>
+    </form>
+</body>
+</html>

@@ -25,7 +25,7 @@ const venues = [
     coordinates: { lat: -33.9198, lng: 151.0346 },
     type: "Reception",
     parking:
-      "Free parking available at venue. Additional parking at Chapel Road Centre.",
+      "Highline underground carpark at Little Saigon Plaza – Rear 53 Kitchener Parade, Bankstown (Corner of French Ave & Kitchener Parade) Highline Main entrance – 462 Chapel Road, Bankstown (LG) Loading dock – 55 Kitchener Parade, Bankstown (Goods lift straight to Level) There are additional parking areas available in the vicinity of The HIGHLINE Venue located on Chapel Rd, Meredith Street, French Ave & Kitchener Parade.",
     publicTransport: {
       train: "Bankstown Station (8min walk) - T3 Bankstown Line",
       bus: "Routes 901, 902, 925 - Stop at Chapel Road/Restwell Street",
@@ -71,6 +71,9 @@ const VenueSection: React.FC = () => {
         ],
       });
 
+      // Create info window for venue details
+      const infoWindow = new window.google!.maps.InfoWindow();
+
       // Create markers for both venues
       const newMarkers: GoogleMapsMarker[] = [];
       venues.forEach((venue, index) => {
@@ -80,21 +83,27 @@ const VenueSection: React.FC = () => {
           map: newMap,
           title: venue.name,
           animation: window.google!.maps.Animation.DROP,
-          icon: {
-            url: `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(`
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="12" cy="12" r="8" fill="${
-                  index === 0 ? "#FF6B6B" : "#4ECDC4"
-                }" stroke="white" stroke-width="2"/>
-                <text x="12" y="16" font-family="Arial" font-size="10" fill="white" text-anchor="middle">${
-                  index + 1
-                }</text>
-              </svg>
-            `)}`,
-            scaledSize: new window.google!.maps.Size(32, 32),
-            anchor: new window.google!.maps.Point(16, 16),
-          },
+          // Using default Google Maps marker (red pin)
         });
+
+        // Add click listener to show info window
+        marker.addListener('click', () => {
+          infoWindow.setContent(`
+            <div style="padding: 10px;">
+              <h3 style="margin: 0 0 8px 0; color: #2c3e50; font-family: 'Instrument Sans', sans-serif;">
+                ${venue.type}
+              </h3>
+              <p style="margin: 0 0 4px 0; color: #666; font-family: 'Instrument Sans', sans-serif; font-weight: 600;">
+                ${venue.name}
+              </p>
+              <p style="margin: 0; color: #888; font-family: 'Instrument Sans', sans-serif; font-size: 14px;">
+                ${venue.address}
+              </p>
+            </div>
+          `);
+          infoWindow.open(newMap, marker);
+        });
+
         newMarkers.push(marker);
       });
 

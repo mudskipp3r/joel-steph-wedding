@@ -37,17 +37,17 @@ const FAQSection: React.FC = () => {
     },
     {
       question: "I cannot come to the wedding but I'd still like to give a gift, is there a way to do this?",
-      answer: "Your presence is the greatest gift we could ask for. However, if you wish to honour us with a contribution, a monetary gift would be warmly appreciated. Bank details: [Insert details here]",
+      answer: "Your presence is the greatest gift we could ask for. However, if you wish to honour us with a contribution, a monetary gift would be warmly appreciated. Bank details: Stephanie Huynh PayID: 0426875301 BSB: 062 111 Account No.: 1106 3602",
       category: "General"
     },
     {
       question: "Can I take photos during the ceremony?",
-      answer: "Yes, we welcome you to share the photos with us. Please be mindful that we will have a professional videographer and we will share the footage with you.",
+      answer: "Yes, we’d love for you to share your photos with us! Please be mindful that we’ll have a professional photographer and videographer capturing the day, and kindly keep the aisle clear during the ceremony.",
       category: "Ceremony"
     },
     {
       question: "What if I have dietary restrictions?",
-      answer: "Please let us know about any dietary restrictions when you RSVP. Our caterer can accommodate most dietary needs including vegetarian, vegan, and gluten-free options.",
+      answer: "Please let us know about any dietary restrictions when you RSVP.",
       category: "Reception"
     },
     {

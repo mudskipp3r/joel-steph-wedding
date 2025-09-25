@@ -104,6 +104,10 @@ const Footer: React.FC<FooterProps> = ({ onOpenRSVPForm }) => {
               <li style={{
                 ...typography.styles.body,
                 lineHeight: 1.8
+              }}>12:30 pm</li>
+              <li style={{
+                ...typography.styles.body,
+                lineHeight: 1.8
               }}>Saint Brigid's Church</li>
               <li style={{
                 ...typography.styles.body,
@@ -124,6 +128,10 @@ const Footer: React.FC<FooterProps> = ({ onOpenRSVPForm }) => {
               padding: 0,
               margin: 0
             }}>
+              <li style={{
+                ...typography.styles.body,
+                lineHeight: 1.8
+              }}>6:00 pm</li>
               <li style={{
                 ...typography.styles.body,
                 lineHeight: 1.8

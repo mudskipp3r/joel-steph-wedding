@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Button from './Button';
+import { typography } from '../styles/typography';
 
 interface NavigationProps {
   isRSVPFormOpen?: boolean;
@@ -66,9 +67,9 @@ const Navigation: React.FC<NavigationProps> = ({ isRSVPFormOpen = false, onOpenR
         left: 0,
         right: 0,
         zIndex: 9999,
-        background: (isScrolled || isHovered) ? 'rgba(255, 255, 255, 0.95)' : 'transparent',
-        backdropFilter: (isScrolled || isHovered) ? 'blur(10px)' : 'none',
-        borderBottom: (isScrolled || isHovered) ? '1px solid rgba(255, 255, 255, 0.2)' : 'none',
+        background: isHovered ? 'rgba(255, 255, 255, 0.95)' : (isScrolled ? 'rgba(255, 255, 255, 0.1)' : 'transparent'),
+        backdropFilter: isHovered ? 'blur(10px)' : (isScrolled ? 'blur(5px)' : 'none'),
+        borderBottom: isHovered ? '1px solid rgba(255, 255, 255, 0.2)' : (isScrolled ? '1px solid rgba(255, 255, 255, 0.05)' : 'none'),
         transform: (isVisible && !isRSVPFormOpen) ? 'translateY(0)' : 'translateY(-100%)',
         transition: 'all 0.3s ease',
         padding: '1rem 2rem',
@@ -88,10 +89,10 @@ const Navigation: React.FC<NavigationProps> = ({ isRSVPFormOpen = false, onOpenR
         {/* Logo/Brand */}
         <div
           style={{
-            fontFamily: 'Instrument Sans, sans-serif',
+            fontFamily: typography.fonts.sans,
             fontSize: '1.5rem',
-            fontWeight: '400',
-            color: (isScrolled || isHovered) ? '#1a1a1a' : 'white',
+            fontWeight: typography.weights.normal,
+            color: (isScrolled || isHovered) ? typography.colors.primary : 'white',
             cursor: 'pointer',
             transition: 'color 0.3s ease',
           }}
@@ -114,20 +115,20 @@ const Navigation: React.FC<NavigationProps> = ({ isRSVPFormOpen = false, onOpenR
             style={{
               background: 'none',
               border: 'none',
-              fontFamily: 'Instrument Sans, sans-serif',
+              fontFamily: typography.fonts.sans,
               fontSize: '1rem',
               fontWeight: '500',
-              color: (isScrolled || isHovered) ? '#1a1a1a' : 'white',
+              color: (isScrolled || isHovered) ? typography.colors.primary : 'white',
               cursor: 'pointer',
               transition: 'all 0.3s ease',
               padding: '0.5rem 0',
               textDecoration: 'none',
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.color = '#FF6B6B';
+              e.currentTarget.style.color = typography.colors.accent;
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.color = (isScrolled || isHovered) ? '#1a1a1a' : 'white';
+              e.currentTarget.style.color = (isScrolled || isHovered) ? typography.colors.primary : 'white';
             }}
           >
             Schedule
@@ -137,20 +138,20 @@ const Navigation: React.FC<NavigationProps> = ({ isRSVPFormOpen = false, onOpenR
             style={{
               background: 'none',
               border: 'none',
-              fontFamily: 'Instrument Sans, sans-serif',
+              fontFamily: typography.fonts.sans,
               fontSize: '1rem',
               fontWeight: '500',
-              color: (isScrolled || isHovered) ? '#1a1a1a' : 'white',
+              color: (isScrolled || isHovered) ? typography.colors.primary : 'white',
               cursor: 'pointer',
               transition: 'all 0.3s ease',
               padding: '0.5rem 0',
               textDecoration: 'none',
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.color = '#FF6B6B';
+              e.currentTarget.style.color = typography.colors.accent;
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.color = (isScrolled || isHovered) ? '#1a1a1a' : 'white';
+              e.currentTarget.style.color = (isScrolled || isHovered) ? typography.colors.primary : 'white';
             }}
           >
             Venue
@@ -165,20 +166,20 @@ const Navigation: React.FC<NavigationProps> = ({ isRSVPFormOpen = false, onOpenR
             style={{
               background: 'none',
               border: 'none',
-              fontFamily: 'Instrument Sans, sans-serif',
+              fontFamily: typography.fonts.sans,
               fontSize: '1rem',
               fontWeight: '500',
-              color: (isScrolled || isHovered) ? '#1a1a1a' : 'white',
+              color: (isScrolled || isHovered) ? typography.colors.primary : 'white',
               cursor: 'pointer',
               transition: 'all 0.3s ease',
               padding: '0.5rem 0',
               textDecoration: 'none',
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.color = '#FF6B6B';
+              e.currentTarget.style.color = typography.colors.accent;
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.color = (isScrolled || isHovered) ? '#1a1a1a' : 'white';
+              e.currentTarget.style.color = (isScrolled || isHovered) ? typography.colors.primary : 'white';
             }}
           >
             FAQ
@@ -241,7 +242,7 @@ const Navigation: React.FC<NavigationProps> = ({ isRSVPFormOpen = false, onOpenR
             fontFamily: 'Instrument Sans, sans-serif',
             fontSize: '1.1rem',
             fontWeight: '500',
-            color: '#1a1a1a',
+            color: typography.colors.primary,
             cursor: 'pointer',
             padding: '1rem 0',
             textAlign: 'left',
@@ -258,7 +259,7 @@ const Navigation: React.FC<NavigationProps> = ({ isRSVPFormOpen = false, onOpenR
             fontFamily: 'Instrument Sans, sans-serif',
             fontSize: '1.1rem',
             fontWeight: '500',
-            color: '#1a1a1a',
+            color: typography.colors.primary,
             cursor: 'pointer',
             padding: '1rem 0',
             textAlign: 'left',
@@ -280,7 +281,7 @@ const Navigation: React.FC<NavigationProps> = ({ isRSVPFormOpen = false, onOpenR
             fontFamily: 'Instrument Sans, sans-serif',
             fontSize: '1.1rem',
             fontWeight: '500',
-            color: '#1a1a1a',
+            color: typography.colors.primary,
             cursor: 'pointer',
             padding: '1rem 0',
             textAlign: 'left',

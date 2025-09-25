@@ -42,7 +42,7 @@ const Footer: React.FC<FooterProps> = ({ onOpenRSVPForm }) => {
               ...typography.styles.subheading,
               fontSize: '1.5rem',
               margin: '0 0 8px 0'
-            }}>Joel & Stephanie</h3>
+            }}>Stephanie & Joel</h3>
             <p style={{
               ...typography.styles.helpText,
               margin: '0'
@@ -181,7 +181,7 @@ const Footer: React.FC<FooterProps> = ({ onOpenRSVPForm }) => {
             <p style={{
               ...typography.styles.helpText,
               margin: '0'
-            }}>© 2025 Joel & Stephanie</p>
+            }}>© 2025 Stephanie & Joel</p>
           </div>
 
           <div>

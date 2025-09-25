@@ -537,7 +537,7 @@ const RSVPSlideout: React.FC<RSVPSlideoutProps> = ({ isOpen, onClose }) => {
                         name="plusOneCode"
                         value={formData.plusOneCode}
                         onChange={handleInputChange}
-                        placeholder="Enter the code provided by Joel & Stephanie"
+                        placeholder="Enter the code provided by Stephanie & Joel"
                         required
                         style={{
                           borderColor: errors.plusOneCode ? '#ef4444' : '#ddd',
@@ -594,7 +594,7 @@ const RSVPSlideout: React.FC<RSVPSlideoutProps> = ({ isOpen, onClose }) => {
 
             {/* Message */}
             <div className="form-group">
-              <label htmlFor="message">A Message for Joel & Stephanie</label>
+              <label htmlFor="message">A Message for Stephanie & Joel</label>
               <textarea
                 id="message"
                 name="message"

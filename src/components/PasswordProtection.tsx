@@ -97,7 +97,7 @@ const PasswordProtection: React.FC<{ children: React.ReactNode }> = ({ children 
               fontSize: '2.5rem',
               marginBottom: '0.5rem'
             }}>
-              Joel & Stephanie
+              Stephanie & Joel
             </h1>
             <p style={{
               ...typography.styles.body,
@@ -183,7 +183,7 @@ const PasswordProtection: React.FC<{ children: React.ReactNode }> = ({ children 
             marginTop: '2rem',
             textAlign: 'center'
           }}>
-            <p>If you need the password, please contact Steph 0426875301 or Joel 0497091831</p>
+            <p>If you need the password, please contact Stephanie or Joel</p>
           </div>
         </div>
       </div>

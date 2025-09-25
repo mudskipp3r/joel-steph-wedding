@@ -438,9 +438,9 @@ const OptimizedMiddleSection: React.FC = () => {
         }
 
         .cloud-svg {
-          filter: drop-shadow(0 4px 20px rgba(255, 207, 145, 0.3)) brightness(0)
-            saturate(100%) invert(93%) sepia(56%) saturate(443%)
-            hue-rotate(315deg) brightness(102%) contrast(94%);
+          filter: drop-shadow(0 4px 20px rgba(208, 219, 225, 0.3)) brightness(0)
+            saturate(100%) invert(90%) sepia(11%) saturate(153%)
+            hue-rotate(168deg) brightness(96%) contrast(91%);
         }
 
         .pinned-text-content {

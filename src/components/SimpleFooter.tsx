@@ -628,7 +628,7 @@ const SimpleFooter: React.FC<SimpleFooterProps> = ({
                           name="plusOneCode"
                           value={formData.plusOneCode}
                           onChange={handleInputChange}
-                          placeholder="Enter the code provided by Joel & Stephanie"
+                          placeholder="Enter the code provided by Stephanie & Joel"
                           style={{
                             flex: 1,
                             borderColor: errors.plusOneCode ? '#e74c3c' : plusOneEnabled ? '#27ae60' : '#ddd'
@@ -690,7 +690,7 @@ const SimpleFooter: React.FC<SimpleFooterProps> = ({
 
             {/* Message */}
             <div className="form-group">
-              <label htmlFor="message">A Message for Joel & Stephanie</label>
+              <label htmlFor="message">A Message for Stephanie & Joel</label>
               <textarea
                 id="message"
                 name="message"

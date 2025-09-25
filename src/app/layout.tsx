@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Joel & Stephanie - Wedding",
+  title: "Stephanie & Joel - Wedding",
   description: "Join us in celebrating our special day",
 };
 

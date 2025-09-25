@@ -35,7 +35,7 @@ const SimpleFooter: React.FC<SimpleFooterProps> = ({
     message: ''
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [errors, setErrors] = useState({});
+  const [errors, setErrors] = useState<{[key: string]: string}>({});
   const [isVerifyingPromo, setIsVerifyingPromo] = useState(false);
   const [plusOneEnabled, setPlusOneEnabled] = useState(false);
 

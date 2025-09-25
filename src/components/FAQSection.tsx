@@ -35,11 +35,6 @@ const FAQSection: React.FC = () => {
       category: "Ceremony"
     },
     {
-      question: "Will the ceremony be indoors or outdoors?",
-      answer: "The ceremony will be held indoors at Saint Brigid's Catholic Church. The church is fully air-conditioned for your comfort.",
-      category: "Ceremony"
-    },
-    {
       question: "Can I take photos during the ceremony?",
       answer: "We're having an unplugged ceremony, so please keep phones and cameras away during the 'I do's. Our professional photographer will capture everything! Feel free to take photos during cocktail hour and the reception.",
       category: "Ceremony"
@@ -62,11 +57,6 @@ const FAQSection: React.FC = () => {
     {
       question: "Where should I park?",
       answer: "There's plenty of free parking available at both the ceremony and reception venues. Detailed parking information will be provided with your invitation.",
-      category: "Travel"
-    },
-    {
-      question: "Are there hotel room blocks?",
-      answer: "Yes! We have room blocks at two hotels near the reception venue. Please check our wedding website for booking links and discount codes.",
       category: "Travel"
     },
     {

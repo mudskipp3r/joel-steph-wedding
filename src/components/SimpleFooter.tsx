@@ -35,6 +35,9 @@ const SimpleFooter: React.FC<SimpleFooterProps> = ({
     message: ''
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [errors, setErrors] = useState({});
+  const [isVerifyingPromo, setIsVerifyingPromo] = useState(false);
+  const [plusOneEnabled, setPlusOneEnabled] = useState(false);
 
   // Handle panel slide animations
   useEffect(() => {
@@ -120,25 +123,50 @@ const SimpleFooter: React.FC<SimpleFooterProps> = ({
     }));
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    // Validation for plus one code
-    if (formData.hasPlusOne && !formData.plusOneCode.trim()) {
-      alert('Please enter your plus one code to bring a guest.');
+  const verifyPromoCode = async (code: string) => {
+    if (!code.trim()) {
+      setPlusOneEnabled(false);
+      setErrors(prev => ({ ...prev, plusOneCode: '' }));
       return;
     }
 
-    // Validate plus one code against environment variable
-    if (formData.hasPlusOne && formData.plusOneCode.trim()) {
-      const validPromoCode = process.env.NEXT_PUBLIC_PROMO_CODE;
-      const enteredCode = formData.plusOneCode.trim().toUpperCase();
-      const correctCode = validPromoCode?.trim().toUpperCase();
+    setIsVerifyingPromo(true);
+    setErrors(prev => ({ ...prev, plusOneCode: '' }));
 
-      if (enteredCode !== correctCode) {
-        alert('Invalid plus one code. Please check your code and try again.');
-        return;
+    try {
+      const response = await fetch('/.netlify/functions/verify-promo', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ promoCode: code }),
+      });
+
+      const result = await response.json();
+
+      if (result.valid) {
+        setPlusOneEnabled(true);
+        setErrors(prev => ({ ...prev, plusOneCode: '' }));
+      } else {
+        setPlusOneEnabled(false);
+        setErrors(prev => ({ ...prev, plusOneCode: 'Invalid plus one code. Please check your code and try again.' }));
       }
+    } catch (error) {
+      setPlusOneEnabled(false);
+      setErrors(prev => ({ ...prev, plusOneCode: 'Error verifying code. Please try again.' }));
+    } finally {
+      setIsVerifyingPromo(false);
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setErrors({});
+
+    // Validation for plus one code
+    if (formData.hasPlusOne && !plusOneEnabled) {
+      setErrors({ plusOneCode: 'Please verify your plus one code before submitting.' });
+      return;
     }
 
     try {
@@ -249,14 +277,16 @@ const SimpleFooter: React.FC<SimpleFooterProps> = ({
         style={{
           position: 'relative',
           width: '100%',
-          height: '120px',
+          minHeight: '200px',
           background: '#FFF0E2',
           borderTopLeftRadius: '40px',
           borderTopRightRadius: '40px',
-          padding: '1.5rem 2rem',
+          padding: '2rem',
           display: 'flex',
+          flexDirection: 'column',
           alignItems: 'center',
-          justifyContent: 'space-between',
+          justifyContent: 'center',
+          gap: '1.5rem',
           boxShadow: '0 -5px 20px rgba(0, 0, 0, 0.05)'
         }}
       >
@@ -265,15 +295,74 @@ const SimpleFooter: React.FC<SimpleFooterProps> = ({
             fontFamily: 'Cardo, serif',
             fontSize: 'clamp(1.5rem, 3vw, 2rem)',
             fontWeight: 400,
-            margin: 0,
+            margin: '0 0 1rem 0',
             color: '#2c3e50'
-          }}>Thank You</h3>
+          }}>Venue Information</h3>
+
+          <div style={{
+            display: 'flex',
+            justifyContent: 'space-around',
+            flexWrap: 'wrap',
+            gap: '1rem',
+            marginBottom: '1rem'
+          }}>
+            <div style={{
+              textAlign: 'center',
+              minWidth: '200px'
+            }}>
+              <h4 style={{
+                fontFamily: 'Instrument Sans, sans-serif',
+                fontSize: '1rem',
+                fontWeight: 600,
+                color: '#FF6B6B',
+                margin: '0 0 0.5rem 0'
+              }}>Ceremony</h4>
+              <p style={{
+                fontFamily: 'Instrument Sans, sans-serif',
+                fontSize: '0.85rem',
+                color: '#666',
+                lineHeight: 1.4,
+                margin: '0'
+              }}>
+                Saint Brigid's Catholic Church<br/>
+                392 Marrickville Rd<br/>
+                Marrickville NSW 2204
+              </p>
+            </div>
+
+            <div style={{
+              textAlign: 'center',
+              minWidth: '200px'
+            }}>
+              <h4 style={{
+                fontFamily: 'Instrument Sans, sans-serif',
+                fontSize: '1rem',
+                fontWeight: 600,
+                color: '#FF6B6B',
+                margin: '0 0 0.5rem 0'
+              }}>Reception</h4>
+              <p style={{
+                fontFamily: 'Instrument Sans, sans-serif',
+                fontSize: '0.85rem',
+                color: '#666',
+                lineHeight: 1.4,
+                margin: '0'
+              }}>
+                The Sky Ballroom<br/>
+                Level 3/462 Chapel Rd<br/>
+                Bankstown NSW 2200
+              </p>
+            </div>
+          </div>
+
           <p style={{
             fontFamily: 'Instrument Sans, sans-serif',
-            fontSize: '0.9rem',
+            fontSize: '0.8rem',
             color: '#666',
-            margin: '0.25rem 0 0 0'
-          }}>We can't wait to celebrate with you</p>
+            lineHeight: 1.5,
+            margin: '1rem 0 0 0',
+            textAlign: 'center'
+          }}>We can't wait to celebrate with you on our special day!</p>
         </div>
 
         <Button onClick={openPanel} size="large" style={{ borderRadius: '50px' }}>
@@ -574,16 +663,53 @@ const SimpleFooter: React.FC<SimpleFooterProps> = ({
                   {formData.hasPlusOne && (
                     <div className="plus-one-code-group">
                       <label htmlFor="plusOneCode">Plus One Code *</label>
-                      <input
-                        type="text"
-                        id="plusOneCode"
-                        name="plusOneCode"
-                        value={formData.plusOneCode}
-                        onChange={handleInputChange}
-                        placeholder="Enter the code provided by Joel & Stephanie"
-                        required
-                      />
-                      <small>This code was provided to you by the bride and groom</small>
+                      <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'flex-start' }}>
+                        <input
+                          type="text"
+                          id="plusOneCode"
+                          name="plusOneCode"
+                          value={formData.plusOneCode}
+                          onChange={handleInputChange}
+                          placeholder="Enter the code provided by Joel & Stephanie"
+                          style={{
+                            flex: 1,
+                            borderColor: errors.plusOneCode ? '#e74c3c' : plusOneEnabled ? '#27ae60' : '#ddd'
+                          }}
+                        />
+                        <button
+                          type="button"
+                          onClick={() => verifyPromoCode(formData.plusOneCode)}
+                          disabled={!formData.plusOneCode.trim() || isVerifyingPromo}
+                          style={{
+                            padding: '0.75rem 1.25rem',
+                            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                            color: 'white',
+                            border: 'none',
+                            borderRadius: '8px',
+                            fontSize: '0.9rem',
+                            fontWeight: '600',
+                            cursor: !formData.plusOneCode.trim() || isVerifyingPromo ? 'not-allowed' : 'pointer',
+                            opacity: !formData.plusOneCode.trim() || isVerifyingPromo ? 0.5 : 1,
+                            whiteSpace: 'nowrap',
+                            minWidth: '80px'
+                          }}
+                        >
+                          {isVerifyingPromo ? 'Verifying...' : 'Verify'}
+                        </button>
+                      </div>
+                      {errors.plusOneCode && (
+                        <small style={{ color: '#e74c3c', fontSize: '0.85rem', marginTop: '0.25rem', display: 'block' }}>
+                          {errors.plusOneCode}
+                        </small>
+                      )}
+                      {plusOneEnabled && !errors.plusOneCode && (
+                        <small style={{ color: '#27ae60', fontSize: '0.85rem', marginTop: '0.25rem', display: 'block', fontWeight: '500' }}>
+                          ✓ Plus one access granted!
+                        </small>
+                      )}
+                      {!errors.plusOneCode && !plusOneEnabled && (
+                        <small>This code was provided to you by the bride and groom</small>
+                      )}
                     </div>
                   )}
                 </div>

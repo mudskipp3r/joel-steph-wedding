@@ -22,7 +22,7 @@ export default function Home() {
 
 
   return (
-    <>
+    <div style={{ overflowX: 'hidden', width: '100%' }}>
       <Navigation
         isRSVPFormOpen={isRSVPFormOpen}
         onOpenRSVPForm={openRSVPForm}
@@ -77,6 +77,6 @@ export default function Home() {
         isOpen={isRSVPFormOpen}
         onClose={closeRSVPForm}
       />
-    </>
+    </div>
   );
 }

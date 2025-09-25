@@ -10,8 +10,6 @@ interface HeroBannerProps {
 }
 
 const HeroBanner: React.FC<HeroBannerProps> = ({
-  title = "Welcome to Our Wedding",
-  subtitle = "Joel & Stephanie",
   backgroundImage,
   className = ""
 }) => {

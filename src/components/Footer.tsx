@@ -29,29 +29,72 @@ const Footer: React.FC<FooterProps> = ({ onOpenRSVPForm }) => {
     >
       <div className="footer-main" style={{
         textAlign: 'center',
-        maxWidth: '600px'
+        maxWidth: '800px'
       }}>
-        <h3 style={{
-          fontFamily: 'Cardo, serif',
-          fontSize: 'clamp(1.5rem, 3vw, 2rem)',
-          fontWeight: 400,
-          margin: '0 0 0.5rem 0',
-          color: '#2c3e50'
-        }}>Join Us for Our Special Day</h3>
+        <div style={{
+          display: 'flex',
+          justifyContent: 'space-around',
+          flexWrap: 'wrap',
+          gap: '2rem',
+          marginBottom: '1rem'
+        }}>
+          <div style={{
+            textAlign: 'center',
+            minWidth: '200px'
+          }}>
+            <h4 style={{
+              fontFamily: 'Instrument Sans, sans-serif',
+              fontSize: '1rem',
+              fontWeight: 600,
+              color: '#FF6B6B',
+              margin: '0 0 0.5rem 0'
+            }}>Ceremony</h4>
+            <p style={{
+              fontFamily: 'Instrument Sans, sans-serif',
+              fontSize: '0.85rem',
+              color: '#666',
+              lineHeight: 1.4,
+              margin: '0'
+            }}>
+              Saint Brigid's Catholic Church<br/>
+              392 Marrickville Rd<br/>
+              Marrickville NSW 2204
+            </p>
+          </div>
+
+          <div style={{
+            textAlign: 'center',
+            minWidth: '200px'
+          }}>
+            <h4 style={{
+              fontFamily: 'Instrument Sans, sans-serif',
+              fontSize: '1rem',
+              fontWeight: 600,
+              color: '#FF6B6B',
+              margin: '0 0 0.5rem 0'
+            }}>Reception</h4>
+            <p style={{
+              fontFamily: 'Instrument Sans, sans-serif',
+              fontSize: '0.85rem',
+              color: '#666',
+              lineHeight: 1.4,
+              margin: '0'
+            }}>
+              The Sky Ballroom<br/>
+              Level 3/462 Chapel Rd<br/>
+              Bankstown NSW 2200
+            </p>
+          </div>
+        </div>
+
         <p style={{
           fontFamily: 'Instrument Sans, sans-serif',
-          fontSize: '1rem',
+          fontSize: '0.8rem',
           color: '#666',
-          margin: '0 0 0.5rem 0',
-          lineHeight: 1.5
-        }}>Saturday, June 21st, 2025 • Marin County, California</p>
-        <p style={{
-          fontFamily: 'Instrument Sans, sans-serif',
-          fontSize: '0.9rem',
-          color: '#888',
-          margin: 0,
-          lineHeight: 1.4
-        }}>Please RSVP by October 6th, 2025</p>
+          lineHeight: 1.5,
+          margin: '0',
+          textAlign: 'center'
+        }}>We can't wait to celebrate with you on our special day!</p>
       </div>
 
       <Button onClick={onOpenRSVPForm} variant="primary" size="large">

@@ -7,7 +7,7 @@ const venues = [
   {
     id: 1,
     name: "Saint Brigid's Catholic Church",
-    address: "Livingstone Rd, Marrickville, NSW 2204",
+    address: "392 Marrickville Rd, Marrickville NSW 2204",
     coordinates: { lat: -33.9133, lng: 151.1553 },
     type: "Ceremony",
     parking: "Limited street parking available. Public parking at nearby Marrickville Metro (5min walk).",

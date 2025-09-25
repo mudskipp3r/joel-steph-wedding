@@ -20,8 +20,9 @@ const TimelineSection: React.FC = () => {
 
     if (!container || !content || !eventsContainer) return;
 
-    // Check if we're on mobile
+    // Check if we're on mobile or iOS
     const isMobile = window.innerWidth <= 768;
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
 
     // Clean up any existing ScrollTriggers
     const triggers: ScrollTrigger[] = [];
@@ -41,6 +42,9 @@ const TimelineSection: React.FC = () => {
           scrub: 1,
           id: "timeline-scroll",
           markers: false,
+          // iOS-specific optimizations
+          invalidateOnRefresh: true,
+          refreshPriority: isIOS ? 1 : 0,
         }
       });
 
@@ -48,13 +52,19 @@ const TimelineSection: React.FC = () => {
       tl.to(eventsContainer, {
         y: -window.innerHeight * 2.5,
         ease: "none",
-        duration: 1
+        duration: 1,
+        force3D: true, // Force hardware acceleration on iOS
       });
 
       triggers.push(ScrollTrigger.getById("timeline-scroll")!);
     } else {
       // Mobile: Simple static layout, no pinning
       gsap.set(eventsContainer, { y: 0, clearProps: "transform" });
+    }
+
+    // Refresh ScrollTrigger after setup for iOS
+    if (isIOS) {
+      ScrollTrigger.refresh();
     }
 
     return () => {
@@ -79,7 +89,10 @@ const TimelineSection: React.FC = () => {
         style={{
           position: 'relative',
           width: '100%',
-          overflow: 'hidden'
+          overflow: 'hidden',
+          WebkitOverflowScrolling: 'touch', // Smooth scrolling on iOS
+          WebkitBackfaceVisibility: 'hidden', // Reduce flickering on iOS
+          WebkitPerspective: 1000, // Enable 3D acceleration
         }}
       >
         {/* Background card */}
@@ -324,6 +337,9 @@ const TimelineSection: React.FC = () => {
 
         .timeline-content {
           height: 100vh;
+          /* iOS Safari viewport height fix */
+          height: 100dvh; /* Dynamic viewport height - iOS 15.4+ */
+          height: -webkit-fill-available; /* Fallback for older iOS */
         }
 
         /* Mobile Layout */
@@ -402,12 +418,11 @@ const TimelineSection: React.FC = () => {
             position: absolute;
             left: -3rem;
             top: 1rem;
-            width: 18px;
-            height: 18px;
+            width: 24px;
+            height: 24px;
             background: #FF6B6B;
             border-radius: 50%;
-            border: 3px solid white;
-            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3), inset 0 1px 3px rgba(255, 255, 255, 0.5);
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
           }
 
           .timeline-content > div > div:last-child > div:first-child > div:first-child {
@@ -441,12 +456,11 @@ const TimelineSection: React.FC = () => {
             position: absolute;
             left: -3rem;
             top: 2rem;
-            width: 18px;
-            height: 18px;
+            width: 24px;
+            height: 24px;
             background: #FF6B6B;
             border-radius: 50%;
-            border: 3px solid white;
-            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3), inset 0 1px 3px rgba(255, 255, 255, 0.5);
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
           }
 
           /* Hide circles on mobile */
@@ -473,6 +487,21 @@ const TimelineSection: React.FC = () => {
           .timeline-content > div > div:last-child > div:nth-child(5) > div:nth-child(3) {
             font-size: 1rem !important;
             margin-bottom: 1.5rem !important;
+          }
+        }
+
+        /* iOS Safari specific fixes */
+        @supports (-webkit-touch-callout: none) {
+          .timeline-content {
+            /* Fix viewport height issues on iOS */
+            height: -webkit-fill-available;
+          }
+
+          /* Ensure smooth scrolling and reduce jank on iOS */
+          .timeline-section * {
+            -webkit-transform: translateZ(0);
+            -webkit-backface-visibility: hidden;
+            -webkit-perspective: 1000;
           }
         }
 

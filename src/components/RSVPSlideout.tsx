@@ -141,24 +141,15 @@ const RSVPSlideout: React.FC<RSVPSlideoutProps> = ({ isOpen, onClose }) => {
 
     // Validate plus one code using hash comparison (same as password protection)
     if (formData.hasPlusOne && formData.plusOneCode.trim()) {
-      console.log('Promo validation starting...', {
-        hasPlusOne: formData.hasPlusOne,
-        promoCode: `'${formData.plusOneCode.trim()}'`,
-        envVar: `'${process.env.NEXT_PUBLIC_PROMO_CODE_HASH}'`,
-        allEnvVars: Object.keys(process.env).filter(key => key.startsWith('NEXT_PUBLIC'))
-      });
-
       try {
         const hashedPromoCode = await hashPromoCode(formData.plusOneCode);
-        const expectedHash = process.env.NEXT_PUBLIC_PROMO_CODE_HASH;
+        const expectedHash = process.env.NEXT_PUBLIC_PROMO_CODE_HASH?.trim();
 
-        // Debug logging
-        console.log('Debug promo validation:', {
-          entered: `'${formData.plusOneCode.trim()}'`,
-          hashedInput: `'${hashedPromoCode}'`,
-          expectedHash: `'${expectedHash}'`,
-          match: hashedPromoCode === expectedHash
-        });
+        if (!expectedHash) {
+          console.error('NEXT_PUBLIC_PROMO_CODE_HASH is not configured');
+          setErrors({ plusOneCode: 'Promo code validation is not configured. Please contact support.' });
+          return;
+        }
 
         if (hashedPromoCode !== expectedHash) {
           setErrors({ plusOneCode: 'Invalid plus one code. Please check your code and try again.' });

@@ -269,6 +269,8 @@ const OptimizedMiddleSection: React.FC = () => {
           color: #4a4a4a;
           position: relative;
           z-index: 10;
+          white-space: nowrap;
+          overflow: visible;
         }
 
         .squares-container {

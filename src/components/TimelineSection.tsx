@@ -237,7 +237,7 @@ const TimelineSection: React.FC = () => {
                 ...typography.styles.eventTime,
                 marginBottom: '0.5rem'
               }}>
-                3:00 pm
+                12:30 pm
               </div>
 
               <div style={{

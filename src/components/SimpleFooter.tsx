@@ -151,17 +151,14 @@ const SimpleFooter: React.FC<SimpleFooterProps> = ({
     setErrors(prev => ({ ...prev, plusOneCode: '' }));
 
     try {
-      const response = await fetch('/api/verify-promo', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ promoCode: code }),
-      });
+      // Client-side promo code validation for static site
+      const validPromoCode = process.env.NEXT_PUBLIC_PROMO_CODE;
+      const enteredCode = code?.trim().toUpperCase();
+      const correctCode = validPromoCode?.trim().toUpperCase();
 
-      const result = await response.json();
+      const isValid = enteredCode === correctCode;
 
-      if (result.valid) {
+      if (isValid) {
         setPlusOneEnabled(true);
         setErrors(prev => ({ ...prev, plusOneCode: '' }));
       } else {

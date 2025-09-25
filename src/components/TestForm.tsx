@@ -100,7 +100,6 @@ const TestForm: React.FC<TestFormProps> = ({ isOpen, onClose }) => {
             <form
               name="test-form"
               method="POST"
-              action="/?form-success=test-form"
               data-netlify="true"
               netlify-honeypot="bot-field"
             >

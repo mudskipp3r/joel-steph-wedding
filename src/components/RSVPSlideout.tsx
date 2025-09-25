@@ -3,6 +3,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 import Button from './Button';
+import { typography } from '../styles/typography';
 
 interface RSVPSlideoutProps {
   isOpen: boolean;
@@ -300,11 +301,9 @@ const RSVPSlideout: React.FC<RSVPSlideoutProps> = ({ isOpen, onClose }) => {
           zIndex: 10
         }}>
           <h2 style={{
-            fontFamily: 'Cardo, serif',
+            ...typography.styles.heading,
             fontSize: '2rem',
-            fontWeight: 400,
-            margin: 0,
-            color: '#2c3e50'
+            margin: 0
           }}>RSVP</h2>
           <button
             onClick={onClose}
@@ -340,10 +339,8 @@ const RSVPSlideout: React.FC<RSVPSlideoutProps> = ({ isOpen, onClose }) => {
           minHeight: 'calc(100vh - 120px)'
         }}>
           <p style={{
-            fontFamily: 'Instrument Sans, sans-serif',
+            ...typography.styles.body,
             fontSize: '1.1rem',
-            color: '#666',
-            lineHeight: 1.6,
             marginBottom: '2rem',
             textAlign: 'center'
           }}>We can't wait to celebrate with you! Please let us know if you'll be joining us for our special day.</p>
@@ -362,15 +359,14 @@ const RSVPSlideout: React.FC<RSVPSlideoutProps> = ({ isOpen, onClose }) => {
             <div style={{ fontSize: '2rem', flexShrink: 0 }}>⏰</div>
             <div>
               <strong style={{
-                fontFamily: 'Instrument Sans, sans-serif',
+                ...typography.styles.label,
                 fontSize: '1.2rem',
-                fontWeight: 700,
+                fontWeight: typography.weights.bold,
                 display: 'block',
                 marginBottom: '0.25rem'
               }}>RSVP Deadline: 6th December 2025</strong>
               <span style={{
-                fontFamily: 'Instrument Sans, sans-serif',
-                fontSize: '0.95rem',
+                ...typography.styles.bodySmall,
                 opacity: 0.95
               }}>Please respond by this date to help us plan the perfect celebration</span>
             </div>
@@ -405,20 +401,15 @@ const RSVPSlideout: React.FC<RSVPSlideoutProps> = ({ isOpen, onClose }) => {
               {/* Success Message */}
               <div>
                 <h3 style={{
-                  fontFamily: 'Cardo, serif',
+                  ...typography.styles.heading,
                   fontSize: '2.5rem',
-                  color: '#1a1a1a',
-                  fontWeight: '400',
-                  marginBottom: '1rem',
-                  letterSpacing: '-0.02em'
+                  marginBottom: '1rem'
                 }}>
                   Thank You!
                 </h3>
                 <p style={{
-                  fontFamily: 'Instrument Sans, sans-serif',
+                  ...typography.styles.body,
                   fontSize: '1.1rem',
-                  color: '#666',
-                  lineHeight: '1.6',
                   marginBottom: '0'
                 }}>
                   Your RSVP has been received successfully. We're excited to celebrate with you and will be in touch soon with more details!
@@ -637,9 +628,9 @@ const RSVPSlideout: React.FC<RSVPSlideoutProps> = ({ isOpen, onClose }) => {
         }
 
         .form-group label {
-          font-family: 'Instrument Sans', sans-serif;
-          font-weight: 600;
-          color: #2c3e50;
+          font-family: ${typography.fonts.sans};
+          font-weight: ${typography.weights.semibold};
+          color: ${typography.colors.secondary};
           font-size: 1rem;
         }
 
@@ -651,7 +642,7 @@ const RSVPSlideout: React.FC<RSVPSlideoutProps> = ({ isOpen, onClose }) => {
           border: 1px solid #ddd;
           border-radius: 4px;
           font-size: 16px;
-          font-family: 'Instrument Sans', sans-serif;
+          font-family: ${typography.fonts.sans};
           background: white;
           transition: all 0.3s ease;
           outline: none;
@@ -673,17 +664,17 @@ const RSVPSlideout: React.FC<RSVPSlideoutProps> = ({ isOpen, onClose }) => {
         }
 
         .form-group small {
-          font-family: 'Instrument Sans', sans-serif;
+          font-family: ${typography.fonts.sans};
           font-size: 0.85rem;
-          color: #888;
+          color: ${typography.colors.light};
           margin-top: 0.25rem;
         }
 
         /* Radio Button Styles */
         .radio-group-label {
-          font-family: 'Instrument Sans', sans-serif;
-          font-weight: 600;
-          color: #2c3e50;
+          font-family: ${typography.fonts.sans};
+          font-weight: ${typography.weights.semibold};
+          color: ${typography.colors.secondary};
           font-size: 1rem;
           margin-bottom: 1rem;
         }
@@ -707,10 +698,10 @@ const RSVPSlideout: React.FC<RSVPSlideoutProps> = ({ isOpen, onClose }) => {
           display: flex;
           align-items: center;
           gap: 0.75rem;
-          font-family: 'Instrument Sans', sans-serif;
+          font-family: ${typography.fonts.sans};
           font-size: 1.1rem;
-          font-weight: 500;
-          color: #2c3e50;
+          font-weight: ${typography.weights.medium};
+          color: ${typography.colors.secondary};
           cursor: pointer;
           padding: 1rem;
           border: 2px solid #e1e8ed;
@@ -776,10 +767,10 @@ const RSVPSlideout: React.FC<RSVPSlideoutProps> = ({ isOpen, onClose }) => {
           display: flex;
           align-items: center;
           gap: 0.75rem;
-          font-family: 'Instrument Sans', sans-serif;
+          font-family: ${typography.fonts.sans};
           font-size: 1.1rem;
-          font-weight: 500;
-          color: #2c3e50;
+          font-weight: ${typography.weights.medium};
+          color: ${typography.colors.secondary};
           cursor: pointer;
         }
 

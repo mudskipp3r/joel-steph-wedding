@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Button from './Button';
+import { typography } from '../styles/typography';
 
 interface FooterProps {
   onOpenRSVPForm: () => void;
@@ -38,29 +39,21 @@ const Footer: React.FC<FooterProps> = ({ onOpenRSVPForm }) => {
             minWidth: '160px'
           }}>
             <h3 style={{
-              fontFamily: 'Cardo, serif',
+              ...typography.styles.subheading,
               fontSize: '1.5rem',
-              fontWeight: 600,
-              color: '#2c3e50',
-              margin: '0 0 8px 0',
-              letterSpacing: '-0.01em'
+              margin: '0 0 8px 0'
             }}>Joel & Stephanie</h3>
             <p style={{
-              fontFamily: 'Instrument Sans, sans-serif',
-              fontSize: '0.85rem',
-              color: '#4a4a4a',
-              margin: '0',
-              lineHeight: 1.4
+              ...typography.styles.helpText,
+              margin: '0'
             }}>February 6th, 2026</p>
           </div>
 
           {/* Wedding Details */}
           <div>
             <h4 style={{
-              fontFamily: 'Instrument Sans, sans-serif',
+              ...typography.styles.label,
               fontSize: '0.9rem',
-              fontWeight: 600,
-              color: '#2c3e50',
               margin: '0 0 16px 0'
             }}>Wedding</h4>
             <ul style={{
@@ -69,45 +62,37 @@ const Footer: React.FC<FooterProps> = ({ onOpenRSVPForm }) => {
               margin: 0
             }}>
               <li><a href="#our-story" style={{
-                fontFamily: 'Instrument Sans, sans-serif',
-                fontSize: '0.85rem',
-                color: '#4a4a4a',
+                ...typography.styles.helpText,
                 textDecoration: 'none',
                 lineHeight: 1.8,
                 transition: 'color 0.2s ease'
               }}
-              onMouseEnter={(e) => e.currentTarget.style.color = '#FF6B6B'}
-              onMouseLeave={(e) => e.currentTarget.style.color = '#4a4a4a'}>Our Story</a></li>
+              onMouseEnter={(e) => e.currentTarget.style.color = typography.colors.accent}
+              onMouseLeave={(e) => e.currentTarget.style.color = typography.colors.body}>Our Story</a></li>
               <li><a href="#timeline" style={{
-                fontFamily: 'Instrument Sans, sans-serif',
-                fontSize: '0.85rem',
-                color: '#4a4a4a',
+                ...typography.styles.helpText,
                 textDecoration: 'none',
                 lineHeight: 1.8,
                 transition: 'color 0.2s ease'
               }}
-              onMouseEnter={(e) => e.currentTarget.style.color = '#FF6B6B'}
-              onMouseLeave={(e) => e.currentTarget.style.color = '#4a4a4a'}>Timeline</a></li>
+              onMouseEnter={(e) => e.currentTarget.style.color = typography.colors.accent}
+              onMouseLeave={(e) => e.currentTarget.style.color = typography.colors.body}>Timeline</a></li>
               <li><a href="#venues" style={{
-                fontFamily: 'Instrument Sans, sans-serif',
-                fontSize: '0.85rem',
-                color: '#4a4a4a',
+                ...typography.styles.helpText,
                 textDecoration: 'none',
                 lineHeight: 1.8,
                 transition: 'color 0.2s ease'
               }}
-              onMouseEnter={(e) => e.currentTarget.style.color = '#FF6B6B'}
-              onMouseLeave={(e) => e.currentTarget.style.color = '#4a4a4a'}>Venues</a></li>
+              onMouseEnter={(e) => e.currentTarget.style.color = typography.colors.accent}
+              onMouseLeave={(e) => e.currentTarget.style.color = typography.colors.body}>Venues</a></li>
             </ul>
           </div>
 
           {/* Ceremony */}
           <div>
             <h4 style={{
-              fontFamily: 'Instrument Sans, sans-serif',
+              ...typography.styles.label,
               fontSize: '0.9rem',
-              fontWeight: 600,
-              color: '#2c3e50',
               margin: '0 0 16px 0'
             }}>Ceremony</h4>
             <ul style={{
@@ -116,15 +101,11 @@ const Footer: React.FC<FooterProps> = ({ onOpenRSVPForm }) => {
               margin: 0
             }}>
               <li style={{
-                fontFamily: 'Instrument Sans, sans-serif',
-                fontSize: '0.85rem',
-                color: '#4a4a4a',
+                ...typography.styles.helpText,
                 lineHeight: 1.8
               }}>Saint Brigid's Church</li>
               <li style={{
-                fontFamily: 'Instrument Sans, sans-serif',
-                fontSize: '0.85rem',
-                color: '#4a4a4a',
+                ...typography.styles.helpText,
                 lineHeight: 1.8
               }}>Marrickville NSW</li>
             </ul>
@@ -133,10 +114,8 @@ const Footer: React.FC<FooterProps> = ({ onOpenRSVPForm }) => {
           {/* Reception */}
           <div>
             <h4 style={{
-              fontFamily: 'Instrument Sans, sans-serif',
+              ...typography.styles.label,
               fontSize: '0.9rem',
-              fontWeight: 600,
-              color: '#2c3e50',
               margin: '0 0 16px 0'
             }}>Reception</h4>
             <ul style={{
@@ -145,15 +124,11 @@ const Footer: React.FC<FooterProps> = ({ onOpenRSVPForm }) => {
               margin: 0
             }}>
               <li style={{
-                fontFamily: 'Instrument Sans, sans-serif',
-                fontSize: '0.85rem',
-                color: '#4a4a4a',
+                ...typography.styles.helpText,
                 lineHeight: 1.8
               }}>The Sky Ballroom</li>
               <li style={{
-                fontFamily: 'Instrument Sans, sans-serif',
-                fontSize: '0.85rem',
-                color: '#4a4a4a',
+                ...typography.styles.helpText,
                 lineHeight: 1.8
               }}>Bankstown NSW</li>
             </ul>
@@ -162,10 +137,8 @@ const Footer: React.FC<FooterProps> = ({ onOpenRSVPForm }) => {
           {/* Contact */}
           <div>
             <h4 style={{
-              fontFamily: 'Instrument Sans, sans-serif',
+              ...typography.styles.label,
               fontSize: '0.9rem',
-              fontWeight: 600,
-              color: '#2c3e50',
               margin: '0 0 16px 0'
             }}>Contact</h4>
             <ul style={{
@@ -174,15 +147,11 @@ const Footer: React.FC<FooterProps> = ({ onOpenRSVPForm }) => {
               margin: 0
             }}>
               <li style={{
-                fontFamily: 'Instrument Sans, sans-serif',
-                fontSize: '0.85rem',
-                color: '#4a4a4a',
+                ...typography.styles.helpText,
                 lineHeight: 1.8
               }}>Steph: 0426 875 301</li>
               <li style={{
-                fontFamily: 'Instrument Sans, sans-serif',
-                fontSize: '0.85rem',
-                color: '#4a4a4a',
+                ...typography.styles.helpText,
                 lineHeight: 1.8
               }}>Joel: 0497 091 831</li>
             </ul>
@@ -210,9 +179,7 @@ const Footer: React.FC<FooterProps> = ({ onOpenRSVPForm }) => {
             gap: '20px'
           }}>
             <p style={{
-              fontFamily: 'Instrument Sans, sans-serif',
-              fontSize: '0.85rem',
-              color: '#4a4a4a',
+              ...typography.styles.helpText,
               margin: '0'
             }}>© 2025 Joel & Stephanie</p>
           </div>

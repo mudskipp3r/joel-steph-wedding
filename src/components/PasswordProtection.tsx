@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { typography } from '../styles/typography';
 
 const PasswordProtection: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -59,9 +60,8 @@ const PasswordProtection: React.FC<{ children: React.ReactNode }> = ({ children 
         background: '#faf9f6'
       }}>
         <div style={{
-          fontSize: '1.5rem',
-          color: '#666',
-          fontFamily: 'Instrument Sans, sans-serif'
+          ...typography.styles.body,
+          fontSize: '1.5rem'
         }}>
           Loading...
         </div>
@@ -93,26 +93,22 @@ const PasswordProtection: React.FC<{ children: React.ReactNode }> = ({ children 
             marginBottom: '2rem'
           }}>
             <h1 style={{
-              fontFamily: 'Cardo, serif',
+              ...typography.styles.heading,
               fontSize: '2.5rem',
-              color: '#2c3e50',
-              marginBottom: '0.5rem',
-              letterSpacing: '-0.02em'
+              marginBottom: '0.5rem'
             }}>
               Joel & Stephanie
             </h1>
             <p style={{
-              fontFamily: 'Instrument Sans, sans-serif',
+              ...typography.styles.body,
               fontSize: '1.1rem',
-              color: '#666',
               marginBottom: '2rem'
             }}>
               Wedding Website
             </p>
             <p style={{
-              fontFamily: 'Instrument Sans, sans-serif',
-              fontSize: '0.95rem',
-              color: '#888'
+              ...typography.styles.bodySmall,
+              color: typography.colors.light
             }}>
               Please enter the password to continue
             </p>
@@ -127,17 +123,16 @@ const PasswordProtection: React.FC<{ children: React.ReactNode }> = ({ children 
                 placeholder="Enter password"
                 required
                 style={{
+                  ...typography.styles.input,
                   width: '100%',
                   padding: '1rem',
-                  fontSize: '1rem',
                   border: '2px solid #e0e0e0',
                   borderRadius: '10px',
-                  fontFamily: 'Instrument Sans, sans-serif',
                   transition: 'border-color 0.3s ease',
                   outline: 'none'
                 }}
                 onFocus={(e) => {
-                  e.target.style.borderColor = '#FF6B6B';
+                  e.target.style.borderColor = typography.colors.accent;
                 }}
                 onBlur={(e) => {
                   e.target.style.borderColor = '#e0e0e0';
@@ -147,11 +142,10 @@ const PasswordProtection: React.FC<{ children: React.ReactNode }> = ({ children 
 
             {error && (
               <div style={{
-                color: '#e74c3c',
-                fontSize: '0.9rem',
+                ...typography.styles.bodySmall,
+                color: typography.colors.error,
                 marginBottom: '1rem',
-                textAlign: 'center',
-                fontFamily: 'Instrument Sans, sans-serif'
+                textAlign: 'center'
               }}>
                 {error}
               </div>
@@ -160,15 +154,13 @@ const PasswordProtection: React.FC<{ children: React.ReactNode }> = ({ children 
             <button
               type="submit"
               style={{
+                ...typography.styles.button,
                 width: '100%',
                 padding: '1rem',
-                background: '#FF6B6B',
+                background: typography.colors.accent,
                 color: 'white',
                 border: 'none',
                 borderRadius: '10px',
-                fontSize: '1rem',
-                fontWeight: '600',
-                fontFamily: 'Instrument Sans, sans-serif',
                 cursor: 'pointer',
                 transition: 'transform 0.2s ease, box-shadow 0.2s ease',
                 boxShadow: '0 4px 15px rgba(255, 107, 107, 0.4)'
@@ -187,11 +179,9 @@ const PasswordProtection: React.FC<{ children: React.ReactNode }> = ({ children 
           </form>
 
           <div style={{
+            ...typography.styles.helpText,
             marginTop: '2rem',
-            textAlign: 'center',
-            fontSize: '0.85rem',
-            color: '#999',
-            fontFamily: 'Instrument Sans, sans-serif'
+            textAlign: 'center'
           }}>
             <p>If you need the password, please contact Steph 0426875301 or Joel 0497091831</p>
           </div>

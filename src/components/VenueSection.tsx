@@ -1,7 +1,8 @@
-'use client';
+"use client";
 
-import React, { useEffect, useRef, useState } from 'react';
-import { GoogleMapsMap, GoogleMapsMarker } from '../types/googlemaps';
+import React, { useEffect, useRef, useState } from "react";
+import { GoogleMapsMap, GoogleMapsMarker } from "../types/googlemaps";
+import { typography } from "../styles/typography";
 
 const venues = [
   {
@@ -10,11 +11,12 @@ const venues = [
     address: "392 Marrickville Rd, Marrickville NSW 2204",
     coordinates: { lat: -33.9133, lng: 151.1553 },
     type: "Ceremony",
-    parking: "Limited street parking available. Public parking at nearby Marrickville Metro (5min walk).",
+    parking:
+      "Limited parking is available on the church premises. Please note that the parking lot will be locked from 2:00PM to 3:15PM due to school zone restrictions, so ensure your vehicle is moved before then. Street parking is also available.",
     publicTransport: {
       train: "Marrickville Station (10min walk) - Inner West Line",
-      bus: "Routes 426, 428, 445 - Stop at Marrickville Road"
-    }
+      bus: "Routes 426, 428, 445 - Stop at Marrickville Road",
+    },
   },
   {
     id: 2,
@@ -22,12 +24,13 @@ const venues = [
     address: "Level 3/462 Chapel Rd, Bankstown NSW 2200",
     coordinates: { lat: -33.9198, lng: 151.0346 },
     type: "Reception",
-    parking: "Free parking available at venue. Additional parking at Chapel Road Centre.",
+    parking:
+      "Free parking available at venue. Additional parking at Chapel Road Centre.",
     publicTransport: {
       train: "Bankstown Station (8min walk) - T3 Bankstown Line",
-      bus: "Routes 901, 902, 925 - Stop at Chapel Road/Restwell Street"
-    }
-  }
+      bus: "Routes 901, 902, 925 - Stop at Chapel Road/Restwell Street",
+    },
+  },
 ];
 
 const VenueSection: React.FC = () => {
@@ -39,7 +42,7 @@ const VenueSection: React.FC = () => {
   // Initialize Google Maps
   const initializeMap = () => {
     if (!mapRef.current || !window.google?.maps) {
-      console.log('Google Maps not ready, retrying...');
+      console.log("Google Maps not ready, retrying...");
       setTimeout(initializeMap, 500);
       return;
     }
@@ -48,24 +51,24 @@ const VenueSection: React.FC = () => {
       const newMap = new window.google!.maps.Map(mapRef.current, {
         zoom: 15,
         center: venues[0].coordinates, // Start with ceremony location
-        mapTypeId: 'roadmap',
+        mapTypeId: "roadmap",
         styles: [
           {
-            featureType: 'all',
-            elementType: 'geometry.fill',
-            stylers: [{ color: '#f8f8f8' }]
+            featureType: "all",
+            elementType: "geometry.fill",
+            stylers: [{ color: "#f8f8f8" }],
           },
           {
-            featureType: 'water',
-            elementType: 'geometry.fill',
-            stylers: [{ color: '#a8d1e0' }]
+            featureType: "water",
+            elementType: "geometry.fill",
+            stylers: [{ color: "#a8d1e0" }],
           },
           {
-            featureType: 'poi',
-            elementType: 'geometry.fill',
-            stylers: [{ color: '#e8f5e8' }]
-          }
-        ]
+            featureType: "poi",
+            elementType: "geometry.fill",
+            stylers: [{ color: "#e8f5e8" }],
+          },
+        ],
       });
 
       // Create markers for both venues
@@ -80,23 +83,27 @@ const VenueSection: React.FC = () => {
           icon: {
             url: `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(`
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="12" cy="12" r="8" fill="${index === 0 ? '#FF6B6B' : '#4ECDC4'}" stroke="white" stroke-width="2"/>
-                <text x="12" y="16" font-family="Arial" font-size="10" fill="white" text-anchor="middle">${index + 1}</text>
+                <circle cx="12" cy="12" r="8" fill="${
+                  index === 0 ? "#FF6B6B" : "#4ECDC4"
+                }" stroke="white" stroke-width="2"/>
+                <text x="12" y="16" font-family="Arial" font-size="10" fill="white" text-anchor="middle">${
+                  index + 1
+                }</text>
               </svg>
             `)}`,
             scaledSize: new window.google!.maps.Size(32, 32),
-            anchor: new window.google!.maps.Point(16, 16)
-          }
+            anchor: new window.google!.maps.Point(16, 16),
+          },
         });
         newMarkers.push(marker);
       });
 
-      console.log('Google Maps initialized with', newMarkers.length, 'markers');
+      console.log("Google Maps initialized with", newMarkers.length, "markers");
 
       setMap(newMap);
       setMarkers(newMarkers);
     } catch (error) {
-      console.error('Error initializing Google Maps:', error);
+      console.error("Error initializing Google Maps:", error);
     }
   };
 
@@ -105,7 +112,12 @@ const VenueSection: React.FC = () => {
     setActiveVenue(venueIndex);
     if (map && venues[venueIndex]) {
       const venue = venues[venueIndex];
-      map.setCenter(new window.google!.maps.LatLng(venue.coordinates.lat, venue.coordinates.lng));
+      map.setCenter(
+        new window.google!.maps.LatLng(
+          venue.coordinates.lat,
+          venue.coordinates.lng
+        )
+      );
       map.setZoom(15);
     }
   };
@@ -113,8 +125,10 @@ const VenueSection: React.FC = () => {
   // Open Google Maps with directions
   const openGoogleMaps = () => {
     const venue = venues[activeVenue];
-    const url = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(venue.address)}`;
-    window.open(url, '_blank');
+    const url = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+      venue.address
+    )}`;
+    window.open(url, "_blank");
   };
 
   // Load Google Maps API
@@ -126,22 +140,22 @@ const VenueSection: React.FC = () => {
 
     const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
     if (!apiKey) {
-      console.error('Google Maps API key not found');
+      console.error("Google Maps API key not found");
       return;
     }
 
-    const script = document.createElement('script');
+    const script = document.createElement("script");
     script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=geometry&v=3.54`;
     script.async = true;
     script.defer = true;
 
     script.onload = () => {
-      console.log('Google Maps script loaded');
+      console.log("Google Maps script loaded");
       setTimeout(initializeMap, 100);
     };
 
     script.onerror = (error) => {
-      console.error('Failed to load Google Maps script:', error);
+      console.error("Failed to load Google Maps script:", error);
     };
 
     document.head.appendChild(script);
@@ -157,24 +171,20 @@ const VenueSection: React.FC = () => {
     <section
       className="venue-section"
       style={{
-        padding: '3rem 2rem',
-        background: 'transparent', // Background managed by BackgroundColorManager
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        gap: '1.5rem' // Tightened spacing
+        padding: "3rem 2rem",
+        background: "transparent", // Background managed by BackgroundColorManager
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        gap: "1.5rem", // Tightened spacing
       }}
     >
       <h2
         style={{
-          fontFamily: 'Instrument Serif, serif',
-          fontSize: 'clamp(3rem, 6vw, 4.5rem)',
-          color: '#1a1a1a',
-          fontWeight: '400',
-          letterSpacing: '-0.02em',
-          margin: '0',
-          textAlign: 'center'
+          ...typography.styles.title,
+          margin: "0",
+          textAlign: "center",
         }}
       >
         Venues
@@ -184,14 +194,16 @@ const VenueSection: React.FC = () => {
       <div
         className="venue-toggle"
         style={{
-          display: 'flex',
-          background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.9))',
-          borderRadius: '25px',
-          padding: '6px',
-          gap: '4px',
-          boxShadow: '0 10px 30px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.8)',
-          border: '1px solid rgba(255, 107, 107, 0.2)',
-          backdropFilter: 'blur(10px)'
+          display: "flex",
+          background:
+            "linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.9))",
+          borderRadius: "25px",
+          padding: "6px",
+          gap: "4px",
+          boxShadow:
+            "0 10px 30px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.8)",
+          border: "1px solid rgba(255, 107, 107, 0.2)",
+          backdropFilter: "blur(10px)",
         }}
       >
         {venues.map((venue, index) => (
@@ -200,32 +212,34 @@ const VenueSection: React.FC = () => {
             onClick={() => switchToVenue(index)}
             className="venue-toggle-button"
             style={{
-              fontFamily: 'Instrument Sans, sans-serif',
-              fontSize: '1rem',
-              fontWeight: '600',
-              padding: '14px 28px',
-              borderRadius: '20px',
-              border: 'none',
-              cursor: 'pointer',
-              transition: 'all 0.3s ease',
-              background: activeVenue === index ?
-                'linear-gradient(135deg, #FF6B6B, #FF5252)' : 'transparent',
-              color: activeVenue === index ? 'white' : '#666',
-              boxShadow: activeVenue === index ?
-                '0 4px 15px rgba(255, 107, 107, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2)' : 'none',
-              transform: activeVenue === index ? 'translateY(-1px)' : 'none',
-              minWidth: '120px'
+              ...typography.styles.button,
+              padding: "14px 28px",
+              borderRadius: "20px",
+              border: "none",
+              cursor: "pointer",
+              transition: "all 0.3s ease",
+              background:
+                activeVenue === index
+                  ? "linear-gradient(135deg, #FF6B6B, #FF5252)"
+                  : "transparent",
+              color: activeVenue === index ? "white" : typography.colors.muted,
+              boxShadow:
+                activeVenue === index
+                  ? "0 4px 15px rgba(255, 107, 107, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2)"
+                  : "none",
+              transform: activeVenue === index ? "translateY(-1px)" : "none",
+              minWidth: "120px",
             }}
             onMouseEnter={(e) => {
               if (activeVenue !== index) {
-                e.currentTarget.style.background = 'rgba(255, 107, 107, 0.1)';
-                e.currentTarget.style.color = '#FF6B6B';
+                e.currentTarget.style.background = "rgba(255, 107, 107, 0.1)";
+                e.currentTarget.style.color = typography.colors.accent;
               }
             }}
             onMouseLeave={(e) => {
               if (activeVenue !== index) {
-                e.currentTarget.style.background = 'transparent';
-                e.currentTarget.style.color = '#666';
+                e.currentTarget.style.background = "transparent";
+                e.currentTarget.style.color = typography.colors.muted;
               }
             }}
           >
@@ -235,61 +249,58 @@ const VenueSection: React.FC = () => {
       </div>
 
       {/* Desktop and Mobile Container */}
-      <div className="venues-container"
+      <div
+        className="venues-container"
         style={{
-          display: 'flex',
-          flexDirection: 'column',
-          gap: '2rem',
-          width: '100%',
-          maxWidth: '1200px'
+          display: "flex",
+          flexDirection: "column",
+          gap: "2rem",
+          width: "100%",
+          maxWidth: "1200px",
         }}
       >
         {/* Venue Information Card - Mobile First */}
-        <div className="venue-info-card"
+        <div
+          className="venue-info-card"
           style={{
-            background: 'linear-gradient(135deg, #ffffff 0%, #fefefe 50%, #ffffff 100%)',
-            borderRadius: '16px',
-            padding: '2.5rem',
-            boxShadow: '0 20px 60px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.8)',
-            border: '1px solid rgba(255, 107, 107, 0.1)'
+            background:
+              "linear-gradient(135deg, #ffffff 0%, #fefefe 50%, #ffffff 100%)",
+            borderRadius: "16px",
+            padding: "2.5rem",
+            boxShadow:
+              "0 20px 60px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.8)",
+            border: "1px solid rgba(255, 107, 107, 0.1)",
           }}
         >
           {/* Venue Header */}
-          <div style={{ marginBottom: '1.5rem' }}>
+          <div style={{ marginBottom: "1.5rem" }}>
             <h3
               style={{
-                fontFamily: 'Instrument Serif, serif',
-                fontSize: '2rem',
-                color: '#1a1a1a',
-                fontWeight: '400',
-                marginBottom: '0.5rem',
-                textAlign: 'left',
-                letterSpacing: '-0.02em'
+                ...typography.styles.heading,
+                fontSize: "2rem",
+                marginBottom: "0.5rem",
+                textAlign: "left",
               }}
             >
               {venues[activeVenue].type}
             </h3>
             <h4
               style={{
-                fontFamily: 'Instrument Sans, sans-serif',
-                fontSize: '1.1rem',
-                color: '#333',
-                fontWeight: '500',
-                marginBottom: '0.5rem',
-                textAlign: 'left'
+                ...typography.styles.subheading,
+                fontSize: "1.1rem",
+                marginBottom: "0.5rem",
+                textAlign: "left",
               }}
             >
               {venues[activeVenue].name}
             </h4>
             <p
               style={{
-                fontFamily: 'Instrument Sans, sans-serif',
-                fontSize: '1rem',
-                color: '#666',
-                fontWeight: '400',
-                lineHeight: '1.4',
-                textAlign: 'left',
-                marginBottom: '1.5rem'
+                ...typography.styles.body,
+                fontSize: "1rem",
+                lineHeight: "1.4",
+                textAlign: "left",
+                marginBottom: "1.5rem",
               }}
             >
               {venues[activeVenue].address}
@@ -300,58 +311,51 @@ const VenueSection: React.FC = () => {
           <button
             onClick={openGoogleMaps}
             style={{
-              fontFamily: 'Instrument Sans, sans-serif',
-              fontSize: '1rem',
-              fontWeight: '500',
-              color: 'white',
-              background: '#FF6B6B',
-              border: 'none',
-              borderRadius: '8px',
-              padding: '14px 24px',
-              cursor: 'pointer',
-              transition: 'all 0.3s ease',
-              marginBottom: '2rem',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: '8px',
-              boxShadow: '0 4px 15px rgba(255, 107, 107, 0.3)'
+              ...typography.styles.button,
+              color: "white",
+              background: typography.colors.accent,
+              border: "none",
+              borderRadius: "8px",
+              padding: "14px 24px",
+              cursor: "pointer",
+              transition: "all 0.3s ease",
+              marginBottom: "2rem",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: "8px",
+              boxShadow: "0 4px 15px rgba(255, 107, 107, 0.3)",
             }}
             onMouseEnter={(e) => {
-              e.currentTarget.style.background = '#FF5252';
-              e.currentTarget.style.transform = 'translateY(-2px)';
-              e.currentTarget.style.boxShadow = '0 8px 25px rgba(255, 107, 107, 0.4)';
+              e.currentTarget.style.background = "#FF5252";
+              e.currentTarget.style.transform = "translateY(-2px)";
+              e.currentTarget.style.boxShadow =
+                "0 8px 25px rgba(255, 107, 107, 0.4)";
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.background = '#FF6B6B';
-              e.currentTarget.style.transform = 'translateY(0)';
-              e.currentTarget.style.boxShadow = '0 4px 15px rgba(255, 107, 107, 0.3)';
+              e.currentTarget.style.background = "#FF6B6B";
+              e.currentTarget.style.transform = "translateY(0)";
+              e.currentTarget.style.boxShadow =
+                "0 4px 15px rgba(255, 107, 107, 0.3)";
             }}
           >
             Open in Google Maps
           </button>
 
           {/* Parking Information */}
-          <div style={{ marginBottom: '1.5rem' }}>
+          <div style={{ marginBottom: "1.5rem" }}>
             <h5
               style={{
-                fontFamily: 'Instrument Sans, sans-serif',
-                fontSize: '1rem',
-                color: '#1a1a1a',
-                fontWeight: '600',
-                marginBottom: '0.75rem'
+                ...typography.styles.label,
+                marginBottom: "0.75rem",
               }}
             >
               Parking
             </h5>
             <p
               style={{
-                fontFamily: 'Instrument Sans, sans-serif',
-                fontSize: '0.95rem',
-                color: '#666',
-                fontWeight: '400',
-                lineHeight: '1.4',
-                marginBottom: '0'
+                ...typography.styles.bodySmall,
+                marginBottom: "0",
               }}
             >
               {venues[activeVenue].parking}
@@ -362,48 +366,48 @@ const VenueSection: React.FC = () => {
           <div>
             <h5
               style={{
-                fontFamily: 'Instrument Sans, sans-serif',
-                fontSize: '1rem',
-                color: '#1a1a1a',
-                fontWeight: '600',
-                marginBottom: '0.75rem'
+                ...typography.styles.label,
+                marginBottom: "0.75rem",
               }}
             >
               Public Transport
             </h5>
-            <div style={{ marginBottom: '0.75rem' }}>
+            <div style={{ marginBottom: "0.75rem" }}>
               <p
                 style={{
-                  fontFamily: 'Instrument Sans, sans-serif',
-                  fontSize: '0.9rem',
-                  color: '#666',
-                  fontWeight: '500',
-                  lineHeight: '1.4',
-                  marginBottom: '0.25rem',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '0.5rem'
+                  ...typography.styles.helpText,
+                  fontSize: "0.9rem",
+                  fontWeight: typography.weights.medium,
+                  marginBottom: "0.25rem",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.5rem",
                 }}
               >
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <rect x="1" y="3" width="15" height="13" rx="2"/>
-                  <path d="M16 16h3a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2H16"/>
-                  <circle cx="5.5" cy="18.5" r="2.5"/>
-                  <circle cx="10.5" cy="18.5" r="2.5"/>
-                  <path d="M5 15V9"/>
-                  <path d="M11 15V9"/>
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <rect x="1" y="3" width="15" height="13" rx="2" />
+                  <path d="M16 16h3a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2H16" />
+                  <circle cx="5.5" cy="18.5" r="2.5" />
+                  <circle cx="10.5" cy="18.5" r="2.5" />
+                  <path d="M5 15V9" />
+                  <path d="M11 15V9" />
                 </svg>
                 Train:
               </p>
               <p
                 style={{
-                  fontFamily: 'Instrument Sans, sans-serif',
-                  fontSize: '0.85rem',
-                  color: '#666',
-                  fontWeight: '400',
-                  lineHeight: '1.4',
-                  marginBottom: '0.75rem',
-                  paddingLeft: '1rem'
+                  ...typography.styles.caption,
+                  marginBottom: "0.75rem",
+                  paddingLeft: "1rem",
                 }}
               >
                 {venues[activeVenue].publicTransport.train}
@@ -412,36 +416,39 @@ const VenueSection: React.FC = () => {
             <div>
               <p
                 style={{
-                  fontFamily: 'Instrument Sans, sans-serif',
-                  fontSize: '0.9rem',
-                  color: '#666',
-                  fontWeight: '500',
-                  lineHeight: '1.4',
-                  marginBottom: '0.25rem',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '0.5rem'
+                  ...typography.styles.helpText,
+                  fontSize: "0.9rem",
+                  fontWeight: typography.weights.medium,
+                  marginBottom: "0.25rem",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.5rem",
                 }}
               >
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M8 6v6"/>
-                  <path d="M15 6v6"/>
-                  <path d="M2 12h19.6"/>
-                  <path d="M18 18h3s.5-1.7.8-2.8c.1-.4.2-.8.2-1.2V9.5a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v4.5c0 .4.1.8.2 1.2.3 1.1.8 2.8.8 2.8h3"/>
-                  <circle cx="7" cy="18" r="2"/>
-                  <circle cx="17" cy="18" r="2"/>
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M8 6v6" />
+                  <path d="M15 6v6" />
+                  <path d="M2 12h19.6" />
+                  <path d="M18 18h3s.5-1.7.8-2.8c.1-.4.2-.8.2-1.2V9.5a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v4.5c0 .4.1.8.2 1.2.3 1.1.8 2.8.8 2.8h3" />
+                  <circle cx="7" cy="18" r="2" />
+                  <circle cx="17" cy="18" r="2" />
                 </svg>
                 Bus:
               </p>
               <p
                 style={{
-                  fontFamily: 'Instrument Sans, sans-serif',
-                  fontSize: '0.85rem',
-                  color: '#666',
-                  fontWeight: '400',
-                  lineHeight: '1.4',
-                  marginBottom: '0',
-                  paddingLeft: '1rem'
+                  ...typography.styles.caption,
+                  marginBottom: "0",
+                  paddingLeft: "1rem",
                 }}
               >
                 {venues[activeVenue].publicTransport.bus}
@@ -451,22 +458,23 @@ const VenueSection: React.FC = () => {
         </div>
 
         {/* Map Container - Separate on Mobile */}
-        <div className="map-container"
+        <div
+          className="map-container"
           style={{
-            position: 'relative',
-            width: '100%',
-            height: '400px',
-            borderRadius: '20px',
-            overflow: 'hidden',
-            boxShadow: '0 10px 30px rgba(0, 0, 0, 0.1)',
-            border: '1px solid rgba(0, 0, 0, 0.1)'
+            position: "relative",
+            width: "100%",
+            height: "400px",
+            borderRadius: "20px",
+            overflow: "hidden",
+            boxShadow: "0 10px 30px rgba(0, 0, 0, 0.1)",
+            border: "1px solid rgba(0, 0, 0, 0.1)",
           }}
         >
           <div
             ref={mapRef}
             style={{
-              width: '100%',
-              height: '100%'
+              width: "100%",
+              height: "100%",
             }}
           />
         </div>

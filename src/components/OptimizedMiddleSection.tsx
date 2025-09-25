@@ -3,6 +3,7 @@
 import React, { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { typography } from "../styles/typography";
 
 const OptimizedMiddleSection: React.FC = () => {
   const sectionRef = useRef<HTMLElement>(null);
@@ -214,17 +215,17 @@ const OptimizedMiddleSection: React.FC = () => {
         }
 
         .section-div h2 {
-          font-family: "Cardo", serif;
+          font-family: ${typography.fonts.serif};
           font-size: clamp(2.5rem, 6vw, 4.5rem);
-          font-weight: 600;
+          font-weight: ${typography.weights.semibold};
           margin: 0 0 20px 0;
           letter-spacing: -0.02em;
         }
 
         .section-div p {
-          font-family: "Instrument Sans", sans-serif;
+          font-family: ${typography.fonts.sans};
           font-size: clamp(1.2rem, 2.5vw, 1.8rem);
-          font-weight: 300;
+          font-weight: ${typography.weights.light};
           margin: 0;
           line-height: 1.6;
           opacity: 0.8;
@@ -238,10 +239,10 @@ const OptimizedMiddleSection: React.FC = () => {
           z-index: 2000;
           text-align: center;
           pointer-events: none;
-          font-family: "Cardo", serif;
+          font-family: ${typography.fonts.serif};
           font-size: clamp(1.8rem, 4vw, 4.5rem);
-          font-weight: 600;
-          color: #4a4a4a;
+          font-weight: ${typography.weights.semibold};
+          color: ${typography.colors.body};
           letter-spacing: -0.02em;
           max-width: calc(100vw - 4rem);
           box-sizing: border-box;

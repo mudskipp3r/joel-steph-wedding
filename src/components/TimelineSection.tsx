@@ -4,6 +4,7 @@ import React, { useRef, useEffect } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Button from './Button';
+import { typography } from '../styles/typography';
 
 const TimelineSection: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -176,21 +177,16 @@ const TimelineSection: React.FC = () => {
               }}
             >
               <div style={{
-                fontFamily: 'Cardo, serif',
+                ...typography.styles.title,
                 fontSize: '4rem',
-                color: '#1a1a1a',
-                fontWeight: '400',
                 marginBottom: '1rem',
-                lineHeight: '0.9',
-                letterSpacing: '-0.02em'
+                lineHeight: '0.9'
               }}>
                 The Day's Timeline
               </div>
               <div style={{
-                fontFamily: 'Instrument Sans, sans-serif',
+                ...typography.styles.body,
                 fontSize: '1.2rem',
-                color: '#666666',
-                fontWeight: '400',
                 lineHeight: '1.4'
               }}>
                 Join us for our special day
@@ -225,35 +221,23 @@ const TimelineSection: React.FC = () => {
               }}
             >
               <div style={{
-                fontFamily: 'Instrument Sans, sans-serif',
-                fontSize: '3.5rem',
-                color: '#FF6B6B',
-                fontWeight: '400',
-                marginBottom: '0.5rem',
-                lineHeight: '1'
+                ...typography.styles.eventTime,
+                marginBottom: '0.5rem'
               }}>
                 3:00 pm
               </div>
 
               <div style={{
-                fontFamily: 'Cardo, serif',
-                fontSize: '5.5rem',
-                color: '#1a1a1a',
-                fontWeight: '400',
-                marginBottom: '1.5rem',
-                lineHeight: '0.9',
-                letterSpacing: '-0.02em'
+                ...typography.styles.eventTitle,
+                marginBottom: '1.5rem'
               }}>
                 Ceremony
               </div>
 
               <div style={{
-                fontFamily: 'Instrument Sans, sans-serif',
+                ...typography.styles.body,
                 fontSize: '1.1rem',
-                color: '#666666',
-                fontWeight: '400',
-                marginBottom: '2rem',
-                lineHeight: '1.4'
+                marginBottom: '2rem'
               }}>
                 Please arrive at least 30 minutes early
               </div>
@@ -291,35 +275,23 @@ const TimelineSection: React.FC = () => {
               }}
             >
               <div style={{
-                fontFamily: 'Instrument Sans, sans-serif',
-                fontSize: '3.5rem',
-                color: '#FF6B6B',
-                fontWeight: '400',
-                marginBottom: '0.5rem',
-                lineHeight: '1'
+                ...typography.styles.eventTime,
+                marginBottom: '0.5rem'
               }}>
                 6:00 pm
               </div>
 
               <div style={{
-                fontFamily: 'Cardo, serif',
-                fontSize: '5.5rem',
-                color: '#1a1a1a',
-                fontWeight: '400',
-                marginBottom: '1.5rem',
-                lineHeight: '0.9',
-                letterSpacing: '-0.02em'
+                ...typography.styles.eventTitle,
+                marginBottom: '1.5rem'
               }}>
                 Reception
               </div>
 
               <div style={{
-                fontFamily: 'Instrument Sans, sans-serif',
+                ...typography.styles.body,
                 fontSize: '1.1rem',
-                color: '#666666',
-                fontWeight: '400',
-                marginBottom: '2rem',
-                lineHeight: '1.4'
+                marginBottom: '2rem'
               }}>
                 6:00pm - 11:30pm. Celebrate with us! Dinner, dancing, and drinks.
               </div>

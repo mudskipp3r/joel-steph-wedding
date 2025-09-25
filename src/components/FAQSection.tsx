@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { typography } from '../styles/typography';
 
 interface FAQItem {
   question: string;
@@ -16,7 +17,7 @@ const FAQSection: React.FC = () => {
   const faqData: FAQItem[] = [
     {
       question: "What is the dress code?",
-      answer: "It's formal. Black tie and cocktail dress.",
+      answer: "We’d love for everyone to dress in formal wear. To help the bride shine, please avoid wearing white. Thanks so much for being part of our special day!",
       category: "General"
     },
     {
@@ -162,7 +163,7 @@ const FAQSection: React.FC = () => {
 
       <style jsx>{`
         .faq-section {
-          font-family: 'Instrument Sans', sans-serif;
+          font-family: ${typography.fonts.sans};
         }
 
         .faq-container {
@@ -177,23 +178,23 @@ const FAQSection: React.FC = () => {
         }
 
         .faq-header h2 {
-          font-family: 'Instrument Serif', serif;
+          font-family: ${typography.fonts.serif};
           font-size: clamp(3rem, 6vw, 4.5rem);
-          font-weight: 400;
-          color: #1a1a1a;
+          font-weight: ${typography.weights.normal};
+          color: ${typography.colors.primary};
           margin-bottom: 1rem;
           letter-spacing: -0.02em;
         }
 
         .faq-header p {
-          font-family: 'Instrument Sans', sans-serif;
+          font-family: ${typography.fonts.sans};
           font-size: 1.1rem;
-          color: #666;
+          color: ${typography.colors.muted};
           line-height: 1.6;
         }
 
         .faq-header a {
-          color: #F58E7F;
+          color: ${typography.colors.accent};
           text-decoration: underline;
           transition: opacity 0.3s ease;
         }
@@ -246,10 +247,10 @@ const FAQSection: React.FC = () => {
           display: flex;
           align-items: center;
           gap: 18px;
-          font-family: 'Instrument Sans', sans-serif;
+          font-family: ${typography.fonts.sans};
           font-size: 1.1rem;
-          font-weight: 500;
-          color: #1a1a1a;
+          font-weight: ${typography.weights.medium};
+          color: ${typography.colors.primary};
           transition: all 0.2s ease;
         }
 
@@ -265,7 +266,7 @@ const FAQSection: React.FC = () => {
           display: flex;
           align-items: center;
           justify-content: center;
-          color: #FF6B6B;
+          color: ${typography.colors.accent};
         }
 
         .faq-icon-right {
@@ -273,7 +274,7 @@ const FAQSection: React.FC = () => {
           display: flex;
           align-items: center;
           justify-content: center;
-          color: #FF6B6B;
+          color: ${typography.colors.accent};
           transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
@@ -294,10 +295,10 @@ const FAQSection: React.FC = () => {
 
         .faq-answer-content {
           padding: 0 28px 24px 66px;
-          color: #666;
+          color: ${typography.colors.muted};
           line-height: 1.6;
           font-size: 1rem;
-          font-family: 'Instrument Sans', sans-serif;
+          font-family: ${typography.fonts.sans};
         }
 
         @media (max-width: 768px) {

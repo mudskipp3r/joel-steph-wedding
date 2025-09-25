@@ -117,6 +117,16 @@ const RSVPSlideout: React.FC<RSVPSlideoutProps> = ({ isOpen, onClose }) => {
     }));
   };
 
+  // Hash function for promo code validation (same as password protection)
+  const hashPromoCode = async (promoCode: string): Promise<string> => {
+    const encoder = new TextEncoder();
+    const data = encoder.encode(promoCode.toUpperCase().trim());
+    const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    return hashHex;
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -129,14 +139,19 @@ const RSVPSlideout: React.FC<RSVPSlideoutProps> = ({ isOpen, onClose }) => {
       return;
     }
 
-    // Validate plus one code against environment variable
+    // Validate plus one code using hash comparison (same as password protection)
     if (formData.hasPlusOne && formData.plusOneCode.trim()) {
-      const validPromoCode = process.env.NEXT_PUBLIC_PROMO_CODE;
-      const enteredCode = formData.plusOneCode.trim().toUpperCase();
-      const correctCode = validPromoCode?.trim().toUpperCase();
+      try {
+        const hashedPromoCode = await hashPromoCode(formData.plusOneCode);
+        const expectedHash = process.env.NEXT_PUBLIC_PROMO_CODE_HASH;
 
-      if (enteredCode !== correctCode) {
-        setErrors({ plusOneCode: 'Invalid plus one code. Please check your code and try again.' });
+        if (hashedPromoCode !== expectedHash) {
+          setErrors({ plusOneCode: 'Invalid plus one code. Please check your code and try again.' });
+          return;
+        }
+      } catch (error) {
+        console.error('Promo code validation error:', error);
+        setErrors({ plusOneCode: 'Error validating code. Please try again.' });
         return;
       }
     }

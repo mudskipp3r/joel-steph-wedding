@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { gsap } from 'gsap';
 import Button from './Button';
 
@@ -18,6 +19,7 @@ const SimpleFooter: React.FC<SimpleFooterProps> = ({
   const footerRef = useRef<HTMLDivElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
   const [internalPanelOpen, setInternalPanelOpen] = useState(false);
+  const searchParams = useSearchParams();
 
   // Use external control if props are provided, otherwise use internal state
   const isPanelOpen = isRSVPFormOpen ?? internalPanelOpen;
@@ -38,6 +40,33 @@ const SimpleFooter: React.FC<SimpleFooterProps> = ({
   const [errors, setErrors] = useState<{[key: string]: string}>({});
   const [isVerifyingPromo, setIsVerifyingPromo] = useState(false);
   const [plusOneEnabled, setPlusOneEnabled] = useState(false);
+
+  const openPanel = () => {
+    console.log('openPanel called, onOpenRSVPForm:', onOpenRSVPForm);
+    if (onOpenRSVPForm) {
+      onOpenRSVPForm();
+    } else {
+      setInternalPanelOpen(true);
+    }
+  };
+
+  const closePanel = () => {
+    if (onCloseRSVPForm) {
+      onCloseRSVPForm();
+    } else {
+      setInternalPanelOpen(false);
+    }
+  };
+
+  // Check for success parameter from form submission
+  useEffect(() => {
+    if (searchParams.get('rsvp') === 'success') {
+      setIsSubmitted(true);
+      openPanel();
+      // Remove the parameter from URL
+      window.history.replaceState({}, '', window.location.pathname);
+    }
+  }, [searchParams]);
 
   // Handle panel slide animations
   useEffect(() => {
@@ -171,24 +200,7 @@ const SimpleFooter: React.FC<SimpleFooterProps> = ({
     }
 
     // If validation passes, let the form submit naturally to Netlify
-    // Don't prevent default - let Netlify handle the submission
-  };
-
-  const openPanel = () => {
-    console.log('openPanel called, onOpenRSVPForm:', onOpenRSVPForm);
-    if (onOpenRSVPForm) {
-      onOpenRSVPForm();
-    } else {
-      setInternalPanelOpen(true);
-    }
-  };
-
-  const closePanel = () => {
-    if (onCloseRSVPForm) {
-      onCloseRSVPForm();
-    } else {
-      setInternalPanelOpen(false);
-    }
+    // Don't prevent default - let the form submit to our API
   };
 
   const handleReturnToSite = () => {
@@ -523,13 +535,11 @@ const SimpleFooter: React.FC<SimpleFooterProps> = ({
             </div>
           ) : (
             /* RSVP Form */
-            <form className="rsvp-form" onSubmit={handleSubmit} data-netlify="true" netlify-honeypot="bot-field" name="wedding-rsvp" method="POST" action="/" style={{
+            <form className="rsvp-form" onSubmit={handleSubmit} name="wedding-rsvp" method="POST" action="/api/submit-rsvp" style={{
             display: 'flex',
             flexDirection: 'column',
             gap: '2rem'
           }}>
-            <input type="hidden" name="form-name" value="wedding-rsvp" />
-            <input type="hidden" name="bot-field" />
             {/* Hidden inputs to ensure default values are always sent */}
             <input type="hidden" name="hasPlusOne" value={formData.hasPlusOne ? 'yes' : 'no'} />
 

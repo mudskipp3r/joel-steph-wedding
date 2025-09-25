@@ -134,7 +134,7 @@ const SimpleFooter: React.FC<SimpleFooterProps> = ({
     setErrors(prev => ({ ...prev, plusOneCode: '' }));
 
     try {
-      const response = await fetch('/.netlify/functions/verify-promo', {
+      const response = await fetch('/api/verify-promo', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

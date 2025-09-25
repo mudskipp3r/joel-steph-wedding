@@ -132,7 +132,10 @@ const SimpleFooter: React.FC<SimpleFooterProps> = ({
     // Validate plus one code against environment variable
     if (formData.hasPlusOne && formData.plusOneCode.trim()) {
       const validPromoCode = process.env.NEXT_PUBLIC_PROMO_CODE;
-      if (formData.plusOneCode.trim() !== validPromoCode) {
+      const enteredCode = formData.plusOneCode.trim().toUpperCase();
+      const correctCode = validPromoCode?.trim().toUpperCase();
+
+      if (enteredCode !== correctCode) {
         alert('Invalid plus one code. Please check your code and try again.');
         return;
       }

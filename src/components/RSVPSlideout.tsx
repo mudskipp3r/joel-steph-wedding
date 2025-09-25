@@ -131,7 +131,7 @@ const RSVPSlideout: React.FC<RSVPSlideoutProps> = ({ isOpen, onClose }) => {
 
     // Validate plus one code against environment variable
     if (formData.hasPlusOne && formData.plusOneCode.trim()) {
-      const validPromoCode = process.env.NEXT_PUBLIC_PROMO_CODE;
+      const validPromoCode = process.env.PROMO_CODE;
       const enteredCode = formData.plusOneCode.trim().toUpperCase();
       const correctCode = validPromoCode?.trim().toUpperCase();
 

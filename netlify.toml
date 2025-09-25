@@ -4,7 +4,7 @@
 
 [build.environment]
   NODE_VERSION = "18"
-  NETLIFY_FORMS_ALLOWED = true
+  NETLIFY_FORMS_ALLOWED = "true"
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"

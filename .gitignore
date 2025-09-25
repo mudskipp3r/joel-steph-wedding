@@ -40,3 +40,6 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 password-test.js
+
+# old site reference (has its own git repo)
+/src/oldSite/

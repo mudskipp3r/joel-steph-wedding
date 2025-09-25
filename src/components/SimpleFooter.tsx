@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
-import { useSearchParams } from 'next/navigation';
 import { gsap } from 'gsap';
 import Button from './Button';
 
@@ -19,7 +18,6 @@ const SimpleFooter: React.FC<SimpleFooterProps> = ({
   const footerRef = useRef<HTMLDivElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
   const [internalPanelOpen, setInternalPanelOpen] = useState(false);
-  const searchParams = useSearchParams();
 
   // Use external control if props are provided, otherwise use internal state
   const isPanelOpen = isRSVPFormOpen ?? internalPanelOpen;
@@ -57,16 +55,6 @@ const SimpleFooter: React.FC<SimpleFooterProps> = ({
       setInternalPanelOpen(false);
     }
   };
-
-  // Check for success parameter from form submission
-  useEffect(() => {
-    if (searchParams.get('rsvp') === 'success') {
-      setIsSubmitted(true);
-      openPanel();
-      // Remove the parameter from URL
-      window.history.replaceState({}, '', window.location.pathname);
-    }
-  }, [searchParams]);
 
   // Handle panel slide animations
   useEffect(() => {
@@ -188,19 +176,37 @@ const SimpleFooter: React.FC<SimpleFooterProps> = ({
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    // Only prevent default if validation fails
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
     setErrors({});
 
     // Validation for plus one code
     if (formData.hasPlusOne && !plusOneEnabled) {
-      e.preventDefault();
       setErrors({ plusOneCode: 'Please verify your plus one code before submitting.' });
       return;
     }
 
-    // If validation passes, let the form submit naturally to Netlify
-    // Don't prevent default - let the form submit to our API
+    try {
+      const formElement = e.target as HTMLFormElement;
+      const formData = new FormData(formElement);
+
+      const response = await fetch("/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: new URLSearchParams(formData as any).toString(),
+      });
+
+      if (response.ok) {
+        setIsSubmitted(true);
+      } else {
+        throw new Error("Form submission failed");
+      }
+    } catch (error) {
+      console.error("Form submission error:", error);
+      alert("There was an error submitting your RSVP. Please try again.");
+    }
   };
 
   const handleReturnToSite = () => {
@@ -535,11 +541,13 @@ const SimpleFooter: React.FC<SimpleFooterProps> = ({
             </div>
           ) : (
             /* RSVP Form */
-            <form className="rsvp-form" onSubmit={handleSubmit} name="wedding-rsvp" method="POST" action="/api/submit-rsvp" style={{
+            <form className="rsvp-form" onSubmit={handleSubmit} style={{
             display: 'flex',
             flexDirection: 'column',
             gap: '2rem'
           }}>
+            {/* Hidden field for Netlify */}
+            <input type="hidden" name="form-name" value="wedding-rsvp" />
             {/* Hidden inputs to ensure default values are always sent */}
             <input type="hidden" name="hasPlusOne" value={formData.hasPlusOne ? 'yes' : 'no'} />
 

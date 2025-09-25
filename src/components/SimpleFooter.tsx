@@ -3,6 +3,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 import Button from './Button';
+import { typography } from '../styles/typography';
 
 interface SimpleFooterProps {
   isRSVPFormOpen?: boolean;
@@ -269,9 +270,10 @@ const SimpleFooter: React.FC<SimpleFooterProps> = ({
               }}>Ceremony</h4>
               <p style={{
                 fontFamily: 'Instrument Sans, sans-serif',
-                fontSize: '0.85rem',
-                color: '#666',
-                lineHeight: 1.4,
+                fontSize: 'clamp(1rem, 2vw, 1.1rem)',
+                fontWeight: 400,
+                color: '#1a1a1a',
+                lineHeight: 1.6,
                 margin: '0'
               }}>
                 Saint Brigid's Catholic Church<br/>
@@ -293,9 +295,10 @@ const SimpleFooter: React.FC<SimpleFooterProps> = ({
               }}>Reception</h4>
               <p style={{
                 fontFamily: 'Instrument Sans, sans-serif',
-                fontSize: '0.85rem',
-                color: '#666',
-                lineHeight: 1.4,
+                fontSize: 'clamp(1rem, 2vw, 1.1rem)',
+                fontWeight: 400,
+                color: '#1a1a1a',
+                lineHeight: 1.6,
                 margin: '0'
               }}>
                 The Sky Ballroom<br/>
@@ -307,9 +310,10 @@ const SimpleFooter: React.FC<SimpleFooterProps> = ({
 
           <p style={{
             fontFamily: 'Instrument Sans, sans-serif',
-            fontSize: '0.8rem',
-            color: '#666',
-            lineHeight: 1.5,
+            fontSize: 'clamp(1rem, 2vw, 1.1rem)',
+            fontWeight: 400,
+            color: '#1a1a1a',
+            lineHeight: 1.6,
             margin: '1rem 0 0 0',
             textAlign: 'center'
           }}>We can't wait to celebrate with you on our special day!</p>

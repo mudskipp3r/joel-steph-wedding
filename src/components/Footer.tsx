@@ -31,6 +31,7 @@ const Footer: React.FC<FooterProps> = ({ onOpenRSVPForm }) => {
           display: 'grid',
           gridTemplateColumns: 'auto repeat(4, 1fr)',
           gap: '60px',
+          columnGap: '80px',
           marginBottom: '40px',
           alignItems: 'start'
         }}>
@@ -44,7 +45,7 @@ const Footer: React.FC<FooterProps> = ({ onOpenRSVPForm }) => {
               margin: '0 0 8px 0'
             }}>Stephanie & Joel</h3>
             <p style={{
-              ...typography.styles.helpText,
+              ...typography.styles.body,
               margin: '0'
             }}>February 6th, 2026</p>
           </div>
@@ -55,14 +56,14 @@ const Footer: React.FC<FooterProps> = ({ onOpenRSVPForm }) => {
               ...typography.styles.label,
               fontSize: '0.9rem',
               margin: '0 0 16px 0'
-            }}>Wedding</h4>
+            }}>Site links</h4>
             <ul style={{
               listStyle: 'none',
               padding: 0,
               margin: 0
             }}>
               <li><a href="#our-story" style={{
-                ...typography.styles.helpText,
+                ...typography.styles.body,
                 textDecoration: 'none',
                 lineHeight: 1.8,
                 transition: 'color 0.2s ease'
@@ -70,7 +71,7 @@ const Footer: React.FC<FooterProps> = ({ onOpenRSVPForm }) => {
               onMouseEnter={(e) => e.currentTarget.style.color = typography.colors.accent}
               onMouseLeave={(e) => e.currentTarget.style.color = typography.colors.body}>Our Story</a></li>
               <li><a href="#timeline" style={{
-                ...typography.styles.helpText,
+                ...typography.styles.body,
                 textDecoration: 'none',
                 lineHeight: 1.8,
                 transition: 'color 0.2s ease'
@@ -78,7 +79,7 @@ const Footer: React.FC<FooterProps> = ({ onOpenRSVPForm }) => {
               onMouseEnter={(e) => e.currentTarget.style.color = typography.colors.accent}
               onMouseLeave={(e) => e.currentTarget.style.color = typography.colors.body}>Timeline</a></li>
               <li><a href="#venues" style={{
-                ...typography.styles.helpText,
+                ...typography.styles.body,
                 textDecoration: 'none',
                 lineHeight: 1.8,
                 transition: 'color 0.2s ease'
@@ -101,11 +102,11 @@ const Footer: React.FC<FooterProps> = ({ onOpenRSVPForm }) => {
               margin: 0
             }}>
               <li style={{
-                ...typography.styles.helpText,
+                ...typography.styles.body,
                 lineHeight: 1.8
               }}>Saint Brigid's Church</li>
               <li style={{
-                ...typography.styles.helpText,
+                ...typography.styles.body,
                 lineHeight: 1.8
               }}>Marrickville NSW</li>
             </ul>
@@ -124,11 +125,11 @@ const Footer: React.FC<FooterProps> = ({ onOpenRSVPForm }) => {
               margin: 0
             }}>
               <li style={{
-                ...typography.styles.helpText,
+                ...typography.styles.body,
                 lineHeight: 1.8
               }}>The Sky Ballroom</li>
               <li style={{
-                ...typography.styles.helpText,
+                ...typography.styles.body,
                 lineHeight: 1.8
               }}>Bankstown NSW</li>
             </ul>
@@ -147,11 +148,11 @@ const Footer: React.FC<FooterProps> = ({ onOpenRSVPForm }) => {
               margin: 0
             }}>
               <li style={{
-                ...typography.styles.helpText,
+                ...typography.styles.body,
                 lineHeight: 1.8
               }}>Steph: 0426 875 301</li>
               <li style={{
-                ...typography.styles.helpText,
+                ...typography.styles.body,
                 lineHeight: 1.8
               }}>Joel: 0497 091 831</li>
             </ul>
@@ -179,7 +180,7 @@ const Footer: React.FC<FooterProps> = ({ onOpenRSVPForm }) => {
             gap: '20px'
           }}>
             <p style={{
-              ...typography.styles.helpText,
+              ...typography.styles.body,
               margin: '0'
             }}>© 2025 Stephanie & Joel</p>
           </div>

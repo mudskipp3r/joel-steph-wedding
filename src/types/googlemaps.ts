@@ -3,6 +3,7 @@ export interface GoogleMapsApi {
   maps: {
     Map: new (element: HTMLElement, options: unknown) => GoogleMapsMap;
     Marker: new (options: unknown) => GoogleMapsMarker;
+    InfoWindow: new (options?: unknown) => GoogleMapsInfoWindow;
     Size: new (width: number, height: number) => unknown;
     Point: new (x: number, y: number) => unknown;
     LatLng: new (lat: number, lng: number) => unknown;
@@ -32,6 +33,12 @@ export interface GoogleMapsMap {
 export interface GoogleMapsMarker {
   addListener(eventName: string, handler: () => void): void;
   setMap: (map: GoogleMapsMap | null) => void;
+}
+
+export interface GoogleMapsInfoWindow {
+  setContent: (content: string) => void;
+  open: (map: GoogleMapsMap, marker: GoogleMapsMarker) => void;
+  close: () => void;
 }
 
 export interface GoogleMapsLatLngBounds {

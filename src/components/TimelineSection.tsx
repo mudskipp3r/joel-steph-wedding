@@ -167,6 +167,22 @@ const TimelineSection: React.FC = () => {
             }}
           >
             {/* Title Section */}
+            {/* Title pip */}
+            <div
+              style={{
+                position: 'absolute',
+                left: '23%',
+                transform: 'translateX(-50%)',
+                top: '30vh',
+                width: '24px',
+                height: '24px',
+                background: '#FF6B6B',
+                borderRadius: '50%',
+                boxShadow: '0 4px 15px rgba(255, 107, 107, 0.3)',
+                zIndex: 20
+              }}
+            />
+
             <div
               style={{
                 position: 'absolute',
@@ -177,10 +193,8 @@ const TimelineSection: React.FC = () => {
               }}
             >
               <div style={{
-                ...typography.styles.title,
-                fontSize: '4rem',
-                marginBottom: '1rem',
-                lineHeight: '0.9'
+                ...typography.styles.eventTitle,
+                marginBottom: '1rem'
               }}>
                 The Day's Timeline
               </div>
@@ -200,12 +214,11 @@ const TimelineSection: React.FC = () => {
                 left: '23%',
                 transform: 'translateX(-50%)',
                 top: '130vh',
-                width: '18px',
-                height: '18px',
+                width: '24px',
+                height: '24px',
                 background: '#FF6B6B',
                 borderRadius: '50%',
-                border: '3px solid white',
-                boxShadow: '0 4px 15px rgba(255, 107, 107, 0.3), inset 0 1px 3px rgba(255, 255, 255, 0.5)',
+                boxShadow: '0 4px 15px rgba(255, 107, 107, 0.3)',
                 zIndex: 20
               }}
             />
@@ -254,12 +267,11 @@ const TimelineSection: React.FC = () => {
                 left: '23%',
                 transform: 'translateX(-50%)',
                 top: '230vh',
-                width: '18px',
-                height: '18px',
+                width: '24px',
+                height: '24px',
                 background: '#FF6B6B',
                 borderRadius: '50%',
-                border: '3px solid white',
-                boxShadow: '0 4px 15px rgba(255, 107, 107, 0.3), inset 0 1px 3px rgba(255, 255, 255, 0.5)',
+                boxShadow: '0 4px 15px rgba(255, 107, 107, 0.3)',
                 zIndex: 20
               }}
             />

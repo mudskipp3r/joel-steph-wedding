@@ -12,7 +12,7 @@ export const typography = {
   colors: {
     primary: '#1a1a1a',      // Main headings
     secondary: '#2c3e50',     // Sub-headings
-    body: '#4a4a4a',         // Body text
+    body: '#2c3e50',         // Body text
     muted: '#666666',        // Muted text
     light: '#888888',        // Light text
     accent: '#FF6B6B',       // Accent/links
@@ -65,7 +65,7 @@ export const typography = {
       fontFamily: 'Instrument Sans, sans-serif',
       fontSize: 'clamp(1rem, 2vw, 1.1rem)',
       fontWeight: 400,
-      color: '#4a4a4a',
+      color: '#2c3e50',
       lineHeight: 1.6,
     },
 

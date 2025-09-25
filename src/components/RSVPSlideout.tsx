@@ -170,9 +170,8 @@ const RSVPSlideout: React.FC<RSVPSlideoutProps> = ({ isOpen, onClose }) => {
       if (!formData.get('hasPlusOne')) {
         formData.set('hasPlusOne', 'no');
       }
-      if (!formData.get('plusOneCode')) {
-        formData.set('plusOneCode', 'N/A');
-      }
+      // Remove plus one code from submission - not needed in Netlify
+      formData.delete('plusOneCode');
       if (!formData.get('phone')) {
         formData.set('phone', 'Not provided');
       }
@@ -241,7 +240,6 @@ const RSVPSlideout: React.FC<RSVPSlideoutProps> = ({ isOpen, onClose }) => {
         <input type="tel" name="phone" />
         <input type="text" name="attendance" />
         <input type="text" name="hasPlusOne" />
-        <input type="text" name="plusOneCode" />
         <input type="text" name="dietaryRestrictions" />
         <textarea name="message"></textarea>
       </form>

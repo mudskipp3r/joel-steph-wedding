@@ -141,6 +141,13 @@ const RSVPSlideout: React.FC<RSVPSlideoutProps> = ({ isOpen, onClose }) => {
 
     // Validate plus one code using hash comparison (same as password protection)
     if (formData.hasPlusOne && formData.plusOneCode.trim()) {
+      console.log('Promo validation starting...', {
+        hasPlusOne: formData.hasPlusOne,
+        promoCode: `'${formData.plusOneCode.trim()}'`,
+        envVar: `'${process.env.NEXT_PUBLIC_PROMO_CODE_HASH}'`,
+        allEnvVars: Object.keys(process.env).filter(key => key.startsWith('NEXT_PUBLIC'))
+      });
+
       try {
         const hashedPromoCode = await hashPromoCode(formData.plusOneCode);
         const expectedHash = process.env.NEXT_PUBLIC_PROMO_CODE_HASH;

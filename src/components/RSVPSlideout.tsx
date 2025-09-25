@@ -20,6 +20,7 @@ const RSVPSlideout: React.FC<RSVPSlideoutProps> = ({ isOpen, onClose }) => {
     attendance: 'yes', // Default to yes
     hasPlusOne: false,
     plusOneCode: '',
+    plusOneName: '',
     dietaryRestrictions: '',
     message: ''
   });
@@ -97,8 +98,8 @@ const RSVPSlideout: React.FC<RSVPSlideoutProps> = ({ isOpen, onClose }) => {
       setFormData(prev => ({
         ...prev,
         [name]: checked,
-        // Clear plus one code if unchecking plus one
-        ...(name === 'hasPlusOne' && !checked ? { plusOneCode: '' } : {})
+        // Clear plus one data if unchecking plus one
+        ...(name === 'hasPlusOne' && !checked ? { plusOneCode: '', plusOneName: '' } : {})
       }));
     } else {
       setFormData(prev => ({
@@ -113,7 +114,7 @@ const RSVPSlideout: React.FC<RSVPSlideoutProps> = ({ isOpen, onClose }) => {
       ...prev,
       attendance: e.target.value,
       // Clear plus one data if selecting "no"
-      ...(e.target.value === 'no' ? { hasPlusOne: false, plusOneCode: '' } : {})
+      ...(e.target.value === 'no' ? { hasPlusOne: false, plusOneCode: '', plusOneName: '' } : {})
     }));
   };
 
@@ -211,6 +212,7 @@ const RSVPSlideout: React.FC<RSVPSlideoutProps> = ({ isOpen, onClose }) => {
       attendance: 'yes',
       hasPlusOne: false,
       plusOneCode: '',
+      plusOneName: '',
       dietaryRestrictions: '',
       message: ''
     });
@@ -563,6 +565,22 @@ const RSVPSlideout: React.FC<RSVPSlideoutProps> = ({ isOpen, onClose }) => {
                       {!errors.plusOneCode && (
                         <small>This code was provided to you by the bride and groom</small>
                       )}
+                    </div>
+                  )}
+
+                  {formData.hasPlusOne && (
+                    <div className="plus-one-code-group">
+                      <label htmlFor="plusOneName">Plus One Name *</label>
+                      <input
+                        type="text"
+                        id="plusOneName"
+                        name="plusOneName"
+                        value={formData.plusOneName}
+                        onChange={handleInputChange}
+                        placeholder="Enter your plus one's full name"
+                        required
+                      />
+                      <small>The name of the person you'll be bringing as your plus one</small>
                     </div>
                   )}
                 </div>

@@ -14,6 +14,7 @@ const Navigation: React.FC<NavigationProps> = ({ isRSVPFormOpen = false, onOpenR
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [scrollingUp, setScrollingUp] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -65,13 +66,15 @@ const Navigation: React.FC<NavigationProps> = ({ isRSVPFormOpen = false, onOpenR
         left: 0,
         right: 0,
         zIndex: 9999,
-        background: isScrolled ? 'rgba(255, 255, 255, 0.95)' : 'transparent',
-        backdropFilter: isScrolled ? 'blur(10px)' : 'none',
-        borderBottom: isScrolled ? '1px solid rgba(255, 255, 255, 0.2)' : 'none',
+        background: (isScrolled || isHovered) ? 'rgba(255, 255, 255, 0.95)' : 'transparent',
+        backdropFilter: (isScrolled || isHovered) ? 'blur(10px)' : 'none',
+        borderBottom: (isScrolled || isHovered) ? '1px solid rgba(255, 255, 255, 0.2)' : 'none',
         transform: (isVisible && !isRSVPFormOpen) ? 'translateY(0)' : 'translateY(-100%)',
         transition: 'all 0.3s ease',
         padding: '1rem 2rem',
       }}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
     >
       <div
         style={{
@@ -88,7 +91,7 @@ const Navigation: React.FC<NavigationProps> = ({ isRSVPFormOpen = false, onOpenR
             fontFamily: 'Instrument Sans, sans-serif',
             fontSize: '1.5rem',
             fontWeight: '400',
-            color: isScrolled ? '#1a1a1a' : 'white',
+            color: (isScrolled || isHovered) ? '#1a1a1a' : 'white',
             cursor: 'pointer',
             transition: 'color 0.3s ease',
           }}
@@ -114,7 +117,7 @@ const Navigation: React.FC<NavigationProps> = ({ isRSVPFormOpen = false, onOpenR
               fontFamily: 'Instrument Sans, sans-serif',
               fontSize: '1rem',
               fontWeight: '500',
-              color: isScrolled ? '#1a1a1a' : 'white',
+              color: (isScrolled || isHovered) ? '#1a1a1a' : 'white',
               cursor: 'pointer',
               transition: 'all 0.3s ease',
               padding: '0.5rem 0',
@@ -124,7 +127,7 @@ const Navigation: React.FC<NavigationProps> = ({ isRSVPFormOpen = false, onOpenR
               e.currentTarget.style.color = '#FF6B6B';
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.color = isScrolled ? '#1a1a1a' : 'white';
+              e.currentTarget.style.color = (isScrolled || isHovered) ? '#1a1a1a' : 'white';
             }}
           >
             Schedule
@@ -137,7 +140,7 @@ const Navigation: React.FC<NavigationProps> = ({ isRSVPFormOpen = false, onOpenR
               fontFamily: 'Instrument Sans, sans-serif',
               fontSize: '1rem',
               fontWeight: '500',
-              color: isScrolled ? '#1a1a1a' : 'white',
+              color: (isScrolled || isHovered) ? '#1a1a1a' : 'white',
               cursor: 'pointer',
               transition: 'all 0.3s ease',
               padding: '0.5rem 0',
@@ -147,7 +150,7 @@ const Navigation: React.FC<NavigationProps> = ({ isRSVPFormOpen = false, onOpenR
               e.currentTarget.style.color = '#FF6B6B';
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.color = isScrolled ? '#1a1a1a' : 'white';
+              e.currentTarget.style.color = (isScrolled || isHovered) ? '#1a1a1a' : 'white';
             }}
           >
             Venue
@@ -165,7 +168,7 @@ const Navigation: React.FC<NavigationProps> = ({ isRSVPFormOpen = false, onOpenR
               fontFamily: 'Instrument Sans, sans-serif',
               fontSize: '1rem',
               fontWeight: '500',
-              color: isScrolled ? '#1a1a1a' : 'white',
+              color: (isScrolled || isHovered) ? '#1a1a1a' : 'white',
               cursor: 'pointer',
               transition: 'all 0.3s ease',
               padding: '0.5rem 0',
@@ -175,7 +178,7 @@ const Navigation: React.FC<NavigationProps> = ({ isRSVPFormOpen = false, onOpenR
               e.currentTarget.style.color = '#FF6B6B';
             }}
             onMouseLeave={(e) => {
-              e.currentTarget.style.color = isScrolled ? '#1a1a1a' : 'white';
+              e.currentTarget.style.color = (isScrolled || isHovered) ? '#1a1a1a' : 'white';
             }}
           >
             FAQ
@@ -197,7 +200,7 @@ const Navigation: React.FC<NavigationProps> = ({ isRSVPFormOpen = false, onOpenR
             border: 'none',
             cursor: 'pointer',
             padding: '0.5rem',
-            color: isScrolled ? '#1a1a1a' : 'white',
+            color: (isScrolled || isHovered) ? '#1a1a1a' : 'white',
           }}
           className="mobile-menu-toggle"
         >

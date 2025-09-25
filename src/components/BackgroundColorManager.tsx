@@ -70,8 +70,14 @@ const BackgroundColorManager: React.FC = () => {
       {
         selector: '.faq-section',
         backgroundColor: '#EBE3D8',
-        nextBackgroundColor: '#F0E9E1',
+        nextBackgroundColor: '#FFF0E2',
         name: 'FAQSection'
+      },
+      {
+        selector: '.simple-footer',
+        backgroundColor: '#FFF0E2',
+        nextBackgroundColor: '#F0E9E1',
+        name: 'Footer'
       }
     ];
 
@@ -84,13 +90,11 @@ const BackgroundColorManager: React.FC = () => {
       const element = document.querySelector(section.selector);
 
       if (element) {
-        console.log(`Setting up comprehensive trigger for ${section.name}`);
-
         const trigger = ScrollTrigger.create({
           trigger: element,
-          start: 'top bottom',
-          end: 'bottom top',
-          scrub: 0.5, // Smoother scrubbing
+          start: "top top",
+          end: "bottom bottom",
+          scrub: 1,
           markers: false,
           onUpdate: (self) => {
             const progress = self.progress;
@@ -110,17 +114,11 @@ const BackgroundColorManager: React.FC = () => {
             // Apply background color directly with gsap.set for immediate response
             gsap.set(document.body, { backgroundColor: backgroundColor });
           },
-          onEnter: () => {
-            console.log(`Entering ${section.name}`);
-          },
-          onLeave: () => {
-            console.log(`Leaving ${section.name}`);
-          }
+          onEnter: () => {},
+          onLeave: () => {}
         });
 
         triggers.push(trigger);
-      } else {
-        console.warn(`${section.name} with selector "${section.selector}" not found`);
       }
     });
 

@@ -304,6 +304,39 @@ const OptimizedMiddleSection: React.FC = () => {
             width: 195px;
             height: 293px;
           }
+
+          /* Strategic repositioning for text readability on mobile */
+          /* Move images that are too close to center text */
+
+          /* Section 1 - Move the tall image on left further left */
+          .section-div:nth-child(1) .red-square.portrait-tall {
+            left: -5% !important;
+            top: 60% !important;
+          }
+
+          /* Section 2 - Move the large portrait on right further right and up */
+          .section-div:nth-child(2) .red-square.portrait-large {
+            right: -10% !important;
+            top: 25% !important;
+          }
+
+          /* Section 2 - Move small portrait on left further down */
+          .section-div:nth-child(2) .red-square.portrait:last-child {
+            top: 90% !important;
+            left: 5% !important;
+          }
+
+          /* Section 3 - Move tall portrait on right further right */
+          .section-div:nth-child(3) .red-square.portrait-tall {
+            right: -5% !important;
+            top: 15% !important;
+          }
+
+          /* Section 3 - Move large portrait on left further left */
+          .section-div:nth-child(3) .red-square.portrait-large {
+            left: -15% !important;
+            top: 50% !important;
+          }
         }
 
         @media (max-width: 480px) {
@@ -325,6 +358,41 @@ const OptimizedMiddleSection: React.FC = () => {
           .red-square.portrait-large {
             width: 150px;
             height: 225px;
+          }
+
+          /* More aggressive repositioning for smaller screens */
+
+          /* Section 1 - Push images further away from center */
+          .section-div:nth-child(1) .red-square.portrait-tall {
+            left: -10% !important;
+            top: 65% !important;
+          }
+
+          .section-div:nth-child(1) .red-square.portrait {
+            right: 5% !important;
+            top: 10% !important;
+          }
+
+          /* Section 2 - Create more space around center */
+          .section-div:nth-child(2) .red-square.portrait-large {
+            right: -15% !important;
+            top: 20% !important;
+          }
+
+          .section-div:nth-child(2) .red-square:first-child {
+            left: 0% !important;
+            top: 8% !important;
+          }
+
+          /* Section 3 - Push images to edges */
+          .section-div:nth-child(3) .red-square.portrait-tall {
+            right: -10% !important;
+            top: 10% !important;
+          }
+
+          .section-div:nth-child(3) .red-square.portrait-large {
+            left: -20% !important;
+            top: 45% !important;
           }
         }
 

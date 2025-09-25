@@ -1,9 +1,11 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import HeroBanner from './HeroBanner';
 
 const HeroSection: React.FC = () => {
+  const [videoLoaded, setVideoLoaded] = useState(false);
+
   return (
     <section
       className="hero-section"
@@ -17,12 +19,10 @@ const HeroSection: React.FC = () => {
         zIndex: 1
       }}
     >
-      {/* Video Background */}
-      <video
-        autoPlay
-        loop
-        muted
-        playsInline
+      {/* Placeholder Image - shown until video loads */}
+      <img
+        src="/images/heroVideoPlaceholder.webp"
+        alt="Hero placeholder"
         style={{
           position: 'absolute',
           top: 0,
@@ -30,7 +30,30 @@ const HeroSection: React.FC = () => {
           width: '100%',
           height: '100%',
           objectFit: 'cover',
-          zIndex: 1
+          zIndex: 1,
+          opacity: videoLoaded ? 0 : 1,
+          transition: 'opacity 0.5s ease-in-out'
+        }}
+      />
+
+      {/* Video Background */}
+      <video
+        autoPlay
+        loop
+        muted
+        playsInline
+        onLoadedData={() => setVideoLoaded(true)}
+        onCanPlay={() => setVideoLoaded(true)}
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          objectFit: 'cover',
+          zIndex: 1,
+          opacity: videoLoaded ? 1 : 0,
+          transition: 'opacity 0.5s ease-in-out'
         }}
       >
         <source src="/images/HeroVideo.mp4" type="video/mp4" />

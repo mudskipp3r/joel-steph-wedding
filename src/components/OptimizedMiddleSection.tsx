@@ -42,7 +42,7 @@ const OptimizedMiddleSection: React.FC = () => {
       end: () => `+=${window.innerHeight * 3}`,
       pin: pinnedText,
       pinSpacing: false,
-      markers: false,
+      markers: true,
     });
 
     const heartSvg = document.querySelector('.heart-svg') as HTMLElement;
@@ -96,8 +96,8 @@ const OptimizedMiddleSection: React.FC = () => {
       }
     };
 
-    // Balanced text transitions - each phrase gets equal duration
-    // Transition 1 -> 2: At end of div1 (33% through)
+    // Unified text transitions with consistent trigger points
+    // Transition 1 -> 2: At end of div1
     ScrollTrigger.create({
       trigger: div1,
       start: "bottom-=50 top",
@@ -108,10 +108,19 @@ const OptimizedMiddleSection: React.FC = () => {
           animateTextTransition("With family and friends", sunSvg, [heartSvg, cloudSvg]);
         }
       },
+      onLeave: () => {
+        // Ensure transition happens when leaving div1 going down
+        animateTextTransition("With family and friends", sunSvg, [heartSvg, cloudSvg]);
+      },
+      onEnterBack: () => {
+        // Ensure reverse transition happens when entering div1 going up
+        animateTextTransition("Together we celebrate", heartSvg, [sunSvg, cloudSvg]);
+      },
+      markers: true,
       id: "text-1-to-2"
     });
 
-    // Transition 2 -> 3: At end of div2 (66% through)
+    // Transition 2 -> 3: At end of div2
     ScrollTrigger.create({
       trigger: div2,
       start: "bottom-=50 top",
@@ -122,36 +131,16 @@ const OptimizedMiddleSection: React.FC = () => {
           animateTextTransition("Friday 6th February 2026", cloudSvg, [heartSvg, sunSvg]);
         }
       },
+      onLeave: () => {
+        // Ensure transition happens when leaving div2 going down
+        animateTextTransition("Friday 6th February 2026", cloudSvg, [heartSvg, sunSvg]);
+      },
+      onEnterBack: () => {
+        // Ensure reverse transition happens when entering div2 going up
+        animateTextTransition("With family and friends", sunSvg, [heartSvg, cloudSvg]);
+      },
+      markers: true,
       id: "text-2-to-3"
-    });
-
-    // REVERSE TRANSITIONS
-    // Transition 2 -> 1: Going back up through div2 (not div1)
-    ScrollTrigger.create({
-      trigger: div2,
-      start: "top-=50 bottom",
-      end: "top bottom",
-      onUpdate: self => {
-        const progress = self.progress;
-        if (progress < 0.5) {
-          animateTextTransition("Together we celebrate", heartSvg, [sunSvg, cloudSvg]);
-        }
-      },
-      id: "text-2-to-1"
-    });
-
-    // Transition 3 -> 2: Going back up through div3
-    ScrollTrigger.create({
-      trigger: div3,
-      start: "top-=50 bottom",
-      end: "top bottom",
-      onUpdate: self => {
-        const progress = self.progress;
-        if (progress < 0.5) {
-          animateTextTransition("With family and friends", sunSvg, [heartSvg, cloudSvg]);
-        }
-      },
-      id: "text-3-to-2"
     });
 
 
@@ -176,29 +165,29 @@ const OptimizedMiddleSection: React.FC = () => {
     >
       <div ref={div1Ref} className="section-div">
         <div className="squares-container">
-          <img src="/images/story-section1-proposal-portrait.jpg" alt="Proposal portrait" className="red-square portrait" style={{ top: '15%', right: '12%' }} />
-          <img src="/images/story-section1-proposal-tall.jpg" alt="Proposal tall" className="red-square portrait-tall" style={{ top: '55%', left: '5%' }} />
-          <img src="/images/story-section1-proposal-landscape.jpg" alt="Proposal landscape" className="red-square" style={{ top: '85%', right: '25%' }} />
+          <img src="/images/story-section1-proposal-portrait.webp" alt="Proposal portrait" className="red-square portrait" style={{ top: '15%', right: '12%' }} />
+          <img src="/images/story-section1-proposal-tall.webp" alt="Proposal tall" className="red-square portrait-tall" style={{ top: '55%', left: '5%' }} />
+          <img src="/images/story-section1-proposal-landscape.webp" alt="Proposal landscape" className="red-square" style={{ top: '85%', right: '25%' }} />
         </div>
       </div>
       <div ref={div2Ref} className="section-div">
         <div className="squares-container">
-          <img src="/images/story-section2-couple-landscape.jpg" alt="Couple landscape" className="red-square" style={{ top: '12%', left: '8%' }} />
-          <img src="/images/story-section2-couple-portrait.jpg" alt="Couple large portrait" className="red-square portrait-large" style={{ top: '40%', right: '10%' }} />
-          <img src="/images/story-section2-couple-small.jpg" alt="Couple portrait" className="red-square portrait" style={{ top: '80%', left: '15%' }} />
+          <img src="/images/story-section2-couple-landscape.webp" alt="Couple landscape" className="red-square" style={{ top: '12%', left: '8%' }} />
+          <img src="/images/story-section2-couple-portrait.webp" alt="Couple large portrait" className="red-square portrait-large" style={{ top: '40%', right: '10%' }} />
+          <img src="/images/story-section2-couple-small.webp" alt="Couple portrait" className="red-square portrait" style={{ top: '80%', left: '15%' }} />
         </div>
       </div>
       <div ref={div3Ref} className="section-div">
         <div className="squares-container">
-          <img src="/images/story-section3-engagement-tall.jpg" alt="Engagement tall portrait" className="red-square portrait-tall" style={{ top: '10%', right: '15%' }} />
-          <img src="/images/story-section3-engagement-portrait.jpg" alt="Engagement large portrait" className="red-square portrait-large" style={{ top: '45%', left: '8%' }} />
-          <img src="/images/story-section3-engagement-moment.jpg" alt="Beautiful moment" className="red-square" style={{ top: '85%', right: '20%' }} />
+          <img src="/images/story-section3-engagement-tall.webp" alt="Engagement tall portrait" className="red-square portrait-tall" style={{ top: '10%', right: '15%' }} />
+          <img src="/images/story-section3-engagement-portrait.webp" alt="Engagement large portrait" className="red-square portrait-large" style={{ top: '45%', left: '8%' }} />
+          <img src="/images/story-section3-engagement-moment.webp" alt="Beautiful moment" className="red-square" style={{ top: '85%', right: '20%' }} />
         </div>
       </div>
       <div ref={div4Ref} className="section-div">
         <div className="squares-container">
-          <img src="/images/story-section4-final-photo.jpg" alt="Engagement photo" className="red-square" style={{ top: '18%', left: '12%' }} />
-          <img src="/images/story-section4-couple-portrait.jpg" alt="Couple portrait" className="red-square" style={{ top: '50%', right: '8%' }} />
+          <img src="/images/story-section4-final-photo.webp" alt="Engagement photo" className="red-square" style={{ top: '18%', left: '12%' }} />
+          <img src="/images/story-section4-couple-portrait.webp" alt="Couple portrait" className="red-square" style={{ top: '50%', right: '8%' }} />
         </div>
       </div>
 
@@ -262,7 +251,7 @@ const OptimizedMiddleSection: React.FC = () => {
 
         #pinned-text-element h2 {
           font-family: 'Cardo', serif;
-          font-size: clamp(2.5rem, 6vw, 4.5rem);
+          font-size: clamp(2rem, 5vw, 4.5rem);
           font-weight: 600;
           margin: 0;
           letter-spacing: -0.02em;
@@ -271,6 +260,9 @@ const OptimizedMiddleSection: React.FC = () => {
           z-index: 10;
           white-space: nowrap;
           overflow: visible;
+          padding: 0 1rem;
+          max-width: calc(100vw - 2rem);
+          box-sizing: border-box;
         }
 
         .squares-container {
@@ -284,12 +276,13 @@ const OptimizedMiddleSection: React.FC = () => {
 
         .red-square {
           position: absolute;
-          background: red;
+          background: #f5f5f5;
           border-radius: 16px;
           opacity: 1;
           width: 240px;
           height: 240px;
           object-fit: cover;
+          border: 1px solid #e0e0e0;
         }
 
         .red-square.portrait {

@@ -48,27 +48,27 @@ const PhotoCarousel: React.FC = () => {
 
   const photos = [
     {
-      src: "/images/carousel-romantic-moment.jpg",
+      src: "/images/carousel-romantic-moment.webp",
       alt: "Joel and Stephanie engagement photo - romantic moment"
     },
     {
-      src: "/images/carousel-celebration.jpg",
+      src: "/images/carousel-celebration.webp",
       alt: "Joel and Stephanie engagement photo - celebration"
     },
     {
-      src: "/images/carousel-engagement-portrait.jpg",
+      src: "/images/carousel-engagement-portrait.webp",
       alt: "Joel and Stephanie engagement photo - portrait"
     },
     {
-      src: "/images/carousel-intimate-moment.jpg",
+      src: "/images/carousel-intimate-moment.webp",
       alt: "Joel and Stephanie engagement photo - intimate moment"
     },
     {
-      src: "/images/carousel-joyful-scene.jpg",
+      src: "/images/carousel-joyful-scene.webp",
       alt: "Joel and Stephanie engagement photo - joyful scene"
     },
     {
-      src: "/images/carousel-beautiful-setting.jpg",
+      src: "/images/carousel-beautiful-setting.webp",
       alt: "Joel and Stephanie engagement photo - beautiful setting"
     }
   ];

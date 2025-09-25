@@ -6,10 +6,9 @@ import Button from './Button';
 interface NavigationProps {
   isRSVPFormOpen?: boolean;
   onOpenRSVPForm?: () => void;
-  onOpenTestForm?: () => void;
 }
 
-const Navigation: React.FC<NavigationProps> = ({ isRSVPFormOpen = false, onOpenRSVPForm, onOpenTestForm }) => {
+const Navigation: React.FC<NavigationProps> = ({ isRSVPFormOpen = false, onOpenRSVPForm }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
@@ -180,29 +179,6 @@ const Navigation: React.FC<NavigationProps> = ({ isRSVPFormOpen = false, onOpenR
             }}
           >
             FAQ
-          </button>
-          <button
-            onClick={() => onOpenTestForm?.()}
-            style={{
-              background: 'none',
-              border: 'none',
-              fontFamily: 'Instrument Sans, sans-serif',
-              fontSize: '1rem',
-              fontWeight: '500',
-              color: isScrolled ? '#1a1a1a' : 'white',
-              cursor: 'pointer',
-              transition: 'all 0.3s ease',
-              padding: '0.5rem 0',
-              textDecoration: 'none',
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.color = '#FF6B6B';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.color = isScrolled ? '#1a1a1a' : 'white';
-            }}
-          >
-            Test
           </button>
           <Button
             size="small"

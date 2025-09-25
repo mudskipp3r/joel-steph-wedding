@@ -76,7 +76,8 @@ const HeroSection: React.FC = () => {
           backgroundPosition: '0 0, 3px 3px, 1px 1px',
           opacity: 0.3,
           mixBlendMode: 'overlay',
-          zIndex: 2.5
+          zIndex: 4,
+          pointerEvents: 'none'
         }}
       />
 

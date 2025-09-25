@@ -13,17 +13,11 @@ import FAQSection from "../components/FAQSection";
 import Footer from "../components/Footer";
 import RSVPSlideout from "../components/RSVPSlideout";
 import BackgroundColorManager from "../components/BackgroundColorManager";
-import TestForm from "../components/TestForm";
 
 export default function Home() {
   const [isRSVPFormOpen, setIsRSVPFormOpen] = useState(false);
-  const [isTestFormOpen, setIsTestFormOpen] = useState(false);
-
   const openRSVPForm = () => setIsRSVPFormOpen(true);
   const closeRSVPForm = () => setIsRSVPFormOpen(false);
-
-  const openTestForm = () => setIsTestFormOpen(true);
-  const closeTestForm = () => setIsTestFormOpen(false);
 
 
   return (
@@ -31,7 +25,6 @@ export default function Home() {
       <Navigation
         isRSVPFormOpen={isRSVPFormOpen}
         onOpenRSVPForm={openRSVPForm}
-        onOpenTestForm={openTestForm}
       />
       <BackgroundColorManager />
       <div id="hero">
@@ -84,11 +77,6 @@ export default function Home() {
         onClose={closeRSVPForm}
       />
 
-      {/* Test Form - positioned at top level */}
-      <TestForm
-        isOpen={isTestFormOpen}
-        onClose={closeTestForm}
-      />
     </div>
   );
 }

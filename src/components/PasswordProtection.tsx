@@ -77,7 +77,7 @@ const PasswordProtection: React.FC<{ children: React.ReactNode }> = ({ children 
         justifyContent: 'center',
         alignItems: 'center',
         minHeight: '100vh',
-        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+        background: '#F0E9E1',
         padding: '20px'
       }}>
         <div style={{
@@ -137,7 +137,7 @@ const PasswordProtection: React.FC<{ children: React.ReactNode }> = ({ children 
                   outline: 'none'
                 }}
                 onFocus={(e) => {
-                  e.target.style.borderColor = '#667eea';
+                  e.target.style.borderColor = '#FF6B6B';
                 }}
                 onBlur={(e) => {
                   e.target.style.borderColor = '#e0e0e0';
@@ -162,7 +162,7 @@ const PasswordProtection: React.FC<{ children: React.ReactNode }> = ({ children 
               style={{
                 width: '100%',
                 padding: '1rem',
-                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                background: '#FF6B6B',
                 color: 'white',
                 border: 'none',
                 borderRadius: '10px',
@@ -171,15 +171,15 @@ const PasswordProtection: React.FC<{ children: React.ReactNode }> = ({ children 
                 fontFamily: 'Instrument Sans, sans-serif',
                 cursor: 'pointer',
                 transition: 'transform 0.2s ease, box-shadow 0.2s ease',
-                boxShadow: '0 4px 15px rgba(102, 126, 234, 0.4)'
+                boxShadow: '0 4px 15px rgba(255, 107, 107, 0.4)'
               }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.transform = 'translateY(-2px)';
-                e.currentTarget.style.boxShadow = '0 6px 20px rgba(102, 126, 234, 0.5)';
+                e.currentTarget.style.boxShadow = '0 6px 20px rgba(255, 107, 107, 0.5)';
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.transform = 'translateY(0)';
-                e.currentTarget.style.boxShadow = '0 4px 15px rgba(102, 126, 234, 0.4)';
+                e.currentTarget.style.boxShadow = '0 4px 15px rgba(255, 107, 107, 0.4)';
               }}
             >
               Enter Site
@@ -193,7 +193,7 @@ const PasswordProtection: React.FC<{ children: React.ReactNode }> = ({ children 
             color: '#999',
             fontFamily: 'Instrument Sans, sans-serif'
           }}>
-            <p>If you need the password, please contact Joel or Stephanie</p>
+            <p>If you need the password, please contact Steph 0426875301 or Joel 0497091831</p>
           </div>
         </div>
       </div>

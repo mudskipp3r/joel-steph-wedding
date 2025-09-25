@@ -255,7 +255,7 @@ const TimelineSection: React.FC = () => {
                 marginBottom: '2rem',
                 lineHeight: '1.4'
               }}>
-                Please arrive at least 30 mins early to be seated
+                Please arrive at least 30 minutes early
               </div>
 
               <Button>
@@ -298,7 +298,7 @@ const TimelineSection: React.FC = () => {
                 marginBottom: '0.5rem',
                 lineHeight: '1'
               }}>
-                6:30 pm
+                6:00 pm
               </div>
 
               <div style={{
@@ -321,7 +321,7 @@ const TimelineSection: React.FC = () => {
                 marginBottom: '2rem',
                 lineHeight: '1.4'
               }}>
-                Celebrate with us! Dinner, dancing, and drinks
+                6:00pm - 11:30pm. Celebrate with us! Dinner, dancing, and drinks.
               </div>
 
               <Button>

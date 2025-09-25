@@ -16,33 +16,33 @@ const FAQSection: React.FC = () => {
   const faqData: FAQItem[] = [
     {
       question: "What is the dress code?",
-      answer: "We're going for cocktail attire! Think dressy but comfortable. Ladies, feel free to wear a nice dress or dressy separates. Gentlemen, a suit or dress shirt with slacks would be perfect. Please avoid white (that's for the bride!) and overly casual clothing like jeans or sneakers.",
+      answer: "It's formal. Black tie and cocktail dress.",
       category: "General"
     },
     {
       question: "When should I RSVP by?",
-      answer: "Please RSVP by March 15th, 2025. This helps us finalize numbers with our caterer and venue. If your plans change after you RSVP, please let us know as soon as possible!",
+      answer: "Please RSVP by 6th December 2025. This helps us finalize numbers with our caterer and venue. If your plans change after you RSVP, please let us know as soon as possible!",
       category: "General"
     },
     {
-      question: "Can I bring a plus-one?",
-      answer: "Due to venue capacity, we're only able to accommodate the guests specifically named on your invitation. If you have any questions about your invitation, please reach out to us directly.",
+      question: "Can I bring a plus one?",
+      answer: "We're so excited to celebrate with you! Due to venue limitations and our desire to keep things intimate, we're only able to accommodate those guests who are formally invited. If a plus one was not included on your invitation, we hope you'll still join us in the celebration.",
       category: "General"
     },
     {
-      question: "What time should I arrive for the ceremony?",
-      answer: "Please arrive at least 30 minutes before the ceremony starts at 3:00 PM. This gives you time to find parking, get seated, and settle in before we begin.",
-      category: "Ceremony"
+      question: "What should I bring?",
+      answer: "Bring your good vibes, happy hearts, and dancing shoes — we're here to celebrate love, laughter, and a whole lot of fun! 💃🕺 Positive energy essential. To make the most of the night (and the dance floor), we kindly encourage you to leave the car at home and enjoy the celebration stress-free! 🍸🚗❌",
+      category: "General"
+    },
+    {
+      question: "I cannot come to the wedding but I'd still like to give a gift, is there a way to do this?",
+      answer: "Your presence is the greatest gift we could ask for. However, if you wish to honour us with a contribution, a monetary gift would be warmly appreciated. Bank details: [Insert details here]",
+      category: "General"
     },
     {
       question: "Can I take photos during the ceremony?",
-      answer: "We're having an unplugged ceremony, so please keep phones and cameras away during the 'I do's. Our professional photographer will capture everything! Feel free to take photos during cocktail hour and the reception.",
+      answer: "Yes, we welcome you to share the photos with us. Please be mindful that we will have a professional videographer and we will share the footage with you.",
       category: "Ceremony"
-    },
-    {
-      question: "Will there be an open bar?",
-      answer: "Yes! We'll have beer, wine, and signature cocktails available throughout the reception. We want everyone to celebrate and have a great time!",
-      category: "Reception"
     },
     {
       question: "What if I have dietary restrictions?",
@@ -51,18 +51,13 @@ const FAQSection: React.FC = () => {
     },
     {
       question: "Are children welcome?",
-      answer: "We love your little ones, but we've decided to have an adult-only celebration. We hope this gives you a chance to relax and enjoy the evening! If you need help arranging childcare, please let us know.",
+      answer: "While we love your little ones, we've decided to keep our celebration an adults-only event, with the exception of children included on your invitation.",
       category: "Reception"
     },
     {
-      question: "Where should I park?",
-      answer: "There's plenty of free parking available at both the ceremony and reception venues. Detailed parking information will be provided with your invitation.",
-      category: "Travel"
-    },
-    {
-      question: "Is there transportation between venues?",
-      answer: "The ceremony and reception venues are about 20 minutes apart by car. We recommend arranging your own transportation or carpooling with other guests.",
-      category: "Travel"
+      question: "Couldn't find your question?",
+      answer: "Contact us directly: Steph 0426875301 or Joel 0497091831",
+      category: "General"
     }
   ];
 

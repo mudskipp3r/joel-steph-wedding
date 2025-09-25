@@ -64,13 +64,13 @@ const BackgroundColorManager: React.FC = () => {
       {
         selector: '.photo-section',
         backgroundColor: '#F4C5AF',
-        nextBackgroundColor: '#D0DBE1',
+        nextBackgroundColor: '#EBE3D8',
         name: 'PhotoSection'
       },
       {
         selector: '.faq-section',
-        backgroundColor: '#D0DBE1',
-        nextBackgroundColor: '#E8E8E8',
+        backgroundColor: '#EBE3D8',
+        nextBackgroundColor: '#F0E9E1',
         name: 'FAQSection'
       }
     ];

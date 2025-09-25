@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 interface TestFormProps {
   isOpen: boolean;
@@ -10,39 +10,18 @@ interface TestFormProps {
 const TestForm: React.FC<TestFormProps> = ({ isOpen, onClose }) => {
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  const encode = (data: Record<string, string>) => {
-    return Object.keys(data)
-      .map(key => encodeURIComponent(key) + "=" + encodeURIComponent(data[key]))
-      .join("&");
-  };
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    try {
-      const form = e.target as HTMLFormElement;
-      const formData = new FormData(form);
-      const data: Record<string, string> = {};
-
-      formData.forEach((value, key) => {
-        data[key] = value.toString();
-      });
-
-      const response = await fetch("/", {
-        method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: encode({ "form-name": "test-form", ...data })
-      });
-
-      if (response.ok) {
+  // Check for success parameter on component mount (after form submission redirect)
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.get('form-success') === 'test-form') {
         setIsSubmitted(true);
-      } else {
-        throw new Error("Form submission failed");
+        // Clean up URL
+        const newUrl = window.location.pathname;
+        window.history.replaceState({}, '', newUrl);
       }
-    } catch (error) {
-      console.error("Form submission error:", error);
-      alert("There was an error submitting the test form.");
     }
-  };
+  }, [isOpen]);
 
   const handleClose = () => {
     setIsSubmitted(false);
@@ -121,9 +100,9 @@ const TestForm: React.FC<TestFormProps> = ({ isOpen, onClose }) => {
             <form
               name="test-form"
               method="POST"
+              action="/?form-success=test-form"
               data-netlify="true"
               netlify-honeypot="bot-field"
-              onSubmit={handleSubmit}
             >
               <input type="hidden" name="form-name" value="test-form" />
               <input type="hidden" name="bot-field" />

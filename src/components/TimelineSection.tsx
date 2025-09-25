@@ -27,7 +27,8 @@ const TimelineSection: React.FC = () => {
 
     if (!isMobile) {
       // Desktop: Use complex pinned scroll animation
-      gsap.set(eventsContainer, { y: window.innerHeight });
+      // Start with title visible (y: 0) instead of off-screen
+      gsap.set(eventsContainer, { y: 0 });
 
       const tl = gsap.timeline({
         scrollTrigger: {
@@ -42,8 +43,9 @@ const TimelineSection: React.FC = () => {
         }
       });
 
+      // Scroll up less distance since we're starting from 0
       tl.to(eventsContainer, {
-        y: -window.innerHeight * 2,
+        y: -window.innerHeight * 2.5,
         ease: "none",
         duration: 1
       });
@@ -344,7 +346,7 @@ const TimelineSection: React.FC = () => {
         @media (max-width: 768px) {
           .timeline-section {
             height: auto !important; /* Remove fixed height on mobile */
-            padding: 2rem 1rem;
+            padding: 2rem 0; /* Remove side padding for full width */
           }
 
           .timeline-content {
@@ -352,21 +354,42 @@ const TimelineSection: React.FC = () => {
             position: static !important; /* Remove pinning on mobile */
           }
 
-          /* Background card adjustments for mobile */
+          /* Force hide only the desktop red line - target by specific attributes */
+          .timeline-content > div > div[style*="left: 23%"][style*="width: 4px"] {
+            display: none !important;
+          }
+
+          /* Keep background card container for mobile with flex layout */
           .timeline-content > div {
             position: static !important;
             inset: 0 !important;
-            margin: 0 !important;
+            margin: 2rem !important;
             border-radius: 20px !important;
             padding: 2rem !important;
+            display: flex !important;
+            align-items: flex-start !important;
+            gap: 2rem !important; /* Add gap between columns */
           }
 
-          /* Hide the vertical line on mobile */
+          /* Hide desktop red line on mobile (the one with inline styles) */
           .timeline-content > div > div:first-child {
             display: none !important;
           }
 
-          /* Events container mobile layout */
+          /* Create new mobile red line column */
+          .timeline-content > div::before {
+            content: '' !important;
+            display: block !important;
+            width: 4px !important;
+            background: linear-gradient(to bottom, rgba(255, 107, 107, 0.3) 0%, rgba(255, 107, 107, 0.8) 20%, rgba(255, 107, 107, 0.8) 80%, rgba(255, 107, 107, 0.3) 100%) !important;
+            border-radius: 2px !important;
+            box-shadow: 0 2px 10px rgba(255, 107, 107, 0.2) !important;
+            flex: 0 0 4px !important; /* Fixed width, no grow, no shrink */
+            min-height: 500px !important; /* Ensure line has minimum height */
+            align-self: stretch !important; /* Stretch to match container height */
+          }
+
+          /* Events container mobile layout - Flexible right column */
           .timeline-content > div > div:last-child {
             position: static !important;
             height: auto !important;
@@ -374,17 +397,33 @@ const TimelineSection: React.FC = () => {
             display: flex;
             flex-direction: column;
             gap: 3rem;
-            padding: 1rem 0;
+            padding: 0;
+            flex: 1 1 auto !important; /* Take remaining space */
+            min-width: 0 !important; /* Allow shrinking if needed */
           }
 
-          /* Mobile title section */
+          /* Mobile title section - left aligned with pip */
           .timeline-content > div > div:last-child > div:first-child {
-            position: static !important;
+            position: relative !important;
             left: auto !important;
             top: auto !important;
             transform: none !important;
-            text-align: center;
+            text-align: left; /* Left align title */
             margin-bottom: 3rem;
+          }
+
+          /* Add pip for title section */
+          .timeline-content > div > div:last-child > div:first-child::before {
+            content: '';
+            position: absolute;
+            left: -3rem;
+            top: 1rem;
+            width: 18px;
+            height: 18px;
+            background: #FF6B6B;
+            border-radius: 50%;
+            border: 3px solid white;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3), inset 0 1px 3px rgba(255, 255, 255, 0.5);
           }
 
           .timeline-content > div > div:last-child > div:first-child > div:first-child {
@@ -397,18 +436,33 @@ const TimelineSection: React.FC = () => {
             font-size: 1rem !important;
           }
 
-          /* Mobile event items */
+          /* Mobile event items - left aligned with no background boxes and pips */
           .timeline-content > div > div:last-child > div:not(:first-child) {
-            position: static !important;
+            position: relative !important;
             left: auto !important;
             top: auto !important;
             transform: none !important;
-            text-align: center;
-            background: rgba(255, 255, 255, 0.8);
-            padding: 2rem;
-            border-radius: 16px;
-            border: 1px solid rgba(0, 0, 0, 0.1);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            text-align: left; /* Left align content */
+            background: transparent !important; /* Remove background */
+            padding: 0 !important; /* Remove padding */
+            border-radius: 0 !important; /* Remove border radius */
+            border: none !important; /* Remove border */
+            box-shadow: none !important; /* Remove shadow */
+          }
+
+          /* Add pips for ceremony and reception events (skip the circle divs) */
+          .timeline-content > div > div:last-child > div:nth-child(3)::before,
+          .timeline-content > div > div:last-child > div:nth-child(5)::before {
+            content: '';
+            position: absolute;
+            left: -3rem;
+            top: 2rem;
+            width: 18px;
+            height: 18px;
+            background: #FF6B6B;
+            border-radius: 50%;
+            border: 3px solid white;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3), inset 0 1px 3px rgba(255, 255, 255, 0.5);
           }
 
           /* Hide circles on mobile */

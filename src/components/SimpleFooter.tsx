@@ -555,7 +555,7 @@ const SimpleFooter: React.FC<SimpleFooterProps> = ({
             </div>
           ) : (
             /* RSVP Form */
-            <form className="rsvp-form" onSubmit={handleSubmit} data-netlify="true" name="wedding-rsvp" style={{
+            <form className="rsvp-form" onSubmit={handleSubmit} data-netlify="true" name="wedding-rsvp" method="POST" style={{
             display: 'flex',
             flexDirection: 'column',
             gap: '2rem'

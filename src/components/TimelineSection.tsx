@@ -402,8 +402,8 @@ const TimelineSection: React.FC = () => {
             min-width: 0 !important; /* Allow shrinking if needed */
           }
 
-          /* Mobile title section - left aligned with pip */
-          .timeline-content > div > div:last-child > div:first-child {
+          /* Mobile title section - left aligned with pip (child 2) */
+          .timeline-content > div > div:last-child > div:nth-child(2) {
             position: relative !important;
             left: auto !important;
             top: auto !important;
@@ -413,7 +413,7 @@ const TimelineSection: React.FC = () => {
           }
 
           /* Add pip for title section */
-          .timeline-content > div > div:last-child > div:first-child::before {
+          .timeline-content > div > div:last-child > div:nth-child(2)::before {
             content: '';
             position: absolute;
             left: -3rem;
@@ -425,18 +425,19 @@ const TimelineSection: React.FC = () => {
             box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
           }
 
-          .timeline-content > div > div:last-child > div:first-child > div:first-child {
+          .timeline-content > div > div:last-child > div:nth-child(2) > div:first-child {
             font-size: 2.5rem !important;
             line-height: 1.2 !important;
             margin-bottom: 1rem !important;
           }
 
-          .timeline-content > div > div:last-child > div:first-child > div:last-child {
+          .timeline-content > div > div:last-child > div:nth-child(2) > div:last-child {
             font-size: 1rem !important;
           }
 
           /* Mobile event items - left aligned with no background boxes and pips */
-          .timeline-content > div > div:last-child > div:not(:first-child) {
+          .timeline-content > div > div:last-child > div:nth-child(4),
+          .timeline-content > div > div:last-child > div:nth-child(6) {
             position: relative !important;
             left: auto !important;
             top: auto !important;
@@ -449,9 +450,9 @@ const TimelineSection: React.FC = () => {
             box-shadow: none !important; /* Remove shadow */
           }
 
-          /* Add pips for ceremony and reception events (skip the circle divs) */
-          .timeline-content > div > div:last-child > div:nth-child(3)::before,
-          .timeline-content > div > div:last-child > div:nth-child(5)::before {
+          /* Add pips for ceremony and reception events */
+          .timeline-content > div > div:last-child > div:nth-child(4)::before,
+          .timeline-content > div > div:last-child > div:nth-child(6)::before {
             content: '';
             position: absolute;
             left: -3rem;
@@ -463,28 +464,43 @@ const TimelineSection: React.FC = () => {
             box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
           }
 
-          /* Hide circles on mobile */
-          .timeline-content > div > div:last-child > div:nth-child(2),
-          .timeline-content > div > div:last-child > div:nth-child(4) {
+          /* Hide desktop pip circles on mobile */
+          .timeline-content > div > div:last-child > div:nth-child(1),
+          .timeline-content > div > div:last-child > div:nth-child(3),
+          .timeline-content > div > div:last-child > div:nth-child(5) {
             display: none !important;
           }
 
-          /* Mobile event content adjustments */
-          .timeline-content > div > div:last-child > div:nth-child(3) > div:first-child,
-          .timeline-content > div > div:last-child > div:nth-child(5) > div:first-child {
+          /* Mobile event content adjustments - Ceremony (child 4) */
+          .timeline-content > div > div:last-child > div:nth-child(4) > div:first-child {
             font-size: 2.5rem !important;
             margin-bottom: 0.5rem !important;
           }
 
-          .timeline-content > div > div:last-child > div:nth-child(3) > div:nth-child(2),
-          .timeline-content > div > div:last-child > div:nth-child(5) > div:nth-child(2) {
+          .timeline-content > div > div:last-child > div:nth-child(4) > div:nth-child(2) {
             font-size: 3rem !important;
             line-height: 1.1 !important;
             margin-bottom: 1rem !important;
           }
 
-          .timeline-content > div > div:last-child > div:nth-child(3) > div:nth-child(3),
-          .timeline-content > div > div:last-child > div:nth-child(5) > div:nth-child(3) {
+          .timeline-content > div > div:last-child > div:nth-child(4) > div:nth-child(3) {
+            font-size: 1rem !important;
+            margin-bottom: 1.5rem !important;
+          }
+
+          /* Mobile event content adjustments - Reception (child 6) */
+          .timeline-content > div > div:last-child > div:nth-child(6) > div:first-child {
+            font-size: 2.5rem !important;
+            margin-bottom: 0.5rem !important;
+          }
+
+          .timeline-content > div > div:last-child > div:nth-child(6) > div:nth-child(2) {
+            font-size: 3rem !important;
+            line-height: 1.1 !important;
+            margin-bottom: 1rem !important;
+          }
+
+          .timeline-content > div > div:last-child > div:nth-child(6) > div:nth-child(3) {
             font-size: 1rem !important;
             margin-bottom: 1.5rem !important;
           }

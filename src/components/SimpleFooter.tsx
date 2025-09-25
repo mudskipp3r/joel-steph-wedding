@@ -159,55 +159,19 @@ const SimpleFooter: React.FC<SimpleFooterProps> = ({
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = (e: React.FormEvent) => {
+    // Only prevent default if validation fails
     setErrors({});
 
     // Validation for plus one code
     if (formData.hasPlusOne && !plusOneEnabled) {
+      e.preventDefault();
       setErrors({ plusOneCode: 'Please verify your plus one code before submitting.' });
       return;
     }
 
-    try {
-      // Create FormData from the form element (like your old form)
-      const formData = new FormData(e.target as HTMLFormElement);
-
-      // Ensure default values for fields that might be blank or unchecked
-      if (!formData.get('hasPlusOne')) {
-        formData.set('hasPlusOne', 'no');
-      }
-      if (!formData.get('plusOneCode')) {
-        formData.set('plusOneCode', 'N/A');
-      }
-      if (!formData.get('phone')) {
-        formData.set('phone', 'Not provided');
-      }
-      if (!formData.get('dietaryRestrictions')) {
-        formData.set('dietaryRestrictions', 'None specified');
-      }
-      if (!formData.get('message')) {
-        formData.set('message', 'No message provided');
-      }
-
-      // Submit to Netlify exactly like your old working form
-      const response = await fetch("/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-        body: new URLSearchParams(formData as any).toString(),
-      });
-
-      if (response.ok) {
-        setIsSubmitted(true);
-      } else {
-        throw new Error('Form submission failed');
-      }
-    } catch (error) {
-      console.error('Form submission error:', error);
-      alert('There was an error submitting your RSVP. Please try again.');
-    }
+    // If validation passes, let the form submit naturally to Netlify
+    // Don't prevent default - let Netlify handle the submission
   };
 
   const openPanel = () => {
@@ -258,8 +222,12 @@ const SimpleFooter: React.FC<SimpleFooterProps> = ({
       <form
         name="wedding-rsvp"
         data-netlify="true"
+        netlify-honeypot="bot-field"
+        method="POST"
         style={{ display: 'none' }}
       >
+        <input type="hidden" name="form-name" value="wedding-rsvp" />
+        <input type="hidden" name="bot-field" />
         <input type="text" name="fullName" />
         <input type="email" name="email" />
         <input type="tel" name="phone" />
@@ -555,12 +523,13 @@ const SimpleFooter: React.FC<SimpleFooterProps> = ({
             </div>
           ) : (
             /* RSVP Form */
-            <form className="rsvp-form" onSubmit={handleSubmit} data-netlify="true" name="wedding-rsvp" method="POST" style={{
+            <form className="rsvp-form" onSubmit={handleSubmit} data-netlify="true" netlify-honeypot="bot-field" name="wedding-rsvp" method="POST" action="/" style={{
             display: 'flex',
             flexDirection: 'column',
             gap: '2rem'
           }}>
             <input type="hidden" name="form-name" value="wedding-rsvp" />
+            <input type="hidden" name="bot-field" />
             {/* Hidden inputs to ensure default values are always sent */}
             <input type="hidden" name="hasPlusOne" value={formData.hasPlusOne ? 'yes' : 'no'} />
 

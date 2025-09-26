@@ -12,7 +12,6 @@ import PhotoSection from "../components/PhotoSection";
 import FAQSection from "../components/FAQSection";
 import Footer from "../components/Footer";
 import RSVPSlideout from "../components/RSVPSlideout";
-import BackgroundColorManager from "../components/BackgroundColorManager";
 
 export default function Home() {
   const [isRSVPFormOpen, setIsRSVPFormOpen] = useState(false);
@@ -26,7 +25,6 @@ export default function Home() {
         isRSVPFormOpen={isRSVPFormOpen}
         onOpenRSVPForm={openRSVPForm}
       />
-      <BackgroundColorManager />
       <div id="hero">
         <HeroSection />
       </div>

@@ -66,26 +66,29 @@ const Footer: React.FC<FooterProps> = ({ onOpenRSVPForm }) => {
                 ...typography.styles.body,
                 textDecoration: 'none',
                 lineHeight: 1.8,
-                transition: 'color 0.2s ease'
+                transition: 'color 0.3s ease',
+                color: typography.colors.primary
               }}
               onMouseEnter={(e) => e.currentTarget.style.color = typography.colors.accent}
-              onMouseLeave={(e) => e.currentTarget.style.color = typography.colors.body}>Our Story</a></li>
+              onMouseLeave={(e) => e.currentTarget.style.color = typography.colors.primary}>Our Story</a></li>
               <li><a href="#timeline" style={{
                 ...typography.styles.body,
                 textDecoration: 'none',
                 lineHeight: 1.8,
-                transition: 'color 0.2s ease'
+                transition: 'color 0.3s ease',
+                color: typography.colors.primary
               }}
               onMouseEnter={(e) => e.currentTarget.style.color = typography.colors.accent}
-              onMouseLeave={(e) => e.currentTarget.style.color = typography.colors.body}>Timeline</a></li>
+              onMouseLeave={(e) => e.currentTarget.style.color = typography.colors.primary}>Timeline</a></li>
               <li><a href="#venues" style={{
                 ...typography.styles.body,
                 textDecoration: 'none',
                 lineHeight: 1.8,
-                transition: 'color 0.2s ease'
+                transition: 'color 0.3s ease',
+                color: typography.colors.primary
               }}
               onMouseEnter={(e) => e.currentTarget.style.color = typography.colors.accent}
-              onMouseLeave={(e) => e.currentTarget.style.color = typography.colors.body}>Venues</a></li>
+              onMouseLeave={(e) => e.currentTarget.style.color = typography.colors.primary}>Venues</a></li>
             </ul>
           </div>
 

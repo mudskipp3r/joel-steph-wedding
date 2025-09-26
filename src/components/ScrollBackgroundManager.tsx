@@ -16,14 +16,14 @@ const ScrollBackgroundManager: React.FC<ScrollBackgroundManagerProps> = ({ conta
 
     if (!containerRef.current) return;
 
-    // Abstract paint background color palette - soft, artistic tones
+    // Simple elegant color scheme with dramatic timeline
     const sectionColors = {
-      'our-story': '#F2E3D5',      // Warm cream (Abstract-paint-4)
-      'timeline': '#2C2B29',       // Dark charcoal for contrast
-      'venues': '#BACBD9',         // Light blue-gray (Abstract-paint-3)
-      'photo-section': '#F2D1C9',  // Soft peach (Abstract-paint-5)
-      'faq-section': '#A0B3D9',    // Medium blue (Abstract-paint-2)
-      'rsvp': '#F2E3D5'           // Warm cream (Abstract-paint-4)
+      'our-story': '#F5F4F2',      // Soft off-white
+      'timeline': '#1A2B42',       // Deep navy blue - dramatic background
+      'venues': '#F5F4F2',         // Soft off-white
+      'photo-section': '#F9F7F5',  // Warm white
+      'faq-section': '#F5F4F2',    // Soft off-white
+      'rsvp': '#F5F4F2'           // Soft off-white for footer background
     };
 
     const container = containerRef.current;
@@ -79,7 +79,7 @@ const ScrollBackgroundManager: React.FC<ScrollBackgroundManagerProps> = ({ conta
       const timelineEl = document.getElementById('timeline');
       if (timelineEl) {
         const elements = timelineEl.querySelectorAll('*') as NodeListOf<HTMLElement>;
-        // Dark background gets light text, light backgrounds get dark text
+        // Dark navy background gets light text, other light backgrounds get dark text
         const color = activeSection.id === 'timeline' ? '#F5F5F5' : '#2c3e50';
         elements.forEach(el => {
           el.style.color = color;

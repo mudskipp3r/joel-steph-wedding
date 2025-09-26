@@ -36,8 +36,8 @@ const FAQSection: React.FC = () => {
       category: "General"
     },
     {
-      question: "I cannot come to the wedding but I'd still like to give a gift, is there a way to do this?",
-      answer: "Your presence is the greatest gift we could ask for. However, if you wish to honour us with a contribution, a monetary gift would be warmly appreciated. Bank details: Stephanie Huynh PayID: 0426875301 BSB: 062 111 Account No.: 1106 3602",
+      question: "Do you have a gift registry or wishing well?",
+      answer: "We don't have a gift registry, but if you wish to contribute, a wishing well will be available near the entrance of L'Aqua during the reception.",
       category: "General"
     },
     {

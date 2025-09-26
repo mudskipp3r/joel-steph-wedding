@@ -83,7 +83,7 @@ const TimelineSection: React.FC = () => {
               <div className="event-description">
                 Please arrive at least 30 minutes early
               </div>
-              <Button>Add to calendar</Button>
+              <Button variant="secondary">Add to calendar</Button>
             </div>
           </div>
 
@@ -96,7 +96,7 @@ const TimelineSection: React.FC = () => {
               <div className="event-description">
                 6:00pm - 11:30pm. Celebrate with us! Dinner, dancing, and drinks.
               </div>
-              <Button>Add to calendar</Button>
+              <Button variant="secondary">Add to calendar</Button>
             </div>
           </div>
         </div>
@@ -124,12 +124,12 @@ const TimelineSection: React.FC = () => {
           bottom: 2rem;
           width: 4px;
           background: linear-gradient(to bottom,
-            rgba(255, 107, 107, 0.3) 0%,
-            rgba(255, 107, 107, 0.8) 20%,
-            rgba(255, 107, 107, 0.8) 80%,
-            rgba(255, 107, 107, 0.3) 100%);
+            rgba(208, 219, 225, 0.3) 0%,
+            rgba(208, 219, 225, 0.8) 20%,
+            rgba(208, 219, 225, 0.8) 80%,
+            rgba(208, 219, 225, 0.3) 100%);
           border-radius: 2px;
-          box-shadow: 0 2px 10px rgba(255, 107, 107, 0.2);
+          box-shadow: 0 2px 10px rgba(208, 219, 225, 0.2);
           z-index: 10;
         }
 
@@ -169,9 +169,9 @@ const TimelineSection: React.FC = () => {
           transform: translateX(-50%);
           width: 24px;
           height: 24px;
-          background: #FF6B6B;
+          background: #D0DBE1;
           border-radius: 50%;
-          box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+          box-shadow: 0 4px 15px rgba(208, 219, 225, 0.3);
           z-index: 20;
         }
 

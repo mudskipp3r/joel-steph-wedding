@@ -47,10 +47,9 @@ const Button: React.FC<ButtonProps> = ({
       boxShadow: '0 4px 15px rgba(255, 107, 107, 0.3)',
     },
     secondary: {
-      color: '#FF6B6B',
-      background: 'white',
-      border: '2px solid #FF6B6B',
-      boxShadow: '0 4px 15px rgba(255, 107, 107, 0.1)',
+      color: '#2c3e50',
+      background: '#D0DBE1',
+      boxShadow: '0 4px 15px rgba(208, 219, 225, 0.3)',
     }
   };
 
@@ -77,9 +76,8 @@ const Button: React.FC<ButtonProps> = ({
       }
     : {
         transform: 'translateY(-2px)',
-        boxShadow: '0 8px 25px rgba(255, 107, 107, 0.2)',
-        background: typography.colors.accent,
-        color: 'white'
+        boxShadow: '0 8px 25px rgba(208, 219, 225, 0.4)',
+        background: '#BAC7D3'
       };
 
   return (

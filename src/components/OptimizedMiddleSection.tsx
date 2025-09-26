@@ -425,28 +425,30 @@ const OptimizedMiddleSection: React.FC = () => {
           top: 45%;
           left: 55%;
           transform: translate(-50%, -50%);
-          opacity: 1;
-          filter: drop-shadow(0 4px 20px rgba(246, 198, 175, 0.3)) brightness(0)
-            saturate(100%) invert(93%) sepia(15%) saturate(1151%)
-            hue-rotate(317deg) brightness(94%) contrast(92%);
+          opacity: 0.4;
+          filter: drop-shadow(0 2px 10px rgba(208, 219, 225, 0.2)) brightness(0)
+            saturate(100%) invert(85%) sepia(8%) saturate(465%)
+            hue-rotate(200deg) brightness(90%) contrast(88%);
         }
 
         .sun-svg {
           top: 48%;
           left: 52%;
           transform: translate(-50%, -50%);
-          filter: drop-shadow(0 4px 20px rgba(245, 142, 127, 0.3)) brightness(0)
-            saturate(100%) invert(71%) sepia(51%) saturate(468%)
-            hue-rotate(315deg) brightness(97%) contrast(91%);
+          opacity: 0.3;
+          filter: drop-shadow(0 2px 10px rgba(208, 219, 225, 0.2)) brightness(0)
+            saturate(100%) invert(82%) sepia(6%) saturate(312%)
+            hue-rotate(200deg) brightness(92%) contrast(85%);
         }
 
         .cloud-svg {
           top: 55%;
           left: 45%;
           transform: translate(-50%, -50%);
-          filter: drop-shadow(0 4px 20px rgba(208, 219, 225, 0.3)) brightness(0)
-            saturate(100%) invert(90%) sepia(11%) saturate(153%)
-            hue-rotate(168deg) brightness(96%) contrast(91%);
+          opacity: 0.35;
+          filter: drop-shadow(0 2px 10px rgba(208, 219, 225, 0.2)) brightness(0)
+            saturate(100%) invert(87%) sepia(5%) saturate(287%)
+            hue-rotate(200deg) brightness(88%) contrast(90%);
         }
 
         .pinned-text-content {

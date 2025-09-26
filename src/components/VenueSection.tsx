@@ -25,7 +25,7 @@ const venues = [
     coordinates: { lat: -33.9198, lng: 151.0346 },
     type: "Reception",
     parking:
-      "Highline underground carpark at Little Saigon Plaza – Rear 53 Kitchener Parade, Bankstown (Corner of French Ave & Kitchener Parade) Highline Main entrance – 462 Chapel Road, Bankstown (LG) Loading dock – 55 Kitchener Parade, Bankstown (Goods lift straight to Level) There are additional parking areas available in the vicinity of The HIGHLINE Venue located on Chapel Rd, Meredith Street, French Ave & Kitchener Parade.",
+      "Available parking is located underground at Little Saigon Plaza.",
     publicTransport: {
       train: "Bankstown Station (8min walk) - T3 Bankstown Line",
       bus: "Routes 901, 902, 925 - Stop at Chapel Road/Restwell Street",

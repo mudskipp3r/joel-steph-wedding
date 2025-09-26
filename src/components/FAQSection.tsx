@@ -126,7 +126,7 @@ const FAQSection: React.FC = () => {
         <div className="faq-header">
           <h2>Frequently Asked Questions</h2>
           <p>Everything you need to know about our special day.<br/>
-             Can't find what you're looking for? <a href="mailto:joel.steph@wedding.com">Contact us</a></p>
+             Can't find what you're looking for? Contact Steph on 0426 875 301 or Joel on 0497 091 831</p>
         </div>
 
         <div className="faq-list">
@@ -136,13 +136,6 @@ const FAQSection: React.FC = () => {
                 className={`faq-question ${openItems.includes(index) ? 'open' : ''}`}
                 onClick={() => toggleFAQ(index)}
               >
-                <span className="faq-icon-left">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <circle cx="12" cy="12" r="10"></circle>
-                    <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
-                    <line x1="12" y1="17" x2="12.01" y2="17"></line>
-                  </svg>
-                </span>
                 <span className="faq-text">{item.question}</span>
                 <span className="faq-icon-right">
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -246,7 +239,7 @@ const FAQSection: React.FC = () => {
           cursor: pointer;
           display: flex;
           align-items: center;
-          gap: 18px;
+          justify-content: space-between;
           font-family: ${typography.fonts.sans};
           font-size: 1.1rem;
           font-weight: ${typography.weights.medium};
@@ -294,7 +287,7 @@ const FAQSection: React.FC = () => {
         }
 
         .faq-answer-content {
-          padding: 0 28px 24px 66px;
+          padding: 0 28px 24px 28px;
           color: ${typography.colors.muted};
           line-height: 1.6;
           font-size: 1rem;
@@ -316,7 +309,7 @@ const FAQSection: React.FC = () => {
           }
 
           .faq-answer-content {
-            padding: 0 20px 18px 52px;
+            padding: 0 20px 18px 20px;
             font-size: 0.9rem;
           }
 

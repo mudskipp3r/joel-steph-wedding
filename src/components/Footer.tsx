@@ -15,7 +15,7 @@ const Footer: React.FC<FooterProps> = ({ onOpenRSVPForm }) => {
       style={{
         position: 'relative',
         width: '100%',
-        background: 'transparent',
+        background: 'white',
         color: '#2c3e50',
         padding: '60px 40px 40px 40px',
         borderTop: '1px solid rgba(44, 62, 80, 0.1)'
@@ -62,33 +62,39 @@ const Footer: React.FC<FooterProps> = ({ onOpenRSVPForm }) => {
               padding: 0,
               margin: 0
             }}>
-              <li><a href="#our-story" style={{
-                ...typography.styles.body,
-                textDecoration: 'none',
-                lineHeight: 1.8,
-                transition: 'color 0.3s ease',
-                color: typography.colors.primary
-              }}
-              onMouseEnter={(e) => e.currentTarget.style.color = typography.colors.accent}
-              onMouseLeave={(e) => e.currentTarget.style.color = typography.colors.primary}>Our Story</a></li>
               <li><a href="#timeline" style={{
-                ...typography.styles.body,
+                fontFamily: typography.fonts.sans,
+                fontSize: '1rem',
+                fontWeight: '500',
                 textDecoration: 'none',
                 lineHeight: 1.8,
-                transition: 'color 0.3s ease',
+                transition: 'all 0.3s ease',
                 color: typography.colors.primary
               }}
               onMouseEnter={(e) => e.currentTarget.style.color = typography.colors.accent}
-              onMouseLeave={(e) => e.currentTarget.style.color = typography.colors.primary}>Timeline</a></li>
+              onMouseLeave={(e) => e.currentTarget.style.color = typography.colors.primary}>Schedule</a></li>
               <li><a href="#venues" style={{
-                ...typography.styles.body,
+                fontFamily: typography.fonts.sans,
+                fontSize: '1rem',
+                fontWeight: '500',
                 textDecoration: 'none',
                 lineHeight: 1.8,
-                transition: 'color 0.3s ease',
+                transition: 'all 0.3s ease',
                 color: typography.colors.primary
               }}
               onMouseEnter={(e) => e.currentTarget.style.color = typography.colors.accent}
-              onMouseLeave={(e) => e.currentTarget.style.color = typography.colors.primary}>Venues</a></li>
+              onMouseLeave={(e) => e.currentTarget.style.color = typography.colors.primary}>Venue</a></li>
+              <li><a href="#faq-section" style={{
+                fontFamily: typography.fonts.sans,
+                fontSize: '1rem',
+                fontWeight: '500',
+                textDecoration: 'none',
+                lineHeight: 1.8,
+                transition: 'all 0.3s ease',
+                color: typography.colors.primary
+              }}
+              onMouseEnter={(e) => e.currentTarget.style.color = typography.colors.accent}
+              onMouseLeave={(e) => e.currentTarget.style.color = typography.colors.primary}>FAQ</a></li>
             </ul>
           </div>
 

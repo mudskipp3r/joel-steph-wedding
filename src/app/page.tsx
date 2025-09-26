@@ -34,7 +34,6 @@ export default function Home() {
 
       {/* Spacer for fixed hero section */}
       <div style={{
-        height: '100vh',
         height: '100dvh' /* Dynamic viewport height - matches hero section */
       }}></div>
 

@@ -83,7 +83,7 @@ const TimelineSection: React.FC = () => {
               <div className="event-description">
                 Please arrive at least 30 minutes early
               </div>
-              <Button variant="secondary">Add to calendar</Button>
+              <Button variant="secondary" calendarEvent="ceremony">Add to calendar</Button>
             </div>
           </div>
 
@@ -96,7 +96,7 @@ const TimelineSection: React.FC = () => {
               <div className="event-description">
                 6:00pm - 11:30pm. Celebrate with us! Dinner, dancing, and drinks.
               </div>
-              <Button variant="secondary">Add to calendar</Button>
+              <Button variant="secondary" calendarEvent="reception">Add to calendar</Button>
             </div>
           </div>
         </div>

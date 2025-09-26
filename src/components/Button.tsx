@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { typography } from '../styles/typography';
+import { addToCalendar } from '../utils/calendar';
 
 interface ButtonProps {
   children: React.ReactNode;
@@ -12,6 +13,7 @@ interface ButtonProps {
   disabled?: boolean;
   className?: string;
   style?: React.CSSProperties;
+  calendarEvent?: 'ceremony' | 'reception';
 }
 
 const Button: React.FC<ButtonProps> = ({
@@ -22,7 +24,8 @@ const Button: React.FC<ButtonProps> = ({
   type = 'button',
   disabled = false,
   className = '',
-  style = {}
+  style = {},
+  calendarEvent
 }) => {
   const baseStyles = {
     fontFamily: 'Instrument Sans, sans-serif',
@@ -47,9 +50,10 @@ const Button: React.FC<ButtonProps> = ({
       boxShadow: '0 4px 15px rgba(255, 107, 107, 0.3)',
     },
     secondary: {
-      color: '#2c3e50',
-      background: '#D0DBE1',
-      boxShadow: '0 4px 15px rgba(208, 219, 225, 0.3)',
+      color: '#D0DBE1',
+      background: 'transparent',
+      border: '2px solid #D0DBE1',
+      boxShadow: '0 4px 15px rgba(208, 219, 225, 0.2)',
     }
   };
 
@@ -77,13 +81,22 @@ const Button: React.FC<ButtonProps> = ({
     : {
         transform: 'translateY(-2px)',
         boxShadow: '0 8px 25px rgba(208, 219, 225, 0.4)',
-        background: '#BAC7D3'
+        background: '#D0DBE1',
+        color: '#2c3e50'
       };
+
+  const handleClick = () => {
+    if (calendarEvent) {
+      addToCalendar(calendarEvent);
+    } else if (onClick) {
+      onClick();
+    }
+  };
 
   return (
     <button
       type={type}
-      onClick={onClick}
+      onClick={handleClick}
       disabled={disabled}
       className={`wedding-button ${variant} ${size} ${className}`}
       style={{

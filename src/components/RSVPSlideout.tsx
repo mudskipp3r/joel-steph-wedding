@@ -172,8 +172,8 @@ const RSVPSlideout: React.FC<RSVPSlideoutProps> = ({ isOpen, onClose }) => {
       if (!formData.get('hasPlusOne')) {
         formData.set('hasPlusOne', 'no');
       }
-      // Remove plus one code from submission - not needed in Netlify
-      formData.delete('plusOneCode');
+      // Keep plus one code in submission for Netlify tracking
+      // formData.delete('plusOneCode'); // Commented out - we need this for tracking
       if (!formData.get('phone')) {
         formData.set('phone', 'Not provided');
       }

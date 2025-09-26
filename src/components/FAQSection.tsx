@@ -218,7 +218,7 @@ const FAQSection: React.FC = () => {
         }
 
         .faq-item {
-          background: linear-gradient(135deg, #ffffff 0%, #fefefe 50%, #ffffff 100%);
+          background: rgba(255, 255, 255, 0.8);
           border: 1px solid rgba(255, 107, 107, 0.1);
           border-bottom: none;
           overflow: hidden;

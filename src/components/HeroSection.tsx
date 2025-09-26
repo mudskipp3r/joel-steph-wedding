@@ -15,6 +15,7 @@ const HeroSection: React.FC = () => {
         left: 0,
         width: '100vw',
         height: '100vh',
+        height: '100dvh', /* Dynamic viewport height - adapts to mobile browser UI */
         overflow: 'hidden',
         zIndex: 1
       }}

@@ -15,7 +15,7 @@ const Footer: React.FC<FooterProps> = ({ onOpenRSVPForm }) => {
       style={{
         position: 'relative',
         width: '100%',
-        background: '#F4C5AF',
+        background: 'transparent',
         color: '#2c3e50',
         padding: '60px 40px 40px 40px',
         borderTop: '1px solid rgba(44, 62, 80, 0.1)'

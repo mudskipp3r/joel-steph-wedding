@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Navigation from "../components/Navigation";
@@ -12,11 +12,14 @@ import PhotoSection from "../components/PhotoSection";
 import FAQSection from "../components/FAQSection";
 import Footer from "../components/Footer";
 import RSVPSlideout from "../components/RSVPSlideout";
+import ScrollBackgroundManager from "../components/ScrollBackgroundManager";
 
 export default function Home() {
   const [isRSVPFormOpen, setIsRSVPFormOpen] = useState(false);
   const openRSVPForm = () => setIsRSVPFormOpen(true);
   const closeRSVPForm = () => setIsRSVPFormOpen(false);
+
+  const mainContentRef = useRef<HTMLDivElement>(null);
 
 
   return (
@@ -30,10 +33,13 @@ export default function Home() {
       </div>
 
       {/* Spacer for fixed hero section */}
-      <div style={{ height: '100vh' }}></div>
+      <div style={{
+        height: '100vh',
+        height: '100dvh' /* Dynamic viewport height - matches hero section */
+      }}></div>
 
       {/* Content that overlaps the hero */}
-      <div className="page-content" style={{
+      <div ref={mainContentRef} className="page-content" style={{
         position: 'relative',
         zIndex: 10,
         background: '#F0E9E1',
@@ -44,7 +50,8 @@ export default function Home() {
         width: '100%',
         margin: 0,
         boxShadow: '0 10px 30px rgba(0, 0, 0, 0.1)',
-        minHeight: '100vh'
+        minHeight: '100vh',
+        transition: 'background-color 0.8s ease'
       }}>
         <div id="our-story">
           <OptimizedMiddleSection />
@@ -74,6 +81,9 @@ export default function Home() {
         isOpen={isRSVPFormOpen}
         onClose={closeRSVPForm}
       />
+
+      {/* Background color manager */}
+      <ScrollBackgroundManager containerRef={mainContentRef} />
 
     </div>
   );

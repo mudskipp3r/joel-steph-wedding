@@ -12,7 +12,7 @@ const venues = [
     coordinates: { lat: -33.9133, lng: 151.1553 },
     type: "Ceremony",
     parking:
-      "Limited parking is available on the church premises. Please note that the parking lot will be locked from 2:00PM to 3:15PM due to school zone restrictions, giving you time to move your vehicle after the ceremony. Street parking is also available.",
+      "Limited parking is available on the church premises. Please note that the parking lot will be locked from 2:00PM to 3:15PM due to school zone restrictions, so ensure your vehicle is moved before then. Street parking is also available.",
     publicTransport: {
       train: "Marrickville Station (10min walk) - Inner West Line",
       bus: "Routes 426, 428, 445 - Stop at Marrickville Road",

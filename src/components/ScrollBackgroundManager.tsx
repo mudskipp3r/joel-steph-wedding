@@ -93,6 +93,19 @@ const ScrollBackgroundManager: React.FC<ScrollBackgroundManagerProps> = ({ conta
           }
         }
       }
+
+      // Handle venues section title color - light on dark background, dark on light background
+      const venuesEl = document.getElementById('venues');
+      if (venuesEl) {
+        const venuesTitle = venuesEl.querySelector('h2');
+        if (venuesTitle) {
+          // If we're still on the timeline section (dark), make venues title light
+          // Otherwise, make it dark (when background transitions to light)
+          const venuesColor = activeSection.id === 'timeline' ? '#F5F5F5' : '#2c3e50';
+          venuesTitle.style.color = venuesColor;
+          venuesTitle.style.transition = 'color 0.5s ease';
+        }
+      }
     };
 
     // Create a single ScrollTrigger with optimized performance

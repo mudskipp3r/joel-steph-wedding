@@ -37,7 +37,7 @@ const FAQSection: React.FC = () => {
     },
     {
       question: "Do you have a gift registry or wishing well?",
-      answer: "We don't have a gift registry, but if you wish to contribute, a wishing well will be available near the entrance of Highline during the reception.",
+      answer: "We don't have a gift registry, but if you wish to contribute, a wishing well will be available at the reception",
       category: "General"
     },
     {

@@ -307,36 +307,36 @@ const OptimizedMiddleSection: React.FC = () => {
           }
 
           /* Strategic repositioning for text readability on mobile */
-          /* Move images that are too close to center text */
+          /* Keep images fully visible within viewport */
 
-          /* Section 1 - Move the tall image on left further left */
+          /* Section 1 - Keep tall image visible on left */
           .section-div:nth-child(1) .red-square.portrait-tall {
-            left: -5% !important;
+            left: 2% !important;
             top: 60% !important;
           }
 
-          /* Section 2 - Move the large portrait on right further right and up */
+          /* Section 2 - Keep large portrait visible on right */
           .section-div:nth-child(2) .red-square.portrait-large {
-            right: -10% !important;
-            top: 25% !important;
+            right: 2% !important;
+            top: 20% !important;
           }
 
-          /* Section 2 - Move small portrait on left further down */
+          /* Section 2 - Small portrait on left */
           .section-div:nth-child(2) .red-square.portrait:last-child {
-            top: 90% !important;
+            top: 85% !important;
             left: 5% !important;
           }
 
-          /* Section 3 - Move tall portrait on right further right */
+          /* Section 3 - Keep tall portrait visible on right */
           .section-div:nth-child(3) .red-square.portrait-tall {
-            right: -5% !important;
-            top: 15% !important;
+            right: 2% !important;
+            top: 10% !important;
           }
 
-          /* Section 3 - Move large portrait on left further left */
+          /* Section 3 - Keep large portrait visible on left */
           .section-div:nth-child(3) .red-square.portrait-large {
-            left: -15% !important;
-            top: 50% !important;
+            left: 2% !important;
+            top: 55% !important;
           }
         }
 
@@ -361,39 +361,39 @@ const OptimizedMiddleSection: React.FC = () => {
             height: 225px;
           }
 
-          /* More aggressive repositioning for smaller screens */
+          /* Repositioning for smaller screens - keep images visible */
 
-          /* Section 1 - Push images further away from center */
+          /* Section 1 - Position images within viewport */
           .section-div:nth-child(1) .red-square.portrait-tall {
-            left: -10% !important;
+            left: 2% !important;
             top: 65% !important;
           }
 
           .section-div:nth-child(1) .red-square.portrait {
-            right: 5% !important;
-            top: 10% !important;
-          }
-
-          /* Section 2 - Create more space around center */
-          .section-div:nth-child(2) .red-square.portrait-large {
-            right: -15% !important;
-            top: 20% !important;
-          }
-
-          .section-div:nth-child(2) .red-square:first-child {
-            left: 0% !important;
+            right: 3% !important;
             top: 8% !important;
           }
 
-          /* Section 3 - Push images to edges */
+          /* Section 2 - Keep images visible */
+          .section-div:nth-child(2) .red-square.portrait-large {
+            right: 2% !important;
+            top: 15% !important;
+          }
+
+          .section-div:nth-child(2) .red-square:first-child {
+            left: 2% !important;
+            top: 5% !important;
+          }
+
+          /* Section 3 - Position images within bounds */
           .section-div:nth-child(3) .red-square.portrait-tall {
-            right: -10% !important;
-            top: 10% !important;
+            right: 2% !important;
+            top: 8% !important;
           }
 
           .section-div:nth-child(3) .red-square.portrait-large {
-            left: -20% !important;
-            top: 45% !important;
+            left: 2% !important;
+            top: 50% !important;
           }
         }
 

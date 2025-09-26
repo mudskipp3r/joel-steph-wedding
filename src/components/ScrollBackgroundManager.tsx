@@ -16,14 +16,14 @@ const ScrollBackgroundManager: React.FC<ScrollBackgroundManagerProps> = ({ conta
 
     if (!containerRef.current) return;
 
-    // Wedding-appropriate color palette - warm, romantic tones
+    // Abstract paint background color palette - soft, artistic tones
     const sectionColors = {
-      'our-story': '#F0E9E1',      // Warm cream - your original
-      'timeline': '#2C2B29',       // REALLY dark charcoal brown
-      'venues': '#E8DDD4',         // Warm beige
-      'photo-section': '#F4C5AF',  // Your signature peach
-      'faq-section': '#EFE3D8',    // Light champagne
-      'rsvp': '#F1C6B0'           // Soft coral-peach
+      'our-story': '#F2E3D5',      // Warm cream (Abstract-paint-4)
+      'timeline': '#2C2B29',       // Dark charcoal for contrast
+      'venues': '#BACBD9',         // Light blue-gray (Abstract-paint-3)
+      'photo-section': '#F2D1C9',  // Soft peach (Abstract-paint-5)
+      'faq-section': '#A0B3D9',    // Medium blue (Abstract-paint-2)
+      'rsvp': '#F2E3D5'           // Warm cream (Abstract-paint-4)
     };
 
     const container = containerRef.current;
@@ -79,6 +79,7 @@ const ScrollBackgroundManager: React.FC<ScrollBackgroundManagerProps> = ({ conta
       const timelineEl = document.getElementById('timeline');
       if (timelineEl) {
         const elements = timelineEl.querySelectorAll('*') as NodeListOf<HTMLElement>;
+        // Dark background gets light text, light backgrounds get dark text
         const color = activeSection.id === 'timeline' ? '#F5F5F5' : '#2c3e50';
         elements.forEach(el => {
           el.style.color = color;

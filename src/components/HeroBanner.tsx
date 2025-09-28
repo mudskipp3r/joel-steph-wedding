@@ -33,9 +33,9 @@ const HeroBanner: React.FC<HeroBannerProps> = ({
       }}
     >
       {/* Main Names Display */}
-      <div style={{
+      <div className="names-container" style={{
         position: 'absolute',
-        bottom: 'calc(5% + 2px)', // 2px above the date - almost touching
+        bottom: 'calc(12% + 20px)', // Much more space above the date
         right: '8%', // Moved left from 4% to 8%
         maxWidth: '600px',
         display: 'flex',
@@ -96,6 +96,7 @@ const HeroBanner: React.FC<HeroBannerProps> = ({
 
       {/* Date in bottom right */}
       <div
+        className="date-container"
         style={{
           position: 'absolute',
           bottom: '5%', // More padding from bottom
@@ -113,6 +114,7 @@ const HeroBanner: React.FC<HeroBannerProps> = ({
 
       {/* Heart SVG in bottom left */}
       <div
+        className="heart-container"
         style={{
           position: 'absolute',
           bottom: '5%',
@@ -140,6 +142,42 @@ const HeroBanner: React.FC<HeroBannerProps> = ({
           />
         </svg>
       </div>
+
+      {/* Mobile-specific adjustments */}
+      <style jsx>{`
+        @media (max-width: 768px) {
+          .hero-banner .names-container {
+            bottom: 18% !important;
+            right: 6% !important;
+            left: 6% !important;
+            max-width: none !important;
+          }
+
+          .hero-banner .date-container {
+            bottom: 8% !important;
+            right: 6% !important;
+          }
+
+          .hero-banner .heart-container {
+            bottom: 8% !important;
+            left: 6% !important;
+          }
+        }
+
+        @media (max-width: 480px) {
+          .hero-banner .names-container {
+            bottom: 20% !important;
+          }
+
+          .hero-banner .date-container {
+            bottom: 10% !important;
+          }
+
+          .hero-banner .heart-container {
+            bottom: 10% !important;
+          }
+        }
+      `}</style>
     </section>
   );
 };

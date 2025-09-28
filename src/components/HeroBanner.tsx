@@ -35,8 +35,8 @@ const HeroBanner: React.FC<HeroBannerProps> = ({
       {/* Main Names Display */}
       <div className="names-container" style={{
         position: 'absolute',
-        bottom: 'calc(8% + 10px)', // Tighter desktop spacing
-        right: '8%', // Moved left from 4% to 8%
+        bottom: 'calc(5% + 2px)', // Very tight, almost touching date
+        right: '4%', // Back to tight corner positioning
         maxWidth: '600px',
         display: 'flex',
         flexDirection: 'column',

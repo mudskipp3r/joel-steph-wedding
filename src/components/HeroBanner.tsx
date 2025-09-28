@@ -35,7 +35,7 @@ const HeroBanner: React.FC<HeroBannerProps> = ({
       {/* Main Names Display */}
       <div className="names-container" style={{
         position: 'absolute',
-        bottom: 'calc(12% + 20px)', // Much more space above the date
+        bottom: 'calc(8% + 10px)', // Reduced gap to date
         right: '8%', // Moved left from 4% to 8%
         maxWidth: '600px',
         display: 'flex',
@@ -147,7 +147,7 @@ const HeroBanner: React.FC<HeroBannerProps> = ({
       <style jsx>{`
         @media (max-width: 768px) {
           .hero-banner .names-container {
-            bottom: 18% !important;
+            bottom: 14% !important;
             right: 6% !important;
             left: 6% !important;
             max-width: none !important;
@@ -166,7 +166,7 @@ const HeroBanner: React.FC<HeroBannerProps> = ({
 
         @media (max-width: 480px) {
           .hero-banner .names-container {
-            bottom: 20% !important;
+            bottom: 16% !important;
           }
 
           .hero-banner .date-container {

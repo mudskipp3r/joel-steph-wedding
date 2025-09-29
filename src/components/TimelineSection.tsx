@@ -293,6 +293,15 @@ const TimelineSection: React.FC = () => {
             font-size: 1rem !important;
             margin-bottom: 1.5rem !important;
           }
+
+          /* Fix button layout on mobile */
+          .timeline-text button {
+            position: relative !important;
+            z-index: 40 !important;
+            margin-top: 0.5rem !important;
+            display: inline-block !important;
+            white-space: nowrap !important;
+          }
         }
 
         /* Tablet adjustments */

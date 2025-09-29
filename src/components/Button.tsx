@@ -41,6 +41,8 @@ const Button: React.FC<ButtonProps> = ({
     textDecoration: 'none',
     outline: 'none',
     opacity: disabled ? 0.6 : 1,
+    WebkitTapHighlightColor: 'transparent',
+    touchAction: 'manipulation',
   };
 
   const variantStyles = {
@@ -106,12 +108,12 @@ const Button: React.FC<ButtonProps> = ({
         ...style,
       }}
       onMouseEnter={(e) => {
-        if (!disabled) {
+        if (!disabled && !('ontouchstart' in window)) {
           Object.assign(e.currentTarget.style, hoverStyles);
         }
       }}
       onMouseLeave={(e) => {
-        if (!disabled) {
+        if (!disabled && !('ontouchstart' in window)) {
           Object.assign(e.currentTarget.style, {
             ...baseStyles,
             ...variantStyles[variant],

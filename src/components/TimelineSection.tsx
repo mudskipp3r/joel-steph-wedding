@@ -262,6 +262,7 @@ const TimelineSection: React.FC = () => {
             position: relative !important;
             display: block !important;
             top: auto !important;
+            overflow: visible !important;
           }
 
           .timeline-pip {
@@ -301,6 +302,15 @@ const TimelineSection: React.FC = () => {
             margin-top: 0.5rem !important;
             display: inline-block !important;
             white-space: nowrap !important;
+            pointer-events: auto !important;
+            -webkit-tap-highlight-color: transparent !important;
+          }
+
+          /* Ensure ceremony button specifically is clickable */
+          .timeline-item:nth-child(2) .timeline-text button {
+            z-index: 50 !important;
+            position: relative !important;
+            pointer-events: auto !important;
           }
         }
 

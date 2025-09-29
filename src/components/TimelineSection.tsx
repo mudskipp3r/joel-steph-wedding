@@ -233,6 +233,7 @@ const TimelineSection: React.FC = () => {
             min-height: auto;
             overflow: visible !important;
             padding-left: 3rem;
+            padding-right: 1rem; /* Add right padding to prevent cutoff */
           }
 
           .timeline-line {
@@ -311,6 +312,33 @@ const TimelineSection: React.FC = () => {
             z-index: 50 !important;
             position: relative !important;
             pointer-events: auto !important;
+          }
+        }
+
+        /* Small mobile portrait specific fixes */
+        @media (max-width: 480px) {
+          /* Ensure ceremony button is fully clickable on small screens */
+          .timeline-item:nth-child(2) {
+            overflow: visible !important;
+            position: relative !important;
+            z-index: 45 !important;
+          }
+
+          .timeline-item:nth-child(2) .timeline-text {
+            position: relative !important;
+            z-index: 45 !important;
+            overflow: visible !important;
+          }
+
+          .timeline-item:nth-child(2) button {
+            z-index: 60 !important;
+            position: relative !important;
+            pointer-events: auto !important;
+            display: block !important;
+            width: auto !important;
+            min-height: 44px !important; /* iOS minimum touch target */
+            padding: 12px 20px !important;
+            margin-top: 1rem !important;
           }
         }
 

@@ -30,7 +30,7 @@ export const generateCalendarEvent = (eventType: 'ceremony' | 'reception'): Cale
 
 export const createGoogleCalendarUrl = (event: CalendarEvent): string => {
   const formatDateForGoogle = (dateStr: string) => {
-    return dateStr.replace(/[-:]/g, '').replace('T', 'T');
+    return dateStr.replace(/[-:]/g, '');
   };
 
   const params = new URLSearchParams({
@@ -38,7 +38,8 @@ export const createGoogleCalendarUrl = (event: CalendarEvent): string => {
     text: event.title,
     dates: `${formatDateForGoogle(event.startDate)}/${formatDateForGoogle(event.endDate)}`,
     location: event.location,
-    details: event.description
+    details: event.description,
+    ctz: 'Australia/Sydney' // Set timezone to Sydney
   });
 
   return `https://calendar.google.com/calendar/render?${params.toString()}`;
@@ -64,7 +65,9 @@ export const createAppleCalendarUrl = (event: CalendarEvent): string => {
 
 export const createICSFile = (event: CalendarEvent): string => {
   const formatDateForICS = (dateStr: string) => {
-    return dateStr.replace(/[-:]/g, '').replace('T', 'T') + '00Z';
+    // Convert to UTC for ICS format - Sydney is UTC+11 in February
+    const date = new Date(dateStr + '+11:00'); // Add Sydney timezone
+    return date.toISOString().replace(/[-:]/g, '').replace(/\.\d{3}/, '');
   };
 
   const icsContent = [

@@ -87,7 +87,15 @@ const Button: React.FC<ButtonProps> = ({
         color: '#2c3e50'
       };
 
-  const handleClick = () => {
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement> | React.TouchEvent<HTMLButtonElement>) => {
+    // Prevent double-firing on mobile
+    if (e.type === 'touchend') {
+      e.preventDefault();
+    }
+    e.stopPropagation();
+
+    console.log('Button clicked:', calendarEvent); // Debug log
+
     if (calendarEvent) {
       addToCalendar(calendarEvent);
     } else if (onClick) {
@@ -99,6 +107,7 @@ const Button: React.FC<ButtonProps> = ({
     <button
       type={type}
       onClick={handleClick}
+      onTouchEnd={handleClick}
       disabled={disabled}
       className={`wedding-button ${variant} ${size} ${className}`}
       style={{

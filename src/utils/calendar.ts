@@ -91,10 +91,12 @@ export const createICSFile = (event: CalendarEvent): string => {
 };
 
 export const addToCalendar = (eventType: 'ceremony' | 'reception') => {
+  console.log('addToCalendar called with:', eventType); // Debug log
   const event = generateCalendarEvent(eventType);
 
   // Detect user agent to provide best experience
   const userAgent = navigator.userAgent.toLowerCase();
+  console.log('User agent:', userAgent); // Debug log
 
   if (userAgent.includes('iphone') || userAgent.includes('ipad') || userAgent.includes('mac')) {
     // iOS/Mac users - try ICS file first, fallback to Google

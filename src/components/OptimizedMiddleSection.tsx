@@ -407,7 +407,7 @@ const OptimizedMiddleSection: React.FC = () => {
         }
 
         .red-square.overlap {
-          z-index: 2100;
+          z-index: 2;
           opacity: 0.9;
         }
 

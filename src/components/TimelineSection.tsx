@@ -294,6 +294,7 @@ const TimelineSection: React.FC = () => {
           .event-description {
             font-size: 1rem !important;
             margin-bottom: 1.5rem !important;
+            pointer-events: none !important;
           }
 
           /* Fix button layout on mobile */

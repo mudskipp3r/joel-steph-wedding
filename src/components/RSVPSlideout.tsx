@@ -853,7 +853,7 @@ const RSVPSlideout: React.FC<RSVPSlideoutProps> = ({ isOpen, onClose }) => {
           .panel-content {
             padding: 1.5rem !important;
             padding-top: 1rem !important;
-            padding-bottom: 8rem !important;
+            padding-bottom: 12rem !important;
             -webkit-overflow-scrolling: touch;
           }
 

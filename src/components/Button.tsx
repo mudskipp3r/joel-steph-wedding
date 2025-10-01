@@ -88,11 +88,15 @@ const Button: React.FC<ButtonProps> = ({
       };
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement> | React.TouchEvent<HTMLButtonElement>) => {
-    // Prevent double-firing on mobile
-    if (e.type === 'touchend') {
+    // Only prevent default if it's not a submit button
+    if (e.type === 'touchend' && type !== 'submit') {
       e.preventDefault();
     }
-    e.stopPropagation();
+
+    // Don't stop propagation for submit buttons
+    if (type !== 'submit') {
+      e.stopPropagation();
+    }
 
     console.log('Button clicked:', calendarEvent); // Debug log
 

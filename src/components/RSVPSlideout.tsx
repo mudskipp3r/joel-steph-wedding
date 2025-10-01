@@ -166,22 +166,32 @@ const RSVPSlideout: React.FC<RSVPSlideoutProps> = ({ isOpen, onClose }) => {
 
     try {
       // Create FormData from the form element
-      const formData = new FormData(e.target as HTMLFormElement);
+      const submissionFormData = new FormData(e.target as HTMLFormElement);
+
+      // Ensure form-name is set for Netlify
+      submissionFormData.set('form-name', 'wedding-rsvp');
 
       // Ensure default values for fields that might be blank or unchecked
-      if (!formData.get('hasPlusOne')) {
-        formData.set('hasPlusOne', 'no');
+      submissionFormData.set('hasPlusOne', formData.hasPlusOne ? 'yes' : 'no');
+
+      // Handle optional fields with appropriate defaults
+      if (!submissionFormData.get('phone') || !formData.phone.trim()) {
+        submissionFormData.set('phone', 'Not provided');
       }
-      // Keep plus one code in submission for Netlify tracking
-      // formData.delete('plusOneCode'); // Commented out - we need this for tracking
-      if (!formData.get('phone')) {
-        formData.set('phone', 'Not provided');
+      if (!submissionFormData.get('dietaryRestrictions') || !formData.dietaryRestrictions.trim()) {
+        submissionFormData.set('dietaryRestrictions', 'None specified');
       }
-      if (!formData.get('dietaryRestrictions')) {
-        formData.set('dietaryRestrictions', 'None specified');
+      if (!submissionFormData.get('message') || !formData.message.trim()) {
+        submissionFormData.set('message', 'No message provided');
       }
-      if (!formData.get('message')) {
-        formData.set('message', 'No message provided');
+
+      // Handle plus one fields
+      if (formData.hasPlusOne) {
+        submissionFormData.set('plusOneCode', formData.plusOneCode);
+        submissionFormData.set('plusOneName', formData.plusOneName);
+      } else {
+        submissionFormData.set('plusOneCode', 'N/A');
+        submissionFormData.set('plusOneName', 'N/A');
       }
 
       // Submit to Netlify
@@ -190,7 +200,7 @@ const RSVPSlideout: React.FC<RSVPSlideoutProps> = ({ isOpen, onClose }) => {
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
         },
-        body: new URLSearchParams(formData as any).toString(),
+        body: new URLSearchParams(submissionFormData as any).toString(),
       });
 
       if (response.ok) {
@@ -236,13 +246,17 @@ const RSVPSlideout: React.FC<RSVPSlideoutProps> = ({ isOpen, onClose }) => {
       <form
         name="wedding-rsvp"
         data-netlify="true"
+        netlify-honeypot="bot-field"
         style={{ display: 'none' }}
       >
+        <input type="hidden" name="form-name" value="wedding-rsvp" />
         <input type="text" name="fullName" />
         <input type="email" name="email" />
         <input type="tel" name="phone" />
         <input type="text" name="attendance" />
         <input type="text" name="hasPlusOne" />
+        <input type="text" name="plusOneCode" />
+        <input type="text" name="plusOneName" />
         <input type="text" name="dietaryRestrictions" />
         <textarea name="message"></textarea>
       </form>
@@ -423,12 +437,14 @@ const RSVPSlideout: React.FC<RSVPSlideoutProps> = ({ isOpen, onClose }) => {
             </div>
           ) : (
             /* RSVP Form */
-            <form className="rsvp-form" onSubmit={handleSubmit} data-netlify="true" name="wedding-rsvp" style={{
+            <form className="rsvp-form" onSubmit={handleSubmit} data-netlify="true" name="wedding-rsvp" netlify-honeypot="bot-field" style={{
             display: 'flex',
             flexDirection: 'column',
             gap: '2rem'
           }}>
             <input type="hidden" name="form-name" value="wedding-rsvp" />
+            {/* Honeypot field for spam prevention - hidden from users */}
+            <input type="text" name="bot-field" style={{ display: 'none' }} tabIndex={-1} autoComplete="off" />
             {/* Hidden inputs to ensure default values are always sent */}
             <input type="hidden" name="hasPlusOne" value={formData.hasPlusOne ? 'yes' : 'no'} />
 

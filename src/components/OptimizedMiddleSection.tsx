@@ -198,6 +198,10 @@ const OptimizedMiddleSection: React.FC = () => {
         .optimized-middle-section {
           height: 400vh;
           background: transparent;
+          user-select: none;
+          -webkit-user-select: none;
+          -moz-user-select: none;
+          -ms-user-select: none;
         }
 
         .section-div {

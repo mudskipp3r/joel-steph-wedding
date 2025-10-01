@@ -107,6 +107,10 @@ const TimelineSection: React.FC = () => {
           position: relative;
           background: transparent;
           height: 300vh; /* Desktop scroll distance */
+          user-select: none;
+          -webkit-user-select: none;
+          -moz-user-select: none;
+          -ms-user-select: none;
         }
 
         .timeline-content {

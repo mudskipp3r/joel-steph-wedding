@@ -264,7 +264,8 @@ const OptimizedMiddleSection: React.FC = () => {
           left: 0;
           width: 100%;
           height: 100vh;
-          z-index: 2500;
+          z-index: 1;
+          pointer-events: none;
         }
 
         .red-square {

@@ -236,7 +236,7 @@ const OptimizedMiddleSection: React.FC = () => {
           top: 50vh;
           left: 50vw;
           transform: translate(-50%, -50%);
-          z-index: 2000;
+          z-index: 5;
           text-align: center;
           pointer-events: none;
           font-family: ${typography.fonts.serif};

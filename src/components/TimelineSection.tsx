@@ -281,14 +281,17 @@ const TimelineSection: React.FC = () => {
 
           .event-time {
             font-size: 2.5rem !important;
+            pointer-events: none !important;
           }
 
           .event-title {
             font-size: 3rem !important;
+            pointer-events: none !important;
           }
 
           .title-item .event-title {
             font-size: 2.5rem !important;
+            pointer-events: none !important;
           }
 
           .event-description {

@@ -282,22 +282,30 @@ const TimelineSection: React.FC = () => {
           .event-time {
             font-size: 2.5rem !important;
             pointer-events: none !important;
+            user-select: none !important;
+            -webkit-user-select: none !important;
           }
 
           .event-title {
             font-size: 3rem !important;
             pointer-events: none !important;
+            user-select: none !important;
+            -webkit-user-select: none !important;
           }
 
           .title-item .event-title {
             font-size: 2.5rem !important;
             pointer-events: none !important;
+            user-select: none !important;
+            -webkit-user-select: none !important;
           }
 
           .event-description {
             font-size: 1rem !important;
             margin-bottom: 1.5rem !important;
             pointer-events: none !important;
+            user-select: none !important;
+            -webkit-user-select: none !important;
           }
 
           /* Fix button layout on mobile */

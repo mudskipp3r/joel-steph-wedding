@@ -239,6 +239,10 @@ const OptimizedMiddleSection: React.FC = () => {
           z-index: 5;
           text-align: center;
           pointer-events: none;
+          user-select: none;
+          -webkit-user-select: none;
+          -moz-user-select: none;
+          -ms-user-select: none;
           font-family: ${typography.fonts.serif};
           font-size: clamp(1.8rem, 4vw, 4.5rem);
           font-weight: ${typography.weights.semibold};

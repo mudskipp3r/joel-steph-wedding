@@ -192,7 +192,7 @@ const OptimizedMiddleSection: React.FC = () => {
         </div>
       </div>
 
-      <div style={{ height: "100vh" }}></div>
+      <div style={{ height: "100vh", pointerEvents: "none" }}></div>
 
       <style jsx>{`
         .optimized-middle-section {
